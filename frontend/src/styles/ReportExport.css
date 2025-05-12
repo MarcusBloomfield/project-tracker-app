@@ -1,0 +1,100 @@
+/* ReportExport.css */
+
+.report-export {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.report-export h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.export-options {
+  margin-bottom: 20px;
+}
+
+.export-format {
+  margin-bottom: 15px;
+}
+
+.export-format label {
+  display: inline-block;
+  margin-right: 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+.export-format select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 0.9rem;
+}
+
+.export-content p {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+.export-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.export-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.export-checkbox input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.export-checkbox label {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.export-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.export-button:hover {
+  background-color: #2980b9;
+}
+
+.export-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.export-button.exporting {
+  background-color: #f39c12;
+}
+
+.export-button.success {
+  background-color: #2ecc71;
+}
+
+@media (max-width: 600px) {
+  .export-checkboxes {
+    grid-template-columns: 1fr;
+  }
+} 

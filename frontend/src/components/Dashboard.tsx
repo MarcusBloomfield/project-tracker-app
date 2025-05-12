@@ -1,0 +1,273 @@
+import React, { useState, useEffect } from 'react';
+import { Task } from '../utils/taskManager';
+import { statisticsManager, ProjectStatistics } from '../utils/statisticsManager';
+import ReportExport from './ReportExport';
+import '../styles/Dashboard.css';
+
+interface DashboardProps {
+  projectId: string;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [stats, setStats] = useState<ProjectStatistics | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  // Load tasks when component mounts or projectId changes
+  useEffect(() => {
+    if (!projectId) return;
+
+    setLoading(true);
+    
+    window.api.send('task:list', { projectId });
+    window.api.receive('task:list', (taskList: Task[]) => {
+      setTasks(taskList);
+      setLoading(false);
+    });
+  }, [projectId]);
+
+  // Calculate statistics when tasks are loaded
+  useEffect(() => {
+    if (tasks.length === 0 && !loading) {
+      setStats(null);
+      return;
+    }
+
+    if (tasks.length > 0) {
+      const projectStats = statisticsManager.calculateProjectStatistics(tasks);
+      setStats(projectStats);
+    }
+  }, [tasks, loading]);
+
+  // Format percentage for display
+  const formatPercentage = (value: number): string => {
+    return `${value.toFixed(1)}%`;
+  };
+
+  if (loading) {
+    return <div className="dashboard-container">Loading project statistics...</div>;
+  }
+
+  if (!stats) {
+    return (
+      <div className="dashboard-container">
+        <h2>Project Dashboard</h2>
+        <div className="no-stats">
+          <p>No tasks found for this project.</p>
+          <p>Create tasks to see project statistics.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashboard-container">
+      <h2>Project Dashboard</h2>
+      
+      <div className="stats-overview">
+        <div className="stat-card">
+          <h3>Task Overview</h3>
+          <div className="stat-value">{stats.totalTasks}</div>
+          <div className="stat-label">Total Tasks</div>
+          
+          <div className="stat-details">
+            <div className="stat-item">
+              <span className="stat-item-value todo">{stats.todoTasks}</span>
+              <span className="stat-item-label">To Do</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-item-value in-progress">{stats.inProgressTasks}</span>
+              <span className="stat-item-label">In Progress</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-item-value completed">{stats.completedTasks}</span>
+              <span className="stat-item-label">Completed</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="stat-card">
+          <h3>Completion Rate</h3>
+          <div className="completion-circle" style={{ 
+            background: `conic-gradient(#4caf50 ${stats.completionRate * 3.6}deg, #f0f0f0 ${stats.completionRate * 3.6}deg)` 
+          }}>
+            <div className="completion-inner">
+              <span>{formatPercentage(stats.completionRate)}</span>
+            </div>
+          </div>
+          <div className="stat-label">Tasks Completed</div>
+        </div>
+        
+        <div className="stat-card">
+          <h3>Average Completion Time</h3>
+          <div className="stat-value">
+            {stats.averageCompletionTime 
+              ? statisticsManager.formatDuration(stats.averageCompletionTime)
+              : 'N/A'}
+          </div>
+          <div className="stat-label">From creation to completion</div>
+        </div>
+      </div>
+      
+      <div className="stats-row">
+        <div className="stat-chart-card">
+          <h3>Task Distribution</h3>
+          <div className="task-distribution">
+            <div className="distribution-bar">
+              {stats.totalTasks > 0 && (
+                <>
+                  <div 
+                    className="distribution-segment todo" 
+                    style={{ width: `${(stats.todoTasks / stats.totalTasks) * 100}%` }}
+                    title={`To Do: ${stats.todoTasks} tasks (${formatPercentage((stats.todoTasks / stats.totalTasks) * 100)})`}
+                  ></div>
+                  <div 
+                    className="distribution-segment in-progress" 
+                    style={{ width: `${(stats.inProgressTasks / stats.totalTasks) * 100}%` }}
+                    title={`In Progress: ${stats.inProgressTasks} tasks (${formatPercentage((stats.inProgressTasks / stats.totalTasks) * 100)})`}
+                  ></div>
+                  <div 
+                    className="distribution-segment completed" 
+                    style={{ width: `${(stats.completedTasks / stats.totalTasks) * 100}%` }}
+                    title={`Completed: ${stats.completedTasks} tasks (${formatPercentage((stats.completedTasks / stats.totalTasks) * 100)})`}
+                  ></div>
+                </>
+              )}
+            </div>
+            
+            <div className="distribution-legend">
+              <div className="legend-item">
+                <span className="legend-color todo"></span>
+                <span className="legend-label">To Do</span>
+                <span className="legend-value">{stats.todoTasks}</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-color in-progress"></span>
+                <span className="legend-label">In Progress</span>
+                <span className="legend-value">{stats.inProgressTasks}</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-color completed"></span>
+                <span className="legend-label">Completed</span>
+                <span className="legend-value">{stats.completedTasks}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="stat-chart-card">
+          <h3>Task Priorities</h3>
+          <div className="task-priorities">
+            <div className="priorities-chart">
+              {Object.entries(stats.tasksByPriority).map(([priority, count]) => (
+                <div 
+                  key={priority}
+                  className={`priority-bar ${priority.toLowerCase()}`}
+                  style={{ height: `${stats.totalTasks > 0 ? (count / stats.totalTasks) * 200 : 0}px` }}
+                  title={`${priority}: ${count} tasks`}
+                ></div>
+              ))}
+            </div>
+            
+            <div className="priorities-legend">
+              <div className="legend-item">
+                <span className="legend-color high"></span>
+                <span className="legend-label">High</span>
+                <span className="legend-value">{stats.tasksByPriority.high}</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-color medium"></span>
+                <span className="legend-label">Medium</span>
+                <span className="legend-value">{stats.tasksByPriority.medium}</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-color low"></span>
+                <span className="legend-label">Low</span>
+                <span className="legend-value">{stats.tasksByPriority.low}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="stats-row">
+        <div className="stat-chart-card full-width">
+          <h3>Task Completion Trend (Last 14 Days)</h3>
+          <div className="trend-chart">
+            {stats.taskCompletionTrend.map((day, index) => (
+              <div key={day.date} className="trend-day">
+                <div className="trend-bars">
+                  <div 
+                    className="trend-bar created"
+                    style={{ height: `${day.created * 20}px` }}
+                    title={`Created: ${day.created} tasks`}
+                  ></div>
+                  <div 
+                    className="trend-bar completed"
+                    style={{ height: `${day.completed * 20}px` }}
+                    title={`Completed: ${day.completed} tasks`}
+                  ></div>
+                </div>
+                <div className="trend-date">
+                  {new Date(day.date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="trend-legend">
+            <div className="legend-item">
+              <span className="legend-color created"></span>
+              <span className="legend-label">Created</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color completed"></span>
+              <span className="legend-label">Completed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="stats-row">
+        <div className="stat-list-card">
+          <h3>Upcoming Deadlines</h3>
+          {stats.upcomingDeadlines.length === 0 ? (
+            <div className="empty-list">No upcoming deadlines</div>
+          ) : (
+            <ul className="stat-list">
+              {stats.upcomingDeadlines.slice(0, 5).map(task => (
+                <li key={task.id} className="stat-list-item">
+                  <div className="task-title">{task.title}</div>
+                  <div className="task-due">
+                    Due: {new Date(task.dueDate!).toLocaleDateString()}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        
+        <div className="stat-list-card">
+          <h3>Overdue Tasks</h3>
+          {stats.overdueTasks.length === 0 ? (
+            <div className="empty-list">No overdue tasks</div>
+          ) : (
+            <ul className="stat-list">
+              {stats.overdueTasks.slice(0, 5).map(task => (
+                <li key={task.id} className="stat-list-item overdue">
+                  <div className="task-title">{task.title}</div>
+                  <div className="task-due">
+                    Due: {new Date(task.dueDate!).toLocaleDateString()}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+      
+      <ReportExport projectId={projectId} stats={stats} />
+    </div>
+  );
+};
+
+export default Dashboard; 
