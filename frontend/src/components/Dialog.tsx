@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import '../styles/CreateProjectDialog.css';
 
-interface CreateProjectDialogProps {
+interface CreateDialogProps {
+  type: string;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (projectName: string) => void;
 }
 
-const CreateProjectDialog: React.FC<CreateProjectDialogProps> = ({ 
+const CreateDialog: React.FC<CreateDialogProps> = ({ 
+  type,
   isOpen, 
   onClose, 
   onConfirm
@@ -40,7 +42,7 @@ const CreateProjectDialog: React.FC<CreateProjectDialogProps> = ({
     <div className="dialog-overlay">
       <div className="dialog-container">
         <div className="dialog-header">
-          <h3>Create New Project</h3>
+          <h3>Create new {type}</h3>
           <button 
             className="dialog-close-button" 
             onClick={handleCancel}
@@ -51,7 +53,7 @@ const CreateProjectDialog: React.FC<CreateProjectDialogProps> = ({
         
         <form onSubmit={handleSubmit}>
           <div className="dialog-content">
-            <label htmlFor="project-name">Project Name:</label>
+            <label htmlFor="project-name">Name:</label>
             <input
               id="project-name"
               type="text"
@@ -83,4 +85,4 @@ const CreateProjectDialog: React.FC<CreateProjectDialogProps> = ({
   );
 };
 
-export default CreateProjectDialog; 
+export default CreateDialog; 

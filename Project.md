@@ -35,13 +35,26 @@
   * Created TaskList component with filtering and sorting
   * Added task creation and status management
   * Implemented task tags and due date functionality
-* ✅ Phase 5: Statistics and Reporting - Complete
+* ✅ Phase 5: Statistics and Reporting - In Progress (Partially Complete: Dashboard UI and basic stats implemented)
   * Created statistics utility module for task analytics
   * Implemented dashboard with interactive visualizations
   * Added task completion trend charts
   * Created task distribution and priority visualizations
   * Added upcoming deadlines and overdue tasks tracking
-  * Implemented report export in multiple formats (HTML, CSV, JSON)
+  * Adjusted application styling to ensure `ProjectView` utilizes the maximum available screen space.
+  * ⬜ Implement report export in multiple formats (HTML, CSV, JSON) - Remaining
+
+## Issues / Blockers
+* Task update and delete operations in `taskHandlers.ts` are inefficient as they iterate through all projects to find the relevant project ID for the task. This needs optimization if performance becomes an issue with many projects/tasks.
+* No actual charting library is used yet for the dashboard; using simple divs for now. Consider integrating a library like Chart.js or Recharts if more complex visualizations are needed.
+
+## Next Steps
+* Complete Phase 5: Statistics and Reporting
+    * Implement basic time tracking functionalities (if feasible within scope).
+    * Develop report generation capabilities (e.g., export to HTML, CSV, JSON).
+* Proceed to Phase 6: Project Collaboration (if decided).
+* Refine UI/UX based on feedback and testing.
+* Address the inefficient task update/delete operations.
 
 ## Issues Resolved
 * Path resolution issues between Electron and webpack

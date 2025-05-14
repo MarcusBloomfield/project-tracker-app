@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FSItem } from '../utils/fileSystem';
 import '../styles/FileBrowser.css';
+import CreateDialog from './Dialog';
 
 interface FileBrowserProps {
   projectPath: string;
@@ -13,6 +14,9 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
   const [error, setError] = useState<string | null>(null);
   const [currentPath, setCurrentPath] = useState<string>(projectPath);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [isFileDialogOpen, setIsFileDialogOpen] = useState<boolean>(false);
+  const [isFolderDialogOpen, setIsFolderDialogOpen] = useState<boolean>(false);
+
 
   // Load directory contents
   useEffect(() => {
@@ -36,6 +40,7 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
       // No cleanup needed for now
     };
   }, [currentPath]);
+
 
   // Handle directory navigation
   const handleItemClick = (item: FSItem) => {
@@ -62,9 +67,24 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     return name;
   };
 
+
   // Create new folder
-  const handleCreateFolder = () => {
-    const folderName = prompt('Enter folder name:');
+  const handleFolderDialogOpen = () => {
+    setIsFolderDialogOpen(true);
+  };
+
+  const handleFolderDialogClose = () => {
+    setIsFolderDialogOpen(false);
+  };
+
+  const handleFolderDialogConfirm = (name: string) => {
+    if (isFolderDialogOpen) {
+      handleCreateFolder(name);
+      handleFolderDialogClose();
+    }
+  };
+
+  const handleCreateFolder = (folderName: string) => {
     if (!folderName) return;
 
     const newFolderPath = `${currentPath}\\${folderName}`;
@@ -83,8 +103,22 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
   };
 
   // Create new file
-  const handleCreateFile = () => {
-    const fileName = prompt('Enter file name:');
+  const handleFileDialogOpen = () => {
+    setIsFileDialogOpen(true);
+  };
+
+  const handleFileDialogClose = () => {
+    setIsFileDialogOpen(false);
+  };
+
+  const handleFileDialogConfirm = (name: string) => {
+    if (isFileDialogOpen) {
+      handleCreateFile(name);
+      handleFileDialogClose();
+    }
+  };
+
+  const handleCreateFile = (fileName: string) => {
     if (!fileName) return;
 
     const newFilePath = `${currentPath}\\${fileName}`;
@@ -142,8 +176,8 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
         </button>
         <span className="current-path">{currentPath.substring(currentPath.lastIndexOf('\\') + 1)}</span>
         <div className="file-actions">
-          <button className="action-button" onClick={handleCreateFolder}>+ Folder</button>
-          <button className="action-button" onClick={handleCreateFile}>+ File</button>
+          <button className="action-button" onClick={handleFolderDialogOpen}>+ Folder</button>
+          <button className="action-button" onClick={handleFileDialogOpen}>+ File</button>
         </div>
       </div>
       
@@ -172,6 +206,20 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
             ))
         )}
       </div>
+
+      <CreateDialog 
+        type="file"
+        isOpen={isFileDialogOpen}
+        onClose={handleFileDialogClose}
+        onConfirm={handleFileDialogConfirm}
+      />
+
+      <CreateDialog 
+        type="folder"
+        isOpen={isFolderDialogOpen}
+        onClose={handleFolderDialogClose}
+        onConfirm={handleFolderDialogConfirm}
+      />
     </div>
   );
 };

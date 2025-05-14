@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectInfo } from '../utils/fileSystem';
-import CreateProjectDialog from './CreateProjectDialog';
+import CreateDialog from './Dialog';
 import '../styles/ProjectSelector.css';
 
 interface ProjectSelectorProps {
@@ -101,7 +101,8 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
         </div>
       </div>
 
-      <CreateProjectDialog 
+      <CreateDialog 
+        type="project"
         isOpen={isDialogOpen}
         onClose={handleDialogClose}
         onConfirm={handleCreateProject}
