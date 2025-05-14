@@ -76,7 +76,6 @@
 .file-item {
   display: flex;
   align-items: center;
-  padding: 8px;
   margin: 2px 0;
   border-radius: 4px;
   cursor: pointer;
@@ -89,6 +88,14 @@
 
 .file-item.selected {
   background-color: #e3f2fd;
+}
+
+.file-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 90%;
+  padding: 8px;
 }
 
 .file-icon {
@@ -109,3 +116,26 @@
   color: #666;
   font-style: italic;
 } 
+
+.file-delete-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+  transition: opacity 0.2s;
+  opacity: 0;
+}
+
+.file-delete-button:hover:not(:disabled) {
+  background-color: #e74c3c;
+  opacity: 1;
+}
+
+.file-delete-button:disabled {
+  background-color: #95a5a6;
+  opacity: 0;
+}

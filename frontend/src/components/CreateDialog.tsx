@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import '../styles/CreateProjectDialog.css';
+import '../styles/CreateDialog.css';
 
 interface CreateDialogProps {
   type: string;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (projectName: string) => void;
+  onConfirm: (name: string) => void;
 }
 
 const CreateDialog: React.FC<CreateDialogProps> = ({ 
@@ -14,7 +14,7 @@ const CreateDialog: React.FC<CreateDialogProps> = ({
   onClose, 
   onConfirm
 }) => {
-  const [projectName, setProjectName] = useState<string>('');
+  const [Name, setName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
@@ -22,18 +22,18 @@ const CreateDialog: React.FC<CreateDialogProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!projectName.trim()) {
-      setError('Project name cannot be empty');
+    if (!Name.trim()) {
+      setError('Name cannot be empty');
       return;
     }
     
-    onConfirm(projectName);
-    setProjectName('');
+    onConfirm(Name);
+    setName('');
     setError(null);
   };
 
   const handleCancel = () => {
-    setProjectName('');
+    setName('');
     setError(null);
     onClose();
   };
@@ -53,12 +53,12 @@ const CreateDialog: React.FC<CreateDialogProps> = ({
         
         <form onSubmit={handleSubmit}>
           <div className="dialog-content">
-            <label htmlFor="project-name">Name:</label>
+            <label htmlFor="name">Name:</label>
             <input
-              id="project-name"
+              id="name"
               type="text"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
+              value={Name}
+              onChange={(e) => setName(e.target.value)}
               autoFocus
             />
             {error && <div className="dialog-error">{error}</div>}

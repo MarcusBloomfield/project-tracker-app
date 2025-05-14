@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FSItem } from '../utils/fileSystem';
 import '../styles/FileBrowser.css';
-import CreateDialog from './Dialog';
+import CreateDialog from './CreateDialog';
 
 interface FileBrowserProps {
   projectPath: string;
@@ -136,6 +136,23 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     });
   };
 
+  const handleDeleteItem = (item: FSItem) => {
+
+    if (item.path.includes('tasks.json')) {
+      setError('Cannot delete task file');
+      return;
+    }
+    
+    window.api.send('fs:delete', { path: item.path });
+      window.api.receive('fs:delete', (success: boolean) => {
+        if (success) {
+          setItems(items.filter(i => i.path !== item.path));
+        } else {
+          setError('Failed to delete file');
+        }
+      });
+  };
+
   // Get file icon based on extension
   const getFileIcon = (item: FSItem) => {
     if (item.type === 'directory') {
@@ -195,13 +212,23 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
               return a.name.localeCompare(b.name);
             })
             .map((item) => (
-              <div 
+              <div
                 key={item.path} 
-                className={`file-item ${selectedItem === item.path ? 'selected' : ''}`}
-                onClick={() => handleItemClick(item)}
-              >
-                <span className="file-icon">{getFileIcon(item)}</span>
-                <span className="file-name" title={item.name}>{formatName(item.name)}</span>
+                className={`file-item ${selectedItem === item.path ? 'selected' : ''}`}> 
+                <div
+                  className="file-button"
+                  onClick={() => handleItemClick(item)}
+                >
+                  <span className="file-icon">{getFileIcon(item)}</span>
+                  <span className="file-name" title={item.name}>{formatName(item.name)}</span>
+                </div>
+                <button 
+                  className="file-delete-button"
+                  onClick={() => handleDeleteItem(item)}
+                  disabled={item.path.includes('tasks.json')}
+                >
+                  Delete
+                </button>
               </div>
             ))
         )}

@@ -9,9 +9,11 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
   const [content, setContent] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [isEdited, setIsEdited] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>('');
+  const [isPreventingTaskFileDeletion, setIsPreventingTaskFileDeletion] = useState<boolean>(false);
 
   // Load file content when filePath changes
   useEffect(() => {
@@ -25,6 +27,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     setIsLoading(true);
     setError(null);
 
+    preventTaskFileDeletion();
+
     // Extract file name from path
     const name = filePath.substring(filePath.lastIndexOf('\\') + 1);
     setFileName(name);
@@ -37,6 +41,13 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
       setIsEdited(false);
     });
   }, [filePath]);
+
+  const preventTaskFileDeletion = () => {
+    if (filePath?.includes('tasks.json')) {
+      setError('Cannot delete task file');
+      setIsPreventingTaskFileDeletion(true);
+    }
+  };
 
   // Handle content changes
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -63,6 +74,25 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     });
   };
 
+  const handleDelete = () => {
+    if (!filePath) return;
+    
+    setIsDeleting(true);
+    setError(null);
+
+    window.api.send('fs:delete', { path: filePath });
+    window.api.receive('fs:delete', (success: boolean) => {
+      setIsDeleting(false);
+      
+      if (success) {
+        setError('File deleted successfully');
+      } else {
+        setError('Failed to delete file');
+      }
+    });
+  };
+
+
   if (!filePath) {
     return (
       <div className="text-editor-empty">
@@ -87,6 +117,13 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
           {isEdited && <span className="edited-indicator">*</span>}
         </div>
         <div className="editor-actions">
+          <button 
+            className="delete-button" 
+            onClick={handleDelete}
+            disabled={isSaving || isPreventingTaskFileDeletion}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete'}
+          </button>
           <button 
             className="save-button" 
             onClick={handleSave}

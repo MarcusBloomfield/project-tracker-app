@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectInfo } from '../utils/fileSystem';
-import CreateDialog from './Dialog';
+import CreateDialog from './CreateDialog';
 import '../styles/ProjectSelector.css';
 
 interface ProjectSelectorProps {
