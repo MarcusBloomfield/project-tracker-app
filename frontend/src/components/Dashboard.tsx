@@ -12,19 +12,78 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [stats, setStats] = useState<ProjectStatistics | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [allProjects, setAllProjects] = useState<string[]>([]);
 
-  // Load tasks when component mounts or projectId changes
+  // Load project list when component mounts if showing all projects
   useEffect(() => {
-    if (!projectId) return;
-
-    setLoading(true);
-    
-    window.api.send('task:list', { projectId });
-    window.api.receive('task:list', (taskList: Task[]) => {
-      setTasks(taskList);
-      setLoading(false);
-    });
+    if (projectId === 'all') {
+      window.api.send('project:list', {});
+      window.api.receive('project:list', (projectList: any[]) => {
+        const projectNames = projectList.map(project => project.name);
+        setAllProjects(projectNames);
+      });
+    }
   }, [projectId]);
+
+  // Load tasks when component mounts or projectId or allProjects changes
+  useEffect(() => {
+    if (projectId === 'all') {
+      if (allProjects.length === 0) return;
+      
+      setLoading(true);
+      
+      // Initialize an array to collect all tasks
+      let allTasks: Task[] = [];
+      let loadedProjectCount = 0;
+      let componentMounted = true;
+      
+      // Setup a handler for receiving tasks from each project
+      const handleTasksReceived = (taskList: Task[], currentProjectId: string) => {
+        if (!componentMounted) return;
+        
+        allTasks = [...allTasks, ...taskList];
+        loadedProjectCount++;
+        
+        // When all projects are loaded, update the state
+        if (loadedProjectCount === allProjects.length) {
+          setTasks(allTasks);
+          setLoading(false);
+        }
+      };
+      
+      // Register the listener once
+      window.api.receive('task:list', handleTasksReceived);
+      
+      // Request tasks for each project
+      allProjects.forEach(projectName => {
+        window.api.send('task:list', { projectId: projectName });
+      });
+      
+      // Cleanup function 
+      return () => {
+        componentMounted = false;
+      };
+    } else if (projectId) {
+      setLoading(true);
+      
+      let componentMounted = true;
+      
+      const handleTaskList = (taskList: Task[]) => {
+        if (!componentMounted) return;
+        
+        setTasks(taskList);
+        setLoading(false);
+      };
+      
+      window.api.send('task:list', { projectId });
+      window.api.receive('task:list', handleTaskList);
+      
+      // Cleanup function
+      return () => {
+        componentMounted = false;
+      };
+    }
+  }, [projectId, allProjects]);
 
   // Calculate statistics when tasks are loaded
   useEffect(() => {
@@ -44,16 +103,16 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
     return `${value.toFixed(1)}%`;
   };
 
-  if (loading) {
+  if (loading && (!stats || tasks.length === 0)) {
     return <div className="dashboard-container">Loading project statistics...</div>;
   }
 
   if (!stats) {
     return (
       <div className="dashboard-container">
-        <h2>Project Dashboard</h2>
+        <h2>{projectId === 'all' ? 'All Projects Dashboard' : 'Project Dashboard'}</h2>
         <div className="no-stats">
-          <p>No tasks found for this project.</p>
+          <p>No tasks found {projectId === 'all' ? 'across any projects' : 'for this project'}.</p>
           <p>Create tasks to see project statistics.</p>
         </div>
       </div>
@@ -62,7 +121,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
 
   return (
     <div className="dashboard-container">
-      <h2>Project Dashboard</h2>
+      <h2>{projectId === 'all' ? 'All Projects Dashboard' : 'Project Dashboard'}</h2>
       
       <div className="stats-overview">
         <div className="stat-card">

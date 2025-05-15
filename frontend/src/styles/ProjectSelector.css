@@ -8,13 +8,36 @@
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #d7d7d7;
 }
 
-.project-selection h2 {
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
   color: #2c3e50;
-  border-bottom: 1px solid #eee;
   padding-bottom: 0.5rem;
+}
+
+.project-header h2 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.view-toggle-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.view-toggle-button:hover {
+  background-color: #2980b9;
 }
 
 .project-list {
@@ -75,4 +98,8 @@
   margin-bottom: 15px;
   border-radius: 4px;
   font-size: 0.9rem;
+}
+
+.dashboard-view {
+  width: 100%;
 } 

@@ -25,19 +25,21 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     setLoading(true);
     setError(null);
 
-    const loadContents = () => {
-      window.api.send('fs:readdir', { path: currentPath });
-      window.api.receive('fs:readdir', (contents: FSItem[]) => {
-        setItems(contents);
-        setLoading(false);
-      });
+    // Define the event handler for 'fs:readdir'
+    const handleFsReadDirResponse = (contents: FSItem[]) => {
+      setItems(contents);
+      setLoading(false);
     };
 
-    loadContents();
+    // Register the listener before sending the request
+    window.api.receive('fs:readdir', handleFsReadDirResponse);
+    window.api.send('fs:readdir', { path: currentPath });
 
-    // Cleanup function
+    // Cleanup function to remove the listener
     return () => {
-      // No cleanup needed for now
+      if (typeof window.api.off === 'function') {
+        window.api.off('fs:readdir', handleFsReadDirResponse);
+      }
     };
   }, [currentPath]);
 

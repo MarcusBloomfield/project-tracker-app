@@ -13,16 +13,17 @@
 * ✅ Implemented statistics dashboard with task visualizations
 * ✅ Added README.md with project documentation
 * ✅ Added .gitignore file for source control
+* ✅ Added project selection dashboard view with aggregated tasks statistics across all projects
 
 ## Implementation Progress
 * ✅ Phase 1: Project Setup and Foundation - Complete
 * ✅ Phase 2: Core UI Framework - Complete
-  * Added React and ReactDOM libraries
-  * Configured webpack for React and TypeScript
-  * Created component structure (App, ProjectSelector)
-  * Set up CSS styling for components
-  * Implemented project selection interface
-  * Connected Electron with React through preload scripts
+* Added React and ReactDOM libraries
+* Configured webpack for React and TypeScript
+* Created component structure (App, ProjectSelector)
+* Set up CSS styling for components
+* Implemented project selection interface
+* Connected Electron with React through preload scripts
 * ✅ Phase 3: File Management - Complete
   * Created file system utility module to interact with OS
   * Added FileBrowser component with directory navigation
@@ -42,6 +43,7 @@
   * Created task distribution and priority visualizations
   * Added upcoming deadlines and overdue tasks tracking
   * Adjusted application styling to ensure `ProjectView` utilizes the maximum available screen space.
+  * Enhanced ProjectSelector to include a dashboard view showing aggregated statistics across all projects
   * ⬜ Implement report export in multiple formats (HTML, CSV, JSON) - Remaining
 
 ## Issues / Blockers
@@ -96,4 +98,28 @@
 * React - UI library
 * Webpack - Module bundler
 * CSS - Styling
-* IPC - Inter-process communication 
+* IPC - Inter-process communication
+
+## Recent Change
+* Implemented cleanup function in `FileBrowser.tsx`'s `useEffect` to remove `fs:readdir` event listener using `window.api.off`. (Note: Requires updating the `ElectronAPI` type definition to include the `off` method to resolve TypeScript errors).
+
+## Development Setup
+
+*   **Build:** `npm run build` (compiles TypeScript and bundles with Webpack)
+*   **Run:** `npm start` (ensure `NODE_ENV` is set, e.g., `$env:NODE_ENV="development"; npm start` on PowerShell)
+*   **Lint:** `npm run lint`
+*   **Dev Mode:** `npm run dev` (runs webpack in watch mode and electron concurrently)
+
+### Key File Locations:
+
+*   **Main Process Entry:** `dist/frontend/src/main.js` (compiled from `frontend/src/main.ts`)
+*   **Renderer Process Entry (React):** `frontend/src/renderer.tsx` (bundled by Webpack into `dist/renderer.js`)
+*   **Webpack Config:** `webpack.config.js`
+*   **TypeScript Config:** `tsconfig.json`
+*   **ESLint Config:** `.eslintrc.js`
+*   **Project Data Storage:**
+    *   Projects are created as folders under `[UserDocuments]/ProjectTracker/`.
+    *   Each project folder (e.g., `[UserDocuments]/ProjectTracker/[ProjectName]/`) contains its files and a `tasks.json` for task management.
+*   **`tasks.json` location:** Each project has its own `tasks.json` file located at `[UserDocuments]/ProjectTracker/[PROJECT_ID]/tasks.json`.
+
+## Architecture Overview 
