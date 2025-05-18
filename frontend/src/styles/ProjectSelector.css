@@ -38,11 +38,13 @@
   flex: 0 0 25%;
   max-width: 25%;
   padding: 20px;
+  height: fit-content;
 }
 
 .daily-tasks-container {
   flex: 0 0 25%;
   max-width: 25%;
+  height: fit-content;
 }
 
 .dashboard-container {
