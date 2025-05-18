@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProjectInfo } from '../utils/fileSystem';
 import CreateDialog from './CreateDialog';
 import Dashboard from './Dashboard';
+import DailyTaskList from './DailyTaskList';
 import '../styles/ProjectSelector.css';
 
 interface ProjectSelectorProps {
@@ -71,11 +72,28 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
 
   return (
     <div className="project-selection">
-      
-      
+      <div className="project-header">
+        <h2>Projects Overview</h2>
+      </div>
+
       {error && <div className="error-message">{error}</div>}
-      
+
+
+
       <div className="project-dashboard-container">
+
+        <div className="daily-tasks-container">
+          <DailyTaskList />
+        </div>
+
+
+
+        <div className="dashboard-container">
+          <h3>Dashboard</h3>
+          <Dashboard projectId="all" />
+        </div>
+
+
         <div className="project-list-container">
           <h3>My Projects</h3>
           <div className="project-list">
@@ -86,8 +104,8 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
               </div>
             ) : (
               projects.map(project => (
-                <div 
-                  key={project.id} 
+                <div
+                  key={project.id}
                   className="project-item"
                   onClick={() => handleProjectSelect(project)}
                 >
@@ -96,8 +114,8 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
                 </div>
               ))
             )}
-            
-            <div 
+
+            <div
               className="project-item new-project"
               onClick={handleCreateProjectClick}
             >
@@ -105,14 +123,9 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
             </div>
           </div>
         </div>
-        
-        <div className="dashboard-container">
-          <h3>Dashboard</h3>
-          <Dashboard projectId="all" />
-        </div>
       </div>
 
-      <CreateDialog 
+      <CreateDialog
         type="project"
         isOpen={isDialogOpen}
         onClose={handleDialogClose}

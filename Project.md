@@ -16,6 +16,8 @@
 * ✅ Added project selection dashboard view with aggregated tasks statistics across all projects
 * ✅ Implemented feature to display all tasks from all projects sorted by priority on the projects overview
 * ✅ Enhanced UI to display projects list and dashboard side by side instead of toggling between them
+* ✅ Added daily repeating tasks panel that resets task completion status each day
+* ✅ Implemented drag-and-drop functionality for reordering daily tasks
 
 ## Implementation Progress
 * ✅ Phase 1: Project Setup and Foundation - Complete
@@ -104,6 +106,8 @@
 * IPC - Inter-process communication
 
 ## Recent Change
+* Added drag-and-drop functionality to allow users to reorder daily tasks by dragging them to the desired position. The order is persisted between sessions.
+* Added daily repeating tasks feature that allows users to create tasks that reset to incomplete each day. This is ideal for tracking daily habits or recurring tasks.
 * Improved ProjectSelector UI by displaying projects list and dashboard side by side instead of toggling between them with a button, providing a more comprehensive overview.
 * Added feature to display all tasks from all projects sorted by priority on the projects overview dashboard. This allows users to quickly view their most important tasks across all projects in one place.
 * Implemented cleanup function in `FileBrowser.tsx`'s `useEffect` to remove `fs:readdir` event listener using `window.api.off`. (Note: Requires updating the `ElectronAPI` type definition to include the `off` method to resolve TypeScript errors).

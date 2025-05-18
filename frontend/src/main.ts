@@ -5,6 +5,7 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import { initFileSystemHandlers } from './main/fileSystemHandlers';
 import { initTaskHandlers } from './main/taskHandlers';
+import { initDailyTaskHandlers } from './main/dailyTaskHandlers';
 
 // Debug logging to help troubleshoot path issues
 console.log('__dirname:', __dirname);
@@ -15,6 +16,9 @@ initFileSystemHandlers();
 
 // Initialize task handlers
 initTaskHandlers();
+
+// Initialize daily task handlers
+initDailyTaskHandlers();
 
 const createWindow = (): void => {
   // Create the browser window.

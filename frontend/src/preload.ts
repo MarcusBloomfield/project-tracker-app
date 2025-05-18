@@ -18,7 +18,12 @@ const validSendChannels = [
   'task:list',
   'task:create',
   'task:update',
-  'task:delete'
+  'task:delete',
+  'dailyTask:list',
+  'dailyTask:create',
+  'dailyTask:toggle',
+  'dailyTask:delete',
+  'dailyTask:reorder'
 ];
 
 const validReceiveChannels = [
@@ -34,7 +39,12 @@ const validReceiveChannels = [
   'task:list',
   'task:created',
   'task:updated',
-  'task:deleted'
+  'task:deleted',
+  'dailyTask:list',
+  'dailyTask:created',
+  'dailyTask:updated',
+  'dailyTask:deleted',
+  'dailyTask:reordered'
 ];
 
 // Expose protected methods that allow the renderer process to use
@@ -50,6 +60,11 @@ contextBridge.exposeInMainWorld('api', {
     if (validReceiveChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender` 
       ipcRenderer.on(channel, (event, ...args) => func(...args));
+    }
+  },
+  off: (channel: string, func: (...args: any[]) => void) => {
+    if (validReceiveChannels.includes(channel)) {
+      ipcRenderer.removeListener(channel, func);
     }
   },
   // Expose any other APIs you need here
