@@ -13,7 +13,6 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [viewMode, setViewMode] = useState<'projects' | 'dashboard'>('projects');
 
   // Load projects when component mounts
   useEffect(() => {
@@ -62,10 +61,6 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
     return d.toLocaleDateString();
   };
 
-  const toggleViewMode = () => {
-    setViewMode(viewMode === 'projects' ? 'dashboard' : 'projects');
-  };
-
   if (loading && projects.length === 0) {
     return (
       <div className="project-selection">
@@ -76,50 +71,46 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
 
   return (
     <div className="project-selection">
-      <div className="project-header">
-        <h2>Projects Overview</h2>
-        <button 
-          className="view-toggle-button" 
-          onClick={toggleViewMode}
-        >
-          {viewMode === 'projects' ? 'View Dashboard' : 'View Projects'}
-        </button>
-      </div>
+      
       
       {error && <div className="error-message">{error}</div>}
       
-      {viewMode === 'projects' ? (
-        <div className="project-list">
-          {projects.length === 0 ? (
-            <div className="no-projects">
-              <p>No projects found</p>
-              <p>Create a new project to get started</p>
-            </div>
-          ) : (
-            projects.map(project => (
-              <div 
-                key={project.id} 
-                className="project-item"
-                onClick={() => handleProjectSelect(project)}
-              >
-                <h3>{project.name}</h3>
-                <p>Last modified: {formatDate(project.modifiedAt)}</p>
+      <div className="project-dashboard-container">
+        <div className="project-list-container">
+          <h3>My Projects</h3>
+          <div className="project-list">
+            {projects.length === 0 ? (
+              <div className="no-projects">
+                <p>No projects found</p>
+                <p>Create a new project to get started</p>
               </div>
-            ))
-          )}
-          
-          <div 
-            className="project-item new-project"
-            onClick={handleCreateProjectClick}
-          >
-            <h3>+ Create New Project</h3>
+            ) : (
+              projects.map(project => (
+                <div 
+                  key={project.id} 
+                  className="project-item"
+                  onClick={() => handleProjectSelect(project)}
+                >
+                  <h3>{project.name}</h3>
+                  <p>Last modified: {formatDate(project.modifiedAt)}</p>
+                </div>
+              ))
+            )}
+            
+            <div 
+              className="project-item new-project"
+              onClick={handleCreateProjectClick}
+            >
+              <h3>+ Create New Project</h3>
+            </div>
           </div>
         </div>
-      ) : (
-        <div className="dashboard-view">
+        
+        <div className="dashboard-container">
+          <h3>Dashboard</h3>
           <Dashboard projectId="all" />
         </div>
-      )}
+      </div>
 
       <CreateDialog 
         type="project"

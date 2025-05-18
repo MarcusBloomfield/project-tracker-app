@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Task } from '../utils/taskManager';
+import { Task, TaskStatus, TaskPriority, taskManager } from '../utils/taskManager';
 import { statisticsManager, ProjectStatistics } from '../utils/statisticsManager';
 import ReportExport from './ReportExport';
 import '../styles/Dashboard.css';
@@ -13,6 +13,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   const [stats, setStats] = useState<ProjectStatistics | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [allProjects, setAllProjects] = useState<string[]>([]);
+  const [projectNames, setProjectNames] = useState<Record<string, string>>({});
 
   // Load project list when component mounts if showing all projects
   useEffect(() => {
@@ -21,6 +22,13 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
       window.api.receive('project:list', (projectList: any[]) => {
         const projectNames = projectList.map(project => project.name);
         setAllProjects(projectNames);
+        
+        // Create a mapping of project IDs to names
+        const projectMapping: Record<string, string> = {};
+        projectList.forEach(project => {
+          projectMapping[project.name] = project.name;
+        });
+        setProjectNames(projectMapping);
       });
     }
   }, [projectId]);
@@ -103,6 +111,36 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
     return `${value.toFixed(1)}%`;
   };
 
+  // Format date for display
+  const formatDate = (date: Date | null) => {
+    if (!date) return 'No due date';
+    return new Date(date).toLocaleDateString();
+  };
+
+  // Get priority label and class
+  const getPriorityInfo = (priority: TaskPriority) => {
+    switch (priority) {
+      case TaskPriority.HIGH:
+        return { label: 'High', className: 'priority-high' };
+      case TaskPriority.MEDIUM:
+        return { label: 'Medium', className: 'priority-medium' };
+      case TaskPriority.LOW:
+        return { label: 'Low', className: 'priority-low' };
+    }
+  };
+
+  // Render task status badge
+  const renderStatusBadge = (status: TaskStatus) => {
+    switch (status) {
+      case TaskStatus.TODO:
+        return <span className="status-badge status-todo">To Do</span>;
+      case TaskStatus.IN_PROGRESS:
+        return <span className="status-badge status-in-progress">In Progress</span>;
+      case TaskStatus.COMPLETED:
+        return <span className="status-badge status-completed">Completed</span>;
+    }
+  };
+
   if (loading && (!stats || tasks.length === 0)) {
     return <div className="dashboard-container">Loading project statistics...</div>;
   }
@@ -118,6 +156,11 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
       </div>
     );
   }
+
+  // Sort tasks by priority for all projects view
+  const tasksSortedByPriority = projectId === 'all' 
+    ? taskManager.sortTasks([...tasks], 'priority')
+    : [];
 
   return (
     <div className="dashboard-container">
@@ -167,6 +210,48 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
           <div className="stat-label">From creation to completion</div>
         </div>
       </div>
+      
+      {/* All tasks from all projects sorted by priority */}
+      {projectId === 'all' && tasksSortedByPriority.length > 0 && (
+        <div className="stats-row">
+          <div className="stat-chart-card full-width">
+            <h3>All Tasks Sorted by Priority</h3>
+            <div className="all-tasks-list">
+              {tasksSortedByPriority.map(task => (
+                <div key={task.id} className={`task-item ${task.status === TaskStatus.COMPLETED ? 'completed' : ''}`}>
+                  <div className="task-header">
+                    <h3>{task.title}</h3>
+                    <div className="task-project">
+                      Project: {projectNames[task.projectId] || task.projectId}
+                    </div>
+                  </div>
+                  <div className="task-info">
+                    <div className="task-status">{renderStatusBadge(task.status)}</div>
+                    <div className={`task-priority ${getPriorityInfo(task.priority).className}`}>
+                      {getPriorityInfo(task.priority).label}
+                    </div>
+                    {task.dueDate && (
+                      <div className="task-due-date">
+                        Due: {formatDate(task.dueDate)}
+                      </div>
+                    )}
+                  </div>
+                  {task.description && (
+                    <div className="task-description">{task.description}</div>
+                  )}
+                  {task.tags && task.tags.length > 0 && (
+                    <div className="task-tags">
+                      {task.tags.map(tag => (
+                        <span key={tag} className="task-tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="stats-row">
         <div className="stat-chart-card">

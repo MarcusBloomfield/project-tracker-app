@@ -6,6 +6,11 @@
   height: 100%;
 }
 
+/* When nested inside another container */
+.dashboard-container .dashboard-container {
+  padding: 0;
+}
+
 .dashboard-container h2 {
   margin-bottom: 20px;
   color: #333;
@@ -266,6 +271,7 @@
   align-items: flex-end;
   height: 200px;
   margin-bottom: 10px;
+  overflow-y: auto;
 }
 
 .trend-day {
@@ -364,5 +370,151 @@
   .stat-chart-card,
   .stat-list-card {
     margin-bottom: 15px;
+  }
+}
+
+/* All Tasks List */
+.all-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.all-tasks-list .task-item {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: 5px solid #999;
+  border-radius: 5px;
+  padding: 15px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.all-tasks-list .task-item.completed {
+  opacity: 0.7;
+  border-left-color: #4caf50;
+}
+
+.all-tasks-list .task-item:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.all-tasks-list .task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.all-tasks-list .task-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  flex: 1;
+}
+
+.all-tasks-list .task-project {
+  font-size: 0.85rem;
+  color: #777;
+  background-color: #f0f0f0;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+}
+
+.all-tasks-list .task-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.all-tasks-list .task-status,
+.all-tasks-list .task-priority,
+.all-tasks-list .task-due-date {
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.all-tasks-list .status-badge {
+  color: white;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.all-tasks-list .status-badge.status-todo {
+  background-color: #ff9800;
+}
+
+.all-tasks-list .status-badge.status-in-progress {
+  background-color: #2196f3;
+}
+
+.all-tasks-list .status-badge.status-completed {
+  background-color: #4caf50;
+}
+
+.all-tasks-list .task-priority {
+  font-weight: 500;
+  color: white;
+}
+
+.all-tasks-list .task-priority.priority-high {
+  background-color: #f44336;
+}
+
+.all-tasks-list .task-priority.priority-medium {
+  background-color: #ff9800;
+}
+
+.all-tasks-list .task-priority.priority-low {
+  background-color: #4caf50;
+}
+
+.all-tasks-list .task-due-date {
+  color: #555;
+  background-color: #e0e0e0;
+}
+
+.all-tasks-list .task-description {
+  margin: 10px 0;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.all-tasks-list .task-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.all-tasks-list .task-tag {
+  font-size: 0.8rem;
+  background-color: #e1f5fe;
+  color: #0288d1;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Responsive styles for the all-tasks-list */
+@media (max-width: 768px) {
+  .all-tasks-list {
+    max-height: 400px;
+  }
+  
+  .all-tasks-list .task-header {
+    flex-direction: column;
+  }
+  
+  .all-tasks-list .task-project {
+    margin-left: 0;
+    margin-top: 5px;
   }
 } 

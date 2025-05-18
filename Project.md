@@ -14,6 +14,8 @@
 * ✅ Added README.md with project documentation
 * ✅ Added .gitignore file for source control
 * ✅ Added project selection dashboard view with aggregated tasks statistics across all projects
+* ✅ Implemented feature to display all tasks from all projects sorted by priority on the projects overview
+* ✅ Enhanced UI to display projects list and dashboard side by side instead of toggling between them
 
 ## Implementation Progress
 * ✅ Phase 1: Project Setup and Foundation - Complete
@@ -44,6 +46,7 @@
   * Added upcoming deadlines and overdue tasks tracking
   * Adjusted application styling to ensure `ProjectView` utilizes the maximum available screen space.
   * Enhanced ProjectSelector to include a dashboard view showing aggregated statistics across all projects
+  * Added feature to display all tasks from all projects sorted by priority on the projects overview dashboard
   * ⬜ Implement report export in multiple formats (HTML, CSV, JSON) - Remaining
 
 ## Issues / Blockers
@@ -101,6 +104,8 @@
 * IPC - Inter-process communication
 
 ## Recent Change
+* Improved ProjectSelector UI by displaying projects list and dashboard side by side instead of toggling between them with a button, providing a more comprehensive overview.
+* Added feature to display all tasks from all projects sorted by priority on the projects overview dashboard. This allows users to quickly view their most important tasks across all projects in one place.
 * Implemented cleanup function in `FileBrowser.tsx`'s `useEffect` to remove `fs:readdir` event listener using `window.api.off`. (Note: Requires updating the `ElectronAPI` type definition to include the `off` method to resolve TypeScript errors).
 
 ## Development Setup
