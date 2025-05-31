@@ -3,8 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #f9f9f9;
-  border-right: 1px solid #e0e0e0;
+  background-color: #1e1e1e;
+  border-right: 1px solid #404040;
 }
 
 .file-browser-header {
@@ -12,17 +12,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #f2f2f2;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #404040;
 }
 
 .nav-button {
   background-color: transparent;
-  border: 1px solid #ccc;
+  border: 1px solid #606060;
   border-radius: 4px;
   padding: 4px 8px;
   cursor: pointer;
   font-size: 0.9rem;
+  color: #e0e0e0;
 }
 
 .nav-button:disabled {
@@ -37,6 +38,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #e0e0e0;
 }
 
 .file-actions {
@@ -45,7 +47,7 @@
 }
 
 .action-button {
-  background-color: #2c3e50;
+  background-color: #3498db;
   color: white;
   border: none;
   border-radius: 4px;
@@ -55,12 +57,12 @@
 }
 
 .action-button:hover {
-  background-color: #34495e;
+  background-color: #2980b9;
 }
 
 .error-message {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: #3d1a1a;
+  color: #ff6b6b;
   padding: 8px;
   margin: 5px;
   border-radius: 4px;
@@ -83,11 +85,11 @@
 }
 
 .file-item:hover {
-  background-color: #eee;
+  background-color: #2a2a2a;
 }
 
 .file-item.selected {
-  background-color: #e3f2fd;
+  background-color: #1a2332;
 }
 
 .file-button {
@@ -96,11 +98,13 @@
   cursor: pointer;
   width: 90%;
   padding: 8px;
+  color: #e0e0e0;
 }
 
 .file-icon {
   margin-right: 8px;
   font-size: 1.2rem;
+  color: #a0a0a0;
 }
 
 .file-name {
@@ -113,7 +117,7 @@
 .empty-directory {
   padding: 20px;
   text-align: center;
-  color: #666;
+  color: #a0a0a0;
   font-style: italic;
 } 
 
@@ -131,11 +135,11 @@
 }
 
 .file-delete-button:hover:not(:disabled) {
-  background-color: #e74c3c;
+  background-color: #c0392b;
   opacity: 1;
 }
 
 .file-delete-button:disabled {
-  background-color: #95a5a6;
+  background-color: #606060;
   opacity: 0;
 }

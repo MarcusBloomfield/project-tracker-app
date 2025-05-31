@@ -1,7 +1,7 @@
 /* DailyTaskList.css */
 
 .daily-task-container {
-  background-color: white;
+  background-color: #1e1e1e;
   border-radius: 8px;
   padding: 20px;
   height: 100%;
@@ -11,14 +11,14 @@
 .daily-task-container h3 {
   margin-top: 0;
   margin-bottom: 5px;
-  color: #2c3e50;
+  color: #e0e0e0;
   font-size: 1.2rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #404040;
 }
 
 .daily-task-subtitle {
-  color: #777;
+  color: #a0a0a0;
   font-size: 0.9rem;
   margin-top: 0;
   margin-bottom: 15px;
@@ -31,8 +31,8 @@
 }
 
 .error-message {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: #3d1a1a;
+  color: #ff6b6b;
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 4px;
@@ -47,10 +47,12 @@
 .daily-task-input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #606060;
   border-radius: 4px 0 0 4px;
   font-size: 0.9rem;
   outline: none;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
 }
 
 .daily-task-input:focus {
@@ -73,7 +75,7 @@
 }
 
 .add-daily-task-button:disabled {
-  background-color: #95a5a6;
+  background-color: #606060;
   cursor: not-allowed;
 }
 
@@ -86,7 +88,7 @@
 .no-daily-tasks {
   text-align: center;
   padding: 20px;
-  color: #777;
+  color: #a0a0a0;
   font-style: italic;
 }
 
@@ -99,7 +101,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 15px;
-  background-color: #f8f9fa;
+  background-color: #2a2a2a;
   border-radius: 4px;
   border-left: 3px solid #3498db;
   transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s;
@@ -107,12 +109,12 @@
 }
 
 .daily-task-item:hover {
-  background-color: #ecf0f1;
+  background-color: #3a3a3a;
 }
 
 .daily-task-item.completed {
   border-left-color: #27ae60;
-  background-color: #f0f7f0;
+  background-color: #1a2e1a;
 }
 
 /* Drag and drop styles */
@@ -121,7 +123,7 @@
   margin-right: 10px;
   display: flex;
   align-items: center;
-  color: #95a5a6;
+  color: #a0a0a0;
   padding: 5px;
 }
 
@@ -132,9 +134,9 @@
 
 .daily-task-item.dragging {
   opacity: 0.6;
-  background-color: #d6eaf8;
+  background-color: #1a2332;
   transform: scale(0.98);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .daily-task-item.drag-over-top {
@@ -165,11 +167,12 @@
   cursor: pointer;
   user-select: none;
   flex: 1;
+  color: #e0e0e0;
 }
 
 .daily-task-item.completed .daily-task-label {
   text-decoration: line-through;
-  color: #7f8c8d;
+  color: #a0a0a0;
 }
 
 .daily-task-actions {
@@ -180,7 +183,7 @@
 
 .daily-task-date {
   font-size: 0.8rem;
-  color: #7f8c8d;
+  color: #a0a0a0;
 }
 
 .delete-daily-task-button {
@@ -195,7 +198,7 @@
 }
 
 .delete-daily-task-button:hover {
-  background-color: rgba(231, 76, 60, 0.1);
+  background-color: rgba(231, 76, 60, 0.2);
 }
 
 @media (max-width: 480px) {
@@ -209,7 +212,7 @@
     justify-content: space-between;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #404040;
   }
   
   .daily-task-drag-handle {

@@ -6,7 +6,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,11 +14,11 @@
 }
 
 .dialog-container {
-  background-color: white;
+  background-color: #1e1e1e;
   border-radius: 8px;
   width: 400px;
   max-width: 90%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   overflow: hidden;
 }
 
@@ -27,8 +27,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  background-color: #2c3e50;
-  color: white;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
 }
 
 .dialog-header h3 {
@@ -40,7 +40,7 @@
 .dialog-close-button {
   background-color: transparent;
   border: none;
-  color: white;
+  color: #e0e0e0;
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0;
@@ -54,7 +54,7 @@
 }
 
 .dialog-close-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(224, 224, 224, 0.1);
 }
 
 .dialog-content {
@@ -65,26 +65,28 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #333;
+  color: #d0d0d0;
 }
 
 .dialog-content input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #606060;
   border-radius: 4px;
   font-size: 1rem;
   box-sizing: border-box;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
 }
 
 .dialog-content input:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
 }
 
 .dialog-error {
-  color: #e74c3c;
+  color: #ff6b6b;
   margin-top: 10px;
   font-size: 0.9rem;
 }
@@ -93,8 +95,8 @@
   display: flex;
   justify-content: flex-end;
   padding: 15px 20px;
-  background-color: #f5f5f5;
-  border-top: 1px solid #eee;
+  background-color: #2a2a2a;
+  border-top: 1px solid #404040;
 }
 
 .dialog-button {
@@ -107,13 +109,13 @@
 
 .cancel-button {
   background-color: transparent;
-  color: #333;
-  border: 1px solid #ddd;
+  color: #e0e0e0;
+  border: 1px solid #606060;
   margin-right: 10px;
 }
 
 .cancel-button:hover {
-  background-color: #e0e0e0;
+  background-color: #3a3a3a;
 }
 
 .confirm-button {

@@ -1,9 +1,9 @@
 /* ReportExport.css */
 
 .report-export {
-  background-color: #fff;
+  background-color: #1e1e1e;
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   padding: 20px;
   margin-top: 20px;
 }
@@ -11,7 +11,7 @@
 .report-export h3 {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #333;
+  color: #e0e0e0;
 }
 
 .export-options {
@@ -26,21 +26,22 @@
   display: inline-block;
   margin-right: 10px;
   font-weight: bold;
-  color: #555;
+  color: #d0d0d0;
 }
 
 .export-format select {
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #606060;
   border-radius: 4px;
-  background-color: #f8f8f8;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
   font-size: 0.9rem;
 }
 
 .export-content p {
   margin-bottom: 10px;
   font-weight: bold;
-  color: #555;
+  color: #d0d0d0;
 }
 
 .export-checkboxes {
@@ -61,7 +62,7 @@
 .export-checkbox label {
   cursor: pointer;
   font-size: 0.9rem;
-  color: #555;
+  color: #d0d0d0;
 }
 
 .export-button {
