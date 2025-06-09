@@ -50,19 +50,22 @@ const validReceiveChannels = [
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
 contextBridge.exposeInMainWorld('api', {
-  send: (channel: string, data: any) => {
+  triggerEvent: (channel: string, data: any) => {
+    console.log('triggerEvent', channel, data);
     // Whitelist channels
     if (validSendChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
     }
   },
-  receive: (channel: string, func: (...args: any[]) => void) => {
+  addListener: (channel: string, func: (...args: any[]) => void) => {
+    console.log('addListener', channel, func);
     if (validReceiveChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender` 
       ipcRenderer.on(channel, (event, ...args) => func(...args));
     }
   },
-  off: (channel: string, func: (...args: any[]) => void) => {
+  removeListener: (channel: string, func: (...args: any[]) => void) => {
+    console.log('removeListener', channel, func);
     if (validReceiveChannels.includes(channel)) {
       ipcRenderer.removeListener(channel, func);
     }

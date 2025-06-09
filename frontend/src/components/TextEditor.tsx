@@ -34,8 +34,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     setFileName(name);
 
     // Load file content
-    window.api.send('fs:readfile', { path: filePath });
-    window.api.receive('fs:readfile', (fileContent: string) => {
+    window.api.triggerEvent('fs:readfile', { path: filePath });
+    window.api.addListener('fs:readfile', (fileContent: string) => {
       setContent(fileContent);
       setIsLoading(false);
       setIsEdited(false);
@@ -62,8 +62,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     setIsSaving(true);
     setError(null);
 
-    window.api.send('fs:writefile', { path: filePath, content });
-    window.api.receive('fs:writefile', (success: boolean) => {
+    window.api.triggerEvent('fs:writefile', { path: filePath, content });
+    window.api.addListener('fs:writefile', (success: boolean) => {
       setIsSaving(false);
       
       if (success) {
@@ -80,8 +80,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     setIsDeleting(true);
     setError(null);
 
-    window.api.send('fs:delete', { path: filePath });
-    window.api.receive('fs:delete', (success: boolean) => {
+    window.api.triggerEvent('fs:delete', { path: filePath });
+    window.api.addListener('fs:delete', (success: boolean) => {
       setIsDeleting(false);
       
       if (success) {

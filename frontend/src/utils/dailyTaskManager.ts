@@ -1,7 +1,3 @@
-/**
- * Daily task management utility module that provides functionality for handling daily repeating tasks.
- * Uses Electron's IPC to communicate with the main process for persistent storage.
- */
 
 // Daily task data model
 export interface DailyTask {
@@ -20,8 +16,8 @@ export const dailyTaskManager = {
    */
   getDailyTasks: (): Promise<DailyTask[]> => {
     return new Promise((resolve) => {
-      window.api.send('dailyTask:list', {});
-      window.api.receive('dailyTask:list', (tasks: DailyTask[]) => {
+      window.api.triggerEvent('dailyTask:list', {});
+      window.api.addListener('dailyTask:list', (tasks: DailyTask[]) => {
         resolve(tasks);
       });
     });
@@ -38,8 +34,8 @@ export const dailyTaskManager = {
         completed: false,
         lastResetDate: today
       };
-      window.api.send('dailyTask:create', { task: taskData });
-      window.api.receive('dailyTask:created', (newTask: DailyTask) => {
+      window.api.triggerEvent('dailyTask:create', { task: taskData });
+      window.api.addListener('dailyTask:created', (newTask: DailyTask) => {
         resolve(newTask);
       });
     });
@@ -50,8 +46,8 @@ export const dailyTaskManager = {
    */
   toggleTaskCompletion: (taskId: string, completed: boolean): Promise<DailyTask> => {
     return new Promise((resolve) => {
-      window.api.send('dailyTask:toggle', { taskId, completed });
-      window.api.receive('dailyTask:updated', (updatedTask: DailyTask) => {
+      window.api.triggerEvent('dailyTask:toggle', { taskId, completed });
+      window.api.addListener('dailyTask:updated', (updatedTask: DailyTask) => {
         resolve(updatedTask);
       });
     });
@@ -62,8 +58,8 @@ export const dailyTaskManager = {
    */
   deleteDailyTask: (taskId: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.send('dailyTask:delete', { taskId });
-      window.api.receive('dailyTask:deleted', (success: boolean) => {
+      window.api.triggerEvent('dailyTask:delete', { taskId });
+      window.api.addListener('dailyTask:deleted', (success: boolean) => {
         resolve(success);
       });
     });
@@ -74,8 +70,8 @@ export const dailyTaskManager = {
    */
   reorderTasks: (tasks: DailyTask[]): Promise<DailyTask[]> => {
     return new Promise((resolve) => {
-      window.api.send('dailyTask:reorder', { tasks });
-      window.api.receive('dailyTask:reordered', (updatedTasks: DailyTask[]) => {
+      window.api.triggerEvent('dailyTask:reorder', { tasks });
+      window.api.addListener('dailyTask:reordered', (updatedTasks: DailyTask[]) => {
         resolve(updatedTasks);
       });
     });

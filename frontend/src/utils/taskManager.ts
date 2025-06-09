@@ -43,8 +43,8 @@ export const taskManager = {
    */
   getProjectTasks: (projectId: string): Promise<Task[]> => {
     return new Promise((resolve) => {
-      window.api.send('task:list', { projectId });
-      window.api.receive('task:list', (tasks: Task[]) => {
+      window.api.triggerEvent('task:list', { projectId });
+      window.api.addListener('task:list', (tasks: Task[]) => {
         resolve(tasks);
       });
     });
@@ -55,8 +55,8 @@ export const taskManager = {
    */
   createTask: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'completedAt'>): Promise<Task> => {
     return new Promise((resolve) => {
-      window.api.send('task:create', { task });
-      window.api.receive('task:created', (newTask: Task) => {
+      window.api.triggerEvent('task:create', { task });
+      window.api.addListener('task:created', (newTask: Task) => {
         resolve(newTask);
       });
     });
@@ -67,8 +67,8 @@ export const taskManager = {
    */
   updateTask: (taskId: string, updates: Partial<Omit<Task, 'id' | 'createdAt'>>): Promise<Task> => {
     return new Promise((resolve) => {
-      window.api.send('task:update', { taskId, updates });
-      window.api.receive('task:updated', (updatedTask: Task) => {
+      window.api.triggerEvent('task:update', { taskId, updates });
+      window.api.addListener('task:updated', (updatedTask: Task) => {
         resolve(updatedTask);
       });
     });
@@ -79,8 +79,8 @@ export const taskManager = {
    */
   deleteTask: (taskId: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.send('task:delete', { taskId });
-      window.api.receive('task:deleted', (success: boolean) => {
+      window.api.triggerEvent('task:delete', { taskId });
+      window.api.addListener('task:deleted', (success: boolean) => {
         resolve(success);
       });
     });
@@ -95,8 +95,8 @@ export const taskManager = {
         status,
         completedAt: status === TaskStatus.COMPLETED ? new Date() : null 
       };
-      window.api.send('task:update', { taskId, updates });
-      window.api.receive('task:updated', (updatedTask: Task) => {
+      window.api.triggerEvent('task:update', { taskId, updates });
+      window.api.addListener('task:updated', (updatedTask: Task) => {
         resolve(updatedTask);
       });
     });

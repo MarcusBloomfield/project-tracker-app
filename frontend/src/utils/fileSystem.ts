@@ -1,8 +1,3 @@
-/**
- * File system utility module that provides functionality for working with files and directories.
- * Uses Electron's IPC to communicate with the main process for file operations.
- */
-
 // Types for file and directory structures
 export interface FileInfo {
   name: string;
@@ -40,8 +35,8 @@ export const fileSystem = {
    */
   listProjects: (): Promise<ProjectInfo[]> => {
     return new Promise((resolve) => {
-      window.api.send('project:list', {});
-      window.api.receive('project:list', (projects: ProjectInfo[]) => {
+      window.api.triggerEvent('project:list', {});
+      window.api.addListener('project:list', (projects: ProjectInfo[]) => {
         resolve(projects);
       });
     });
@@ -52,8 +47,8 @@ export const fileSystem = {
    */
   createProject: (name: string): Promise<ProjectInfo> => {
     return new Promise((resolve) => {
-      window.api.send('project:create', { name });
-      window.api.receive('project:created', (project: ProjectInfo) => {
+      window.api.triggerEvent('project:create', { name });
+      window.api.addListener('project:created', (project: ProjectInfo) => {
         resolve(project);
       });
     });
@@ -64,8 +59,8 @@ export const fileSystem = {
    */
   getDirectoryContents: (path: string): Promise<FSItem[]> => {
     return new Promise((resolve) => {
-      window.api.send('fs:readdir', { path });
-      window.api.receive('fs:readdir', (items: FSItem[]) => {
+      window.api.triggerEvent('fs:readdir', { path });
+      window.api.addListener('fs:readdir', (items: FSItem[]) => {
         resolve(items);
       });
     });
@@ -76,8 +71,8 @@ export const fileSystem = {
    */
   readFile: (path: string): Promise<string> => {
     return new Promise((resolve) => {
-      window.api.send('fs:readfile', { path });
-      window.api.receive('fs:readfile', (content: string) => {
+      window.api.triggerEvent('fs:readfile', { path });
+      window.api.addListener('fs:readfile', (content: string) => {
         resolve(content);
       });
     });
@@ -88,8 +83,8 @@ export const fileSystem = {
    */
   writeFile: (path: string, content: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.send('fs:writefile', { path, content });
-      window.api.receive('fs:writefile', (success: boolean) => {
+      window.api.triggerEvent('fs:writefile', { path, content });
+      window.api.addListener('fs:writefile', (success: boolean) => {
         resolve(success);
       });
     });
@@ -100,8 +95,8 @@ export const fileSystem = {
    */
   createDirectory: (path: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.send('fs:mkdir', { path });
-      window.api.receive('fs:mkdir', (success: boolean) => {
+      window.api.triggerEvent('fs:mkdir', { path });
+      window.api.addListener('fs:mkdir', (success: boolean) => {
         resolve(success);
       });
     });
@@ -112,8 +107,8 @@ export const fileSystem = {
    */
   delete: (path: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.send('fs:delete', { path });
-      window.api.receive('fs:delete', (success: boolean) => {
+      window.api.triggerEvent('fs:delete', { path });
+      window.api.addListener('fs:delete', (success: boolean) => {
         resolve(success);
       });
     });
@@ -124,8 +119,8 @@ export const fileSystem = {
    */
   rename: (oldPath: string, newPath: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.send('fs:rename', { oldPath, newPath });
-      window.api.receive('fs:rename', (success: boolean) => {
+      window.api.triggerEvent('fs:rename', { oldPath, newPath });
+      window.api.addListener('fs:rename', (success: boolean) => {
         resolve(success);
       });
     });

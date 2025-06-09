@@ -15,6 +15,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
   const [typeFilter, setTypeFilter] = useState<TaskType | null>(null);
   const [sortBy, setSortBy] = useState<'dueDate' | 'priority' | 'createdAt'>('createdAt');
   const [isCreating, setIsCreating] = useState<boolean>(false);
+  const [pendingDeleteTaskId, setPendingDeleteTaskId] = useState<string | null>(null);
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
@@ -25,17 +26,69 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
     tags: ''
   });
 
-  // Load tasks when component mounts or projectId changes
+  // Load tasks and set up event listeners when component mounts or projectId changes
   useEffect(() => {
     if (!projectId) return;
 
     setLoading(true);
     
-    window.api.send('task:list', { projectId });
-    window.api.receive('task:list', (taskList: Task[]) => {
+    // Set up event listeners
+    const handleTaskList = (taskList: Task[]) => {
       setTasks(taskList);
       setLoading(false);
-    });
+    };
+
+    const handleTaskCreated = (createdTask: Task) => {
+      if (createdTask) {
+        setTasks(prevTasks => [...prevTasks, createdTask]);
+        setNewTask({
+          title: '',
+          description: '',
+          priority: TaskPriority.MEDIUM,
+          status: TaskStatus.TODO,
+          type: TaskType.TASK,
+          dueDate: '',
+          tags: ''
+        });
+        setIsCreating(false);
+      }
+    };
+
+    const handleTaskUpdated = (updatedTask: Task) => {
+      if (updatedTask) {
+        setTasks(prevTasks => prevTasks.map(task => 
+          task.id === updatedTask.id ? updatedTask : task
+        ));
+      }
+    };
+
+    const handleTaskDeleted = (success: boolean) => {
+      console.log('Task deletewwwwwwwwwwwd',success);
+      if (success && pendingDeleteTaskId) {
+        setTasks(prevTasks => prevTasks.filter(task => task.id !== pendingDeleteTaskId));
+        setPendingDeleteTaskId(null);
+        console.log('Task deleted');
+      } else if (!success) {
+        setPendingDeleteTaskId(null);
+      }
+    };
+
+    // Register listeners
+    window.api.addListener('task:list', handleTaskList);
+    window.api.addListener('task:created', handleTaskCreated);
+    window.api.addListener('task:updated', handleTaskUpdated);
+    window.api.addListener('task:deleted', handleTaskDeleted);
+    
+    // Load initial tasks
+    window.api.triggerEvent('task:list', { projectId });
+
+    // Cleanup function to remove listeners
+    return () => {
+      window.api.removeListener('task:list', handleTaskList);
+      window.api.removeListener('task:created', handleTaskCreated);
+      window.api.removeListener('task:updated', handleTaskUpdated);
+      window.api.removeListener('task:deleted', handleTaskDeleted);
+    };
   }, [projectId]);
 
   // Apply filters and sorting when tasks, filters, or sort criteria change
@@ -73,32 +126,20 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
 
   // Handle changing task status
   const handleStatusChange = (taskId: string, newStatus: TaskStatus) => {
-    window.api.send('task:update', { 
+    window.api.triggerEvent('task:update', { 
       taskId, 
       updates: { 
         status: newStatus,
         completedAt: newStatus === TaskStatus.COMPLETED ? new Date() : null
       } 
     });
-    
-    window.api.receive('task:updated', (updatedTask: Task) => {
-      if (updatedTask) {
-        setTasks(prevTasks => prevTasks.map(task => 
-          task.id === updatedTask.id ? updatedTask : task
-        ));
-      }
-    });
   };
 
   // Handle deleting a task
   const handleDeleteTask = (taskId: string) => {
     if (confirm('Are you sure you want to delete this task?')) {
-      window.api.send('task:delete', { taskId });
-      window.api.receive('task:deleted', (success: boolean) => {
-        if (success) {
-          setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-        }
-      });
+      setPendingDeleteTaskId(taskId);
+      window.api.triggerEvent('task:delete', { taskId });
     }
   };
 
@@ -123,22 +164,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
       tags: newTask.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
     };
     
-    window.api.send('task:create', { task: taskData });
-    window.api.receive('task:created', (createdTask: Task) => {
-      if (createdTask) {
-        setTasks(prevTasks => [...prevTasks, createdTask]);
-        setNewTask({
-          title: '',
-          description: '',
-          priority: TaskPriority.MEDIUM,
-          status: TaskStatus.TODO,
-          type: TaskType.TASK,
-          dueDate: '',
-          tags: ''
-        });
-        setIsCreating(false);
-      }
-    });
+    window.api.triggerEvent('task:create', { task: taskData });
   };
 
   // Format date for display

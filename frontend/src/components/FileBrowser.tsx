@@ -32,13 +32,13 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     };
 
     // Register the listener before sending the request
-    window.api.receive('fs:readdir', handleFsReadDirResponse);
-    window.api.send('fs:readdir', { path: currentPath });
+    window.api.addListener('fs:readdir', handleFsReadDirResponse);
+    window.api.triggerEvent('fs:readdir', { path: currentPath });
 
     // Cleanup function to remove the listener
     return () => {
-      if (typeof window.api.off === 'function') {
-        window.api.off('fs:readdir', handleFsReadDirResponse);
+      if (typeof window.api.removeListener === 'function') {
+        window.api.removeListener('fs:readdir', handleFsReadDirResponse);
       }
     };
   }, [currentPath]);
@@ -90,12 +90,12 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     if (!folderName) return;
 
     const newFolderPath = `${currentPath}\\${folderName}`;
-    window.api.send('fs:mkdir', { path: newFolderPath });
-    window.api.receive('fs:mkdir', (success: boolean) => {
+    window.api.triggerEvent('fs:mkdir', { path: newFolderPath });
+    window.api.addListener('fs:mkdir', (success: boolean) => {
       if (success) {
         // Refresh the directory contents
-        window.api.send('fs:readdir', { path: currentPath });
-        window.api.receive('fs:readdir', (contents: FSItem[]) => {
+        window.api.triggerEvent('fs:readdir', { path: currentPath });
+        window.api.addListener('fs:readdir', (contents: FSItem[]) => {
           setItems(contents);
         });
       } else {
@@ -124,12 +124,12 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     if (!fileName) return;
 
     const newFilePath = `${currentPath}\\${fileName}`;
-    window.api.send('fs:writefile', { path: newFilePath, content: '' });
-    window.api.receive('fs:writefile', (success: boolean) => {
+    window.api.triggerEvent('fs:writefile', { path: newFilePath, content: '' });
+    window.api.addListener('fs:writefile', (success: boolean) => {
       if (success) {
         // Refresh the directory contents
-        window.api.send('fs:readdir', { path: currentPath });
-        window.api.receive('fs:readdir', (contents: FSItem[]) => {
+        window.api.triggerEvent('fs:readdir', { path: currentPath });
+        window.api.addListener('fs:readdir', (contents: FSItem[]) => {
           setItems(contents);
         });
       } else {
@@ -145,8 +145,8 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
       return;
     }
     
-    window.api.send('fs:delete', { path: item.path });
-      window.api.receive('fs:delete', (success: boolean) => {
+    window.api.triggerEvent('fs:delete', { path: item.path });
+      window.api.addListener('fs:delete', (success: boolean) => {
         if (success) {
           setItems(items.filter(i => i.path !== item.path));
         } else {

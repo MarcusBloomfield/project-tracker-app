@@ -17,8 +17,8 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   // Load project list when component mounts if showing all projects
   useEffect(() => {
     if (projectId === 'all') {
-      window.api.send('project:list', {});
-      window.api.receive('project:list', (projectList: any[]) => {
+      window.api.triggerEvent('project:list', {});
+      window.api.addListener('project:list', (projectList: any[]) => {
         const projectNames = projectList.map(project => project.name);
         setAllProjects(projectNames);
         
@@ -59,11 +59,11 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
       };
       
       // Register the listener once
-      window.api.receive('task:list', handleTasksReceived);
+      window.api.addListener('task:list', handleTasksReceived);
       
       // Request tasks for each project
       allProjects.forEach(projectName => {
-        window.api.send('task:list', { projectId: projectName });
+        window.api.triggerEvent('task:list', { projectId: projectName });
       });
       
       // Cleanup function 
@@ -82,8 +82,8 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
         setLoading(false);
       };
       
-      window.api.send('task:list', { projectId });
-      window.api.receive('task:list', handleTaskList);
+      window.api.triggerEvent('task:list', { projectId });
+      window.api.addListener('task:list', handleTaskList);
       
       // Cleanup function
       return () => {

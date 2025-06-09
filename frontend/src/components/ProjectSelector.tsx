@@ -21,8 +21,8 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
     setError(null);
 
     // Call the API to list projects
-    window.api.send('project:list', {});
-    window.api.receive('project:list', (projectList: ProjectInfo[]) => {
+    window.api.triggerEvent('project:list', {});
+    window.api.addListener('project:list', (projectList: ProjectInfo[]) => {
       setProjects(projectList);
       setLoading(false);
     });
@@ -45,8 +45,8 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
     setError(null);
     setIsDialogOpen(false);
 
-    window.api.send('project:create', { name: projectName });
-    window.api.receive('project:created', (project: ProjectInfo) => {
+    window.api.triggerEvent('project:create', { name: projectName });
+    window.api.addListener('project:created', (project: ProjectInfo) => {
       if (project) {
         setProjects(prevProjects => [...prevProjects, project]);
         setLoading(false);

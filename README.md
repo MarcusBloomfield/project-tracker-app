@@ -1,81 +1,101 @@
 # Project Tracker App
 
-A desktop application built with Electron, TypeScript, and React for tracking project progress, managing files, and monitoring tasks.
+A desktop project management application built with Electron, React, and TypeScript. Track your projects, manage tasks, and monitor progress with an intuitive interface.
 
 ## Features
 
 - **Project Management**: Create and organize multiple projects
-- **File Management**: Browse, edit, and organize project files
-- **Task Management**: Create tasks with priorities, tags, and due dates
-- **Statistics Dashboard**: Visualize task status, completion rates, and trends
-- **Report Export**: Generate reports in multiple formats (HTML, CSV, JSON)
+- **Task Tracking**: Create, edit, and manage tasks with priorities and due dates
+- **Daily Tasks**: Manage recurring daily tasks separately
+- **Progress Dashboard**: Visual statistics and progress tracking
+- **File Browser**: Browse and manage project files
+- **Text Editor**: Built-in text editor for project notes and files
 
-## Screenshots
+## Technology Stack
 
-(Screenshots will be added here)
+- **Frontend**: React 18 with TypeScript
+- **Desktop Framework**: Electron 36
+- **Build Tools**: Webpack, TypeScript Compiler
+- **Styling**: CSS with component-based styles
 
-## Installation
+## Getting Started
 
+### Prerequisites
+
+- Node.js (version 14 or higher)
+- npm
+
+### Installation
+
+1. Clone the repository
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/project-tracker-app.git
-
-# Navigate to the project directory
+git clone <repository-url>
 cd project-tracker-app
+```
 
-# Install dependencies
+2. Install dependencies
+```bash
 npm install
+```
 
-# Start the application
+### Development
+
+Run the application in development mode:
+```bash
+npm run dev
+```
+
+This will start the application with hot reloading enabled.
+
+### Building
+
+Build the application for production:
+```bash
+npm run build
+```
+
+Start the built application:
+```bash
 npm start
 ```
 
-## Development
+### Scripts
 
-```bash
-# Build the application
-npm run build
-
-# Watch for changes
-npm run watch
-
-# Run the application in development mode with hot reloading
-npm run dev
-
-# Lint the code
-npm run lint
-```
+- `npm run build` - Build TypeScript and bundle with Webpack
+- `npm run watch` - Watch TypeScript files for changes
+- `npm start` - Build and start the Electron application
+- `npm run dev` - Start development mode with hot reloading
 
 ## Project Structure
 
-- `frontend/src/` - Source TypeScript files
-  - `components/` - React components
-  - `styles/` - CSS styles
-  - `utils/` - Utility modules
-  - `main/` - Main process code
-- `dist/` - Compiled JavaScript files
-
-## Technologies
-
-- **Electron**: Desktop application framework
-- **TypeScript**: Programming language
-- **React**: UI library
-- **Webpack**: Module bundler
-- **CSS**: Styling
-
-## Implementation Phases
-
-- ✅ Phase 1: Project Setup and Foundation
-- ✅ Phase 2: Core UI Framework
-- ✅ Phase 3: File Management
-- ✅ Phase 4: Task Management
-- ✅ Phase 5: Statistics and Reporting
-- ⬜ Phase 6: Project Collaboration (Planned)
+```
+project-tracker-app/
+├── frontend/src/
+│   ├── components/         # React components
+│   │   ├── App.tsx        # Main application component
+│   │   ├── Dashboard.tsx  # Project statistics dashboard
+│   │   ├── TaskList.tsx   # Task management interface
+│   │   └── ...
+│   ├── main/              # Electron main process handlers
+│   │   ├── taskHandlers.ts
+│   │   ├── dailyTaskHandlers.ts
+│   │   └── fileSystemHandlers.ts
+│   ├── styles/            # CSS stylesheets
+│   ├── utils/             # Utility functions and managers
+│   ├── main.ts           # Electron main process entry
+│   └── renderer.tsx      # React application entry
+├── dist/                  # Built application files
+└── package.json
+```
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Author
 
-Marcus Bloomfield 
+Marcus Bloomfield
+
+---
+
+*A simple and effective project tracking solution for managing your development projects and tasks.*

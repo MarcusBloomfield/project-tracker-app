@@ -110,6 +110,7 @@ const loadTasks = async (projectId: string): Promise<Task[]> => {
   }
 };
 
+// Save old tasks to backup folder
 const saveTasksBackup = async (projectId: string, tasks: Task[]): Promise<boolean> => {
   await ensureTasksFileBackup(projectId);
   const tasksBackUpFilePath = getTasksBackUpFilePath(projectId);
@@ -159,7 +160,7 @@ export const initTaskHandlers = (): void => {
   ipcMain.on('task:create', async (event, { task }) => {
     try {
       const tasks = await loadTasks(task.projectId);
-      
+
       const newTask: Task = {
         ...task,
         id: Date.now().toString(),
@@ -188,9 +189,6 @@ export const initTaskHandlers = (): void => {
       // We need to find the project ID first
       let projectId = '';
       let tasks: Task[] = [];
-      
-      // This is not efficient for a real app, but this is a simple demo
-      // In a real app, we would structure our data differently or use a database
       const projectsPath = path.join(app.getPath('documents'), 'ProjectTracker');
       const projects = await fs.promises.readdir(projectsPath, { withFileTypes: true });
       

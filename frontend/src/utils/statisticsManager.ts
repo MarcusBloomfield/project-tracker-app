@@ -1,8 +1,3 @@
-/**
- * Statistics management utility module that provides analytics functionality for tasks and projects.
- * Calculates various metrics based on task data.
- */
-
 import { Task, TaskStatus, TaskPriority } from './taskManager';
 
 // Statistics data model
