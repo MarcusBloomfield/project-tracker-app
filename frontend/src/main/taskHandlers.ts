@@ -51,9 +51,34 @@ const getTasksFilePath = (projectId: string): string => {
   return path.join(projectsPath, projectId, 'tasks.json');
 };
 
+const getTasksBackUpFilePath = (projectId: string): string => {
+  const projectsPath = path.join(app.getPath('documents'), 'ProjectTracker', '.backup');
+  return path.join(projectsPath, projectId, 'tasks.json');
+};
+
 // Ensure tasks file exists for a project
 const ensureTasksFile = async (projectId: string): Promise<void> => {
   const tasksFilePath = getTasksFilePath(projectId);
+  const dir = path.dirname(tasksFilePath);
+  
+  try {
+    await stat(dir);
+  } catch (error) {
+    // Directory doesn't exist, create it
+    await mkdir(dir, { recursive: true });
+  }
+  
+  try {
+    await stat(tasksFilePath);
+  } catch (error) {
+    // File doesn't exist, create it with empty tasks array
+    await writeFile(tasksFilePath, JSON.stringify([], null, 2), { encoding: 'utf-8' });
+  }
+};
+
+// Ensure backup tasks file exists for a project
+const ensureTasksFileBackup = async (projectId: string): Promise<void> => {
+  const tasksFilePath = getTasksBackUpFilePath(projectId);
   const dir = path.dirname(tasksFilePath);
   
   try {
@@ -85,8 +110,26 @@ const loadTasks = async (projectId: string): Promise<Task[]> => {
   }
 };
 
+const saveTasksBackup = async (projectId: string, tasks: Task[]): Promise<boolean> => {
+  await ensureTasksFileBackup(projectId);
+  const tasksBackUpFilePath = getTasksBackUpFilePath(projectId);
+  try {
+    await writeFile(tasksBackUpFilePath, JSON.stringify(tasks, null, 2), { encoding: 'utf-8' });
+    return true;
+  } catch (error) {
+    console.error('Error saving tasks backup:', error);
+    return false;
+  }
+};
+
 // Save tasks to file
 const saveTasks = async (projectId: string, tasks: Task[]): Promise<boolean> => {
+  const backedUpTasks = await saveTasksBackup(projectId, tasks);
+  if (backedUpTasks) {
+    console.log(`Tasks backed up for project: ${projectId}`);
+  } else {
+    console.error(`Failed to backup tasks for project: ${projectId}`);
+  }
   await ensureTasksFile(projectId);
   const tasksFilePath = getTasksFilePath(projectId);
   
