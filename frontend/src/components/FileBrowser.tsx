@@ -229,7 +229,7 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
                   onClick={() => handleDeleteItem(item)}
                   disabled={item.path.includes('tasks.json')}
                 >
-                  Delete
+                  ✖
                 </button>
               </div>
             ))
