@@ -87,6 +87,14 @@
   flex: 1;
   overflow: auto;
   width: 100%;
+  /* Remove scrollbar for dashboard-container */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for webkit browsers */
+.dashboard-container::-webkit-scrollbar {
+  display: none;
 }
 
 /* Responsive styles */

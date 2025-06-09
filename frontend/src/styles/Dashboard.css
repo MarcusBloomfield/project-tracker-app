@@ -1,14 +1,23 @@
 /* Dashboard.css */
 
 .dashboard-container {
-  padding: 20px;
-  overflow-y: auto;
+  flex: 1 1 25%;
   height: 100%;
+  /* Remove scrollbar */
+  overflow: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for webkit browsers */
+.dashboard-container::-webkit-scrollbar {
+  display: none;
 }
 
 /* When nested inside another container */
 .dashboard-container .dashboard-container {
   padding: 0;
+  flex: 1 1 25%;
 }
 
 .dashboard-container h2 {
@@ -43,7 +52,7 @@
   background-color: #1e1e1e;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -136,11 +145,12 @@
   background-color: #1e1e1e;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  padding: 20px;
 }
 
 .stat-chart-card.full-width {
+  flex: 1 1 100%;
   width: 100%;
+  height: auto;
 }
 
 /* Task distribution */
@@ -175,7 +185,7 @@
 .distribution-legend {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin: 15px;
 }
 
 /* Task priorities */
@@ -213,6 +223,7 @@
 .priorities-legend {
   display: flex;
   justify-content: space-around;
+  margin: 15px;
 }
 
 /* Legend items */
@@ -368,6 +379,8 @@
   gap: 15px;
   padding: 20px;
   background-color: #121212;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .all-tasks-list .task-item {

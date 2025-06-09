@@ -1,8 +1,3 @@
-/**
- * Task management utility module that provides functionality for handling tasks.
- * Uses Electron's IPC to communicate with the main process for persistent storage.
- */
-
 // Task status options
 export enum TaskStatus {
   TODO = 'todo',
@@ -17,6 +12,14 @@ export enum TaskPriority {
   HIGH = 'high'
 }
 
+// Task type options
+export enum TaskType {
+  BUG = 'bug',
+  FEATURE = 'feature',
+  TASK = 'task',
+  OTHER = 'other'
+}
+
 // Task data model
 export interface Task {
   id: string;
@@ -25,6 +28,7 @@ export interface Task {
   description: string;
   status: TaskStatus;
   priority: TaskPriority;
+  type: TaskType;
   dueDate: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -112,6 +116,16 @@ export const taskManager = {
   filterByPriority: (tasks: Task[], priority: TaskPriority | null): Task[] => {
     if (!priority) return tasks;
     return tasks.filter(task => task.priority === priority);
+  },
+
+  /**
+   * Filter tasks by type
+  /**
+   * Filter tasks by type
+   */
+  filterByType: (tasks: Task[], type: TaskType | null): Task[] => {
+    if (!type) return tasks;
+    return tasks.filter(task => task.type === type);
   },
 
   /**

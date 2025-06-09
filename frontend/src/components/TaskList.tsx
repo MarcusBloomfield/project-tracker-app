@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Task, TaskStatus, TaskPriority, taskManager } from '../utils/taskManager';
+import { Task, TaskStatus, TaskPriority, taskManager, TaskType } from '../utils/taskManager';
 import '../styles/TaskList.css';
 
 interface TaskListProps {
@@ -12,6 +12,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [statusFilter, setStatusFilter] = useState<TaskStatus | null>(null);
   const [priorityFilter, setPriorityFilter] = useState<TaskPriority | null>(null);
+  const [typeFilter, setTypeFilter] = useState<TaskType | null>(null);
   const [sortBy, setSortBy] = useState<'dueDate' | 'priority' | 'createdAt'>('createdAt');
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [newTask, setNewTask] = useState({
@@ -19,6 +20,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
     description: '',
     priority: TaskPriority.MEDIUM,
     status: TaskStatus.TODO,
+    type: TaskType.TASK,
     dueDate: '',
     tags: ''
   });
@@ -50,16 +52,22 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
       result = taskManager.filterByPriority(result, priorityFilter);
     }
     
+    // Apply type filter
+    if (typeFilter) {
+      result = taskManager.filterByType(result, typeFilter);
+    }
+    
     // Apply sort
     result = taskManager.sortTasks(result, sortBy);
     
     setFilteredTasks(result);
-  }, [tasks, statusFilter, priorityFilter, sortBy]);
+  }, [tasks, statusFilter, priorityFilter, typeFilter, sortBy]);
 
   // Reset filters
   const handleResetFilters = () => {
     setStatusFilter(null);
     setPriorityFilter(null);
+    setTypeFilter(null);
     setSortBy('createdAt');
   };
 
@@ -110,6 +118,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
       description: newTask.description,
       status: newTask.status,
       priority: newTask.priority,
+      type: newTask.type,
       dueDate: newTask.dueDate ? new Date(newTask.dueDate) : null,
       tags: newTask.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
     };
@@ -123,6 +132,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
           description: '',
           priority: TaskPriority.MEDIUM,
           status: TaskStatus.TODO,
+          type: TaskType.TASK,
           dueDate: '',
           tags: ''
         });
@@ -158,6 +168,23 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
         return <span className="status-badge status-in-progress">In Progress</span>;
       case TaskStatus.COMPLETED:
         return <span className="status-badge status-completed">Completed</span>;
+    }
+  };
+
+  
+  // Render task status badge
+  const renderTaskTypeBadge = (type: TaskType) => {
+    switch (type) {
+      case TaskType.TASK:
+        return <span className="task-type-badge task-type-task">Task</span>;
+      case TaskType.FEATURE:
+        return <span className="task-type-badge task-type-feature">Feature</span>;
+      case TaskType.BUG:
+        return <span className="task-type-badge task-type-bug">Bug</span>;
+      case TaskType.OTHER:
+        return <span className="task-type-badge task-type-other">Other</span>;
+      default:
+        return <span className="task-type-badge task-type-other">Other</span>;
     }
   };
 
@@ -200,6 +227,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
                 name="description" 
                 value={newTask.description} 
                 onChange={handleNewTaskChange} 
+                className='description-textarea'
               />
             </div>
             
@@ -231,7 +259,24 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
                   <option value={TaskPriority.HIGH}>High</option>
                 </select>
               </div>
+
+              
+              <div className="form-group">
+                <label htmlFor="type">Type:</label>
+                <select 
+                  id="type" 
+                  name="type" 
+                  value={newTask.type} 
+                  onChange={handleNewTaskChange}
+                >
+                  <option value={TaskType.TASK}>Task</option>
+                  <option value={TaskType.FEATURE}>Feature</option>
+                  <option value={TaskType.BUG}>Bug</option>
+                  <option value={TaskType.OTHER}>Other</option>
+                </select>
+              </div>
             </div>
+            
             
             <div className="form-group">
               <label htmlFor="dueDate">Due Date:</label>
@@ -290,6 +335,18 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
             <option value={TaskPriority.LOW}>Low</option>
           </select>
         </div>
+
+        
+        <div className="filter-group">
+          <label>Type:</label>
+          <select value={typeFilter || ''} onChange={e => setTypeFilter(e.target.value as TaskType || null)}>
+            <option value="">All</option>
+            <option value={TaskType.TASK}>Task</option>
+            <option value={TaskType.FEATURE}>Feature</option>
+            <option value={TaskType.BUG}>Bug</option>
+            <option value={TaskType.OTHER}>Other</option>
+          </select>
+        </div>
         
         <div className="filter-group">
           <label>Sort By:</label>
@@ -336,12 +393,17 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
               </div>
               
               <div className="task-info">
+
                 <div className="task-status">
                   {renderStatusBadge(task.status)}
                 </div>
                 
                 <div className={`task-priority ${getPriorityInfo(task.priority).className}`}>
                   {getPriorityInfo(task.priority).label}
+                </div>  
+
+                <div className="task-type">
+                  {renderTaskTypeBadge(task.type)}
                 </div>
                 
                 {task.dueDate && (

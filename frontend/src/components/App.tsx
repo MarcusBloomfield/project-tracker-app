@@ -7,12 +7,10 @@ import { ProjectInfo } from '../utils/fileSystem';
 const App: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<ProjectInfo | null>(null);
 
-  // Handle project selection
   const handleProjectSelect = (project: ProjectInfo) => {
     setSelectedProject(project);
   };
 
-  // Handle back navigation from project view
   const handleBackToProjects = () => {
     setSelectedProject(null);
   };

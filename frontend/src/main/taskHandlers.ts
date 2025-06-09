@@ -22,6 +22,13 @@ enum TaskPriority {
   HIGH = 'high'
 }
 
+enum TaskType {
+  BUG = 'bug',
+  FEATURE = 'feature',
+  TASK = 'task',
+  OTHER = 'other'
+}
+
 // Task interface (must match the one in taskManager.ts)
 interface Task {
   id: string;
@@ -30,6 +37,7 @@ interface Task {
   description: string;
   status: TaskStatus;
   priority: TaskPriority;
+  type: TaskType;
   dueDate: Date | null;
   createdAt: Date;
   updatedAt: Date;

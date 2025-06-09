@@ -5,20 +5,39 @@
   margin: 2rem auto;
   width: 100%;
   padding: 2rem;
+  background-color: #1e1e1e00;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  gap: 1.5rem;
+}
+
+.project-selection-tasks-and-projects-subcontainer {
+  max-width: 100%;
+  padding: 2rem;
   background-color: #1e1e1e;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   border: 1px solid #404040;
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+.project-selection-dashboard-subcontainer {
+  max-width: 50%;
+  padding: 2rem;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid #404040;
+  flex-shrink: 1;
+  flex-grow: 1;
 }
 
-.project-header {
+.project-selection-tasks-and-projects-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  color: #e0e0e0;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #404040;
+  flex: 1 1;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .project-header h2 {
@@ -35,22 +54,27 @@
 }
 
 .project-list-container {
-  flex: 0 0 25%;
-  max-width: 25%;
+  flex: 1 1 25%;
   padding: 20px;
   height: fit-content;
 }
 
 .daily-tasks-container {
-  flex: 0 0 25%;
-  max-width: 25%;
-  height: fit-content;
+  flex: 1 1 25%;
+  width: 100%;
 }
 
 .dashboard-container {
-  flex: 0 0 50%;
-  max-width: 50%;
-  overflow-y: auto;
+  flex: 1 1 25%;
+  /* Remove scrollbar */
+  overflow: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for webkit browsers */
+.dashboard-container::-webkit-scrollbar {
+  display: none;
 }
 
 .project-list-container h3,
@@ -131,24 +155,28 @@
   font-size: 0.9rem;
 }
 
-/* Dashboard styling */
-.dashboard-container .dashboard-container {
-  padding: 0;
-  max-width: 100%;
-  width: 100%;
-  min-width: 100%;
-}
-
 /* Responsive adjustments */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
+
+  .project-selection {
+    flex-direction: column;
+  }
+  .project-selection-tasks-and-projects-container {
+    width: 100%;
+    max-width: 100%;
+  }
+  .project-selection-dashboard-subcontainer {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .project-dashboard-container {
     flex-wrap: wrap;
   }
   
   .project-list-container,
   .daily-tasks-container {
-    flex: 0 0 calc(50% - 0.75rem);
-    max-width: calc(50% - 0.75rem);
+    flex: 1 1 50%;
   }
   
   .dashboard-container {
@@ -166,7 +194,7 @@
   .project-list-container,
   .daily-tasks-container,
   .dashboard-container {
-    flex: 0 0 100%;
+    flex: 1 1 100%;
     max-width: 100%;
     margin-top: 0;
     margin-bottom: 1.5rem;

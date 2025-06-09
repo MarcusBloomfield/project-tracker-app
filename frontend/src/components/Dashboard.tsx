@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Task, TaskStatus, TaskPriority, taskManager } from '../utils/taskManager';
 import { statisticsManager, ProjectStatistics } from '../utils/statisticsManager';
-import ReportExport from './ReportExport';
 import '../styles/Dashboard.css';
 
 interface DashboardProps {
@@ -334,82 +333,6 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
         </div>
       </div>
       
-      <div className="stats-row">
-        <div className="stat-chart-card full-width">
-          <h3>Task Completion Trend (Last 14 Days)</h3>
-          <div className="trend-chart">
-            {stats.taskCompletionTrend.map((day, index) => (
-              <div key={day.date} className="trend-day">
-                <div className="trend-bars">
-                  <div 
-                    className="trend-bar created"
-                    style={{ height: `${day.created * 20}px` }}
-                    title={`Created: ${day.created} tasks`}
-                  ></div>
-                  <div 
-                    className="trend-bar completed"
-                    style={{ height: `${day.completed * 20}px` }}
-                    title={`Completed: ${day.completed} tasks`}
-                  ></div>
-                </div>
-                <div className="trend-date">
-                  {new Date(day.date).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' })}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="trend-legend">
-            <div className="legend-item">
-              <span className="legend-color created"></span>
-              <span className="legend-label">Created</span>
-            </div>
-            <div className="legend-item">
-              <span className="legend-color completed"></span>
-              <span className="legend-label">Completed</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div className="stats-row">
-        <div className="stat-list-card">
-          <h3>Upcoming Deadlines</h3>
-          {stats.upcomingDeadlines.length === 0 ? (
-            <div className="empty-list">No upcoming deadlines</div>
-          ) : (
-            <ul className="stat-list">
-              {stats.upcomingDeadlines.slice(0, 5).map(task => (
-                <li key={task.id} className="stat-list-item">
-                  <div className="task-title">{task.title}</div>
-                  <div className="task-due">
-                    Due: {new Date(task.dueDate!).toLocaleDateString()}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        
-        <div className="stat-list-card">
-          <h3>Overdue Tasks</h3>
-          {stats.overdueTasks.length === 0 ? (
-            <div className="empty-list">No overdue tasks</div>
-          ) : (
-            <ul className="stat-list">
-              {stats.overdueTasks.slice(0, 5).map(task => (
-                <li key={task.id} className="stat-list-item overdue">
-                  <div className="task-title">{task.title}</div>
-                  <div className="task-due">
-                    Due: {new Date(task.dueDate!).toLocaleDateString()}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-      
-      <ReportExport projectId={projectId} stats={stats} />
     </div>
   );
 };

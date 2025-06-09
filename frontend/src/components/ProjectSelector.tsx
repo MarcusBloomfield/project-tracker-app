@@ -72,28 +72,14 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
 
   return (
     <div className="project-selection">
-      <div className="project-header">
-        <h2>Projects Overview</h2>
-      </div>
 
       {error && <div className="error-message">{error}</div>}
 
 
 
-      <div className="project-dashboard-container">
+      <div className="project-selection-tasks-and-projects-container">
 
-        <div className="daily-tasks-container">
-          <DailyTaskList />
-        </div>
-
-
-
-        <div className="dashboard-container">
-          <h3>Dashboard</h3>
-          <Dashboard projectId="all" />
-        </div>
-
-
+      <div className="project-selection-tasks-and-projects-subcontainer">
         <div className="project-list-container">
           <h3>My Projects</h3>
           <div className="project-list">
@@ -124,6 +110,27 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
           </div>
         </div>
       </div>
+
+
+      
+      <div className="project-selection-tasks-and-projects-subcontainer">
+
+        <div className="daily-tasks-container">
+          <DailyTaskList />
+        </div>
+
+      </div>
+
+      </div>
+
+      <div className="project-selection-dashboard-subcontainer">
+        <div className="dashboard-container">
+          <h3>Dashboard</h3>
+          <Dashboard projectId="all" />
+        </div>
+      </div>
+
+
 
       <CreateDialog
         type="project"

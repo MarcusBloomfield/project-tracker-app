@@ -89,6 +89,20 @@
   gap: 15px;
 }
 
+.task-type-task {
+  background-color: #2196f3;
+  color: rgb(40, 184, 71);
+}
+.task-type-feature {
+  color: #ff9800;
+}
+.task-type-bug {
+  color: #f44336;
+}
+.task-type-other {
+  color: #9e9e9e;
+}
+
 .task-item {
   background-color: #1e1e1e;
   border-radius: 8px;
@@ -145,14 +159,14 @@
   margin-bottom: 10px;
 }
 
-.task-status, .task-priority, .task-due-date {
+.task-status, .task-priority, .task-due-date, .task-type {
   font-size: 0.8rem;
   padding: 3px 8px;
   border-radius: 12px;
   background-color: #2a2a2a;
 }
 
-.status-badge {
+.status-badge, .task-type-badge {
   padding: 3px 8px;
   border-radius: 12px;
   font-size: 0.8rem;
@@ -160,17 +174,14 @@
 }
 
 .status-todo {
-  background-color: rgba(255, 152, 0, 0.2);
   color: #ff9800;
 }
 
 .status-in-progress {
-  background-color: rgba(33, 150, 243, 0.2);
   color: #2196f3;
 }
 
 .status-completed {
-  background-color: rgba(76, 175, 80, 0.2);
   color: #4caf50;
 }
 
@@ -359,6 +370,10 @@
   margin-top: 20px;
 }
 
+.description-textarea {
+  background-color: #2a2a2a;
+  color:#e0e0e0
+}
 /* Responsive styles */
 @media (max-width: 768px) {
   .task-filters {
