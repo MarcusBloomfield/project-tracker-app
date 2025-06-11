@@ -3,18 +3,18 @@
 A desktop project management application built with Electron, React, and TypeScript. Track your projects, manage tasks, and monitor progress with an intuitive interface.
 
 ## Screenshots
+*Main interface showing project management, daily tasks, and comprehensive dashboard with statistics*
 
 ![Project Tracker App Interface](Display.png)
 
-*Main interface showing project management, daily tasks, and comprehensive dashboard with statistics*
+*Built-in file browser and text editor for managing project files and documentation*
 
 ![File Browser and Text Editor](Notes.png)
 
-*Built-in file browser and text editor for managing project files and documentation*
+*Task creation dialog and kanban-style task management with status tracking*
 
 ![Task Management Interface](TaskCreator.png)
 
-*Task creation dialog and kanban-style task management with status tracking*
 
 ## Features
 
