@@ -17,9 +17,6 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>Project Tracker</h1>
-      </header>
       <main className="app-content">
         {selectedProject ? (
           <ProjectView 
