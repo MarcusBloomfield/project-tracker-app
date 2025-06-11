@@ -8,6 +8,14 @@ A desktop project management application built with Electron, React, and TypeScr
 
 *Main interface showing project management, daily tasks, and comprehensive dashboard with statistics*
 
+![File Browser and Text Editor](Notes.png)
+
+*Built-in file browser and text editor for managing project files and documentation*
+
+![Task Management Interface](TaskCreator.png)
+
+*Task creation dialog and kanban-style task management with status tracking*
+
 ## Features
 
 - **Project Management**: Create and organize multiple projects
