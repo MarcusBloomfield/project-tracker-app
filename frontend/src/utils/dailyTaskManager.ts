@@ -16,10 +16,14 @@ export const dailyTaskManager = {
    */
   getDailyTasks: (): Promise<DailyTask[]> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('dailyTask:list', {});
-      window.api.addListener('dailyTask:list', (tasks: DailyTask[]) => {
+      const handleTaskList = (tasks: DailyTask[]) => {
+        window.api.removeListener('dailyTask:list', handleTaskList);
         resolve(tasks);
-      });
+      };
+
+      window.api.removeListener('dailyTask:list', handleTaskList);
+      window.api.addListener('dailyTask:list', handleTaskList);
+      window.api.triggerEvent('dailyTask:list', {});
     });
   },
 
@@ -34,10 +38,14 @@ export const dailyTaskManager = {
         completed: false,
         lastResetDate: today
       };
-      window.api.triggerEvent('dailyTask:create', { task: taskData });
-      window.api.addListener('dailyTask:created', (newTask: DailyTask) => {
+
+      const handleTaskCreated = (newTask: DailyTask) => {
+        window.api.removeListener('dailyTask:created', handleTaskCreated);
         resolve(newTask);
-      });
+      };
+
+      window.api.addListener('dailyTask:created', handleTaskCreated);
+      window.api.triggerEvent('dailyTask:create', { task: taskData });
     });
   },
 
@@ -46,10 +54,13 @@ export const dailyTaskManager = {
    */
   toggleTaskCompletion: (taskId: string, completed: boolean): Promise<DailyTask> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('dailyTask:toggle', { taskId, completed });
-      window.api.addListener('dailyTask:updated', (updatedTask: DailyTask) => {
+      const handleTaskUpdated = (updatedTask: DailyTask) => {
+        window.api.removeListener('dailyTask:updated', handleTaskUpdated);
         resolve(updatedTask);
-      });
+      };
+
+      window.api.addListener('dailyTask:updated', handleTaskUpdated);
+      window.api.triggerEvent('dailyTask:toggle', { taskId, completed });
     });
   },
 
@@ -58,10 +69,13 @@ export const dailyTaskManager = {
    */
   deleteDailyTask: (taskId: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('dailyTask:delete', { taskId });
-      window.api.addListener('dailyTask:deleted', (success: boolean) => {
+      const handleTaskDeleted = (success: boolean) => {
+        window.api.removeListener('dailyTask:deleted', handleTaskDeleted);
         resolve(success);
-      });
+      };
+
+      window.api.addListener('dailyTask:deleted', handleTaskDeleted);
+      window.api.triggerEvent('dailyTask:delete', { taskId });
     });
   },
 
@@ -70,10 +84,13 @@ export const dailyTaskManager = {
    */
   reorderTasks: (tasks: DailyTask[]): Promise<DailyTask[]> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('dailyTask:reorder', { tasks });
-      window.api.addListener('dailyTask:reordered', (updatedTasks: DailyTask[]) => {
+      const handleTasksReordered = (updatedTasks: DailyTask[]) => {
+        window.api.removeListener('dailyTask:reordered', handleTasksReordered);
         resolve(updatedTasks);
-      });
+      };
+
+      window.api.addListener('dailyTask:reordered', handleTasksReordered);
+      window.api.triggerEvent('dailyTask:reorder', { tasks });
     });
   }
 }; 

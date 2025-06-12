@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FSItem } from '../utils/fileSystem';
+import { FSItem, fileSystem } from '../utils/fileSystem';
 import '../styles/FileBrowser.css';
 import CreateDialog from './CreateDialog';
 
@@ -22,27 +22,32 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
   useEffect(() => {
     if (!currentPath) return;
 
-    setLoading(true);
-    setError(null);
+    const loadDirectoryContents = async () => {
+      setLoading(true);
+      setError(null);
 
-    // Define the event handler for 'fs:readdir'
-    const handleFsReadDirResponse = (contents: FSItem[]) => {
-      setItems(contents);
-      setLoading(false);
-    };
-
-    // Register the listener before sending the request
-    window.api.addListener('fs:readdir', handleFsReadDirResponse);
-    window.api.triggerEvent('fs:readdir', { path: currentPath });
-
-    // Cleanup function to remove the listener
-    return () => {
-      if (typeof window.api.removeListener === 'function') {
-        window.api.removeListener('fs:readdir', handleFsReadDirResponse);
+      try {
+        const contents = await fileSystem.getDirectoryContents(currentPath);
+        setItems(contents);
+      } catch (err) {
+        setError('Failed to load directory contents');
+      } finally {
+        setLoading(false);
       }
     };
+
+    loadDirectoryContents();
   }, [currentPath]);
 
+  // Helper function to refresh directory contents
+  const refreshDirectory = async () => {
+    try {
+      const contents = await fileSystem.getDirectoryContents(currentPath);
+      setItems(contents);
+    } catch (err) {
+      setError('Failed to refresh directory contents');
+    }
+  };
 
   // Handle directory navigation
   const handleItemClick = (item: FSItem) => {
@@ -86,22 +91,21 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     }
   };
 
-  const handleCreateFolder = (folderName: string) => {
+  const handleCreateFolder = async (folderName: string) => {
     if (!folderName) return;
 
-    const newFolderPath = `${currentPath}\\${folderName}`;
-    window.api.triggerEvent('fs:mkdir', { path: newFolderPath });
-    window.api.addListener('fs:mkdir', (success: boolean) => {
+    try {
+      const newFolderPath = `${currentPath}\\${folderName}`;
+      const success = await fileSystem.createDirectory(newFolderPath);
+      
       if (success) {
-        // Refresh the directory contents
-        window.api.triggerEvent('fs:readdir', { path: currentPath });
-        window.api.addListener('fs:readdir', (contents: FSItem[]) => {
-          setItems(contents);
-        });
+        await refreshDirectory();
       } else {
         setError('Failed to create folder');
       }
-    });
+    } catch (err) {
+      setError('Failed to create folder');
+    }
   };
 
   // Create new file
@@ -120,39 +124,40 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
     }
   };
 
-  const handleCreateFile = (fileName: string) => {
+  const handleCreateFile = async (fileName: string) => {
     if (!fileName) return;
 
-    const newFilePath = `${currentPath}\\${fileName}`;
-    window.api.triggerEvent('fs:writefile', { path: newFilePath, content: '' });
-    window.api.addListener('fs:writefile', (success: boolean) => {
+    try {
+      const newFilePath = `${currentPath}\\${fileName}`;
+      const success = await fileSystem.writeFile(newFilePath, '');
+      
       if (success) {
-        // Refresh the directory contents
-        window.api.triggerEvent('fs:readdir', { path: currentPath });
-        window.api.addListener('fs:readdir', (contents: FSItem[]) => {
-          setItems(contents);
-        });
+        await refreshDirectory();
       } else {
         setError('Failed to create file');
       }
-    });
+    } catch (err) {
+      setError('Failed to create file');
+    }
   };
 
-  const handleDeleteItem = (item: FSItem) => {
-
+  const handleDeleteItem = async (item: FSItem) => {
     if (item.path.includes('tasks.json')) {
       setError('Cannot delete task file');
       return;
     }
-    
-    window.api.triggerEvent('fs:delete', { path: item.path });
-      window.api.addListener('fs:delete', (success: boolean) => {
-        if (success) {
-          setItems(items.filter(i => i.path !== item.path));
-        } else {
-          setError('Failed to delete file');
-        }
-      });
+
+    try {
+      const success = await fileSystem.delete(item.path);
+      
+      if (success) {
+        await refreshDirectory();
+      } else {
+        setError('Failed to delete file');
+      }
+    } catch (err) {
+      setError('Failed to delete file');
+    }
   };
 
   // Get file icon based on extension
@@ -203,7 +208,7 @@ const FileBrowser: React.FC<FileBrowserProps> = ({ projectPath, onSelectFile }) 
       {error && <div className="error-message">{error}</div>}
       
       <div className="file-list">
-        {items.length === 0 ? (
+        {!Array.isArray(items) || items.length === 0 ? (
           <div className="empty-directory">This folder is empty</div>
         ) : (
           items

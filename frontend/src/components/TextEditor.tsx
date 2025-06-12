@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { fileSystem } from '../utils/fileSystem';
 import '../styles/TextEditor.css';
 
 interface TextEditorProps {
@@ -24,22 +25,29 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
+    const loadFileContent = async () => {
+      setIsLoading(true);
+      setError(null);
 
-    preventTaskFileDeletion();
+      preventTaskFileDeletion();
 
-    // Extract file name from path
-    const name = filePath.substring(filePath.lastIndexOf('\\') + 1);
-    setFileName(name);
+      // Extract file name from path
+      const name = filePath.substring(filePath.lastIndexOf('\\') + 1);
+      setFileName(name);
 
-    // Load file content
-    window.api.triggerEvent('fs:readfile', { path: filePath });
-    window.api.addListener('fs:readfile', (fileContent: string) => {
-      setContent(fileContent);
-      setIsLoading(false);
-      setIsEdited(false);
-    });
+      try {
+        const fileContent = await fileSystem.readFile(filePath);
+        setContent(fileContent);
+        setIsEdited(false);
+      } catch (error) {
+        setError('Failed to load file');
+        console.error('Failed to load file:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadFileContent();
   }, [filePath]);
 
   const preventTaskFileDeletion = () => {
@@ -56,40 +64,49 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
   };
 
   // Save the file
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!filePath) return;
     
     setIsSaving(true);
     setError(null);
 
-    window.api.triggerEvent('fs:writefile', { path: filePath, content });
-    window.api.addListener('fs:writefile', (success: boolean) => {
-      setIsSaving(false);
+    try {
+      const success = await fileSystem.writeFile(filePath, content);
       
       if (success) {
         setIsEdited(false);
       } else {
         setError('Failed to save file');
       }
-    });
+    } catch (error) {
+      setError('Failed to save file');
+      console.error('Failed to save file:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!filePath) return;
     
     setIsDeleting(true);
     setError(null);
 
-    window.api.triggerEvent('fs:delete', { path: filePath });
-    window.api.addListener('fs:delete', (success: boolean) => {
-      setIsDeleting(false);
+    try {
+      const success = await fileSystem.delete(filePath);
       
       if (success) {
         setError('File deleted successfully');
+        // Note: Consider adding a callback prop to notify parent component
       } else {
         setError('Failed to delete file');
       }
-    });
+    } catch (error) {
+      setError('Failed to delete file');
+      console.error('Failed to delete file:', error);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Task, TaskStatus, TaskPriority, taskManager } from '../utils/taskManager';
 import { statisticsManager, ProjectStatistics } from '../utils/statisticsManager';
+import { fileSystem } from '../utils/fileSystem';
 import '../styles/Dashboard.css';
 
 interface DashboardProps {
@@ -17,18 +18,24 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   // Load project list when component mounts if showing all projects
   useEffect(() => {
     if (projectId === 'all') {
-      window.api.triggerEvent('project:list', {});
-      window.api.addListener('project:list', (projectList: any[]) => {
-        const projectNames = projectList.map(project => project.name);
-        setAllProjects(projectNames);
-        
-        // Create a mapping of project IDs to names
-        const projectMapping: Record<string, string> = {};
-        projectList.forEach(project => {
-          projectMapping[project.name] = project.name;
-        });
-        setProjectNames(projectMapping);
-      });
+      const loadProjects = async () => {
+        try {
+          const projectList = await fileSystem.listProjects();
+          const projectNames = projectList.map(project => project.name);
+          setAllProjects(projectNames);
+          
+          // Create a mapping of project IDs to names
+          const projectMapping: Record<string, string> = {};
+          projectList.forEach(project => {
+            projectMapping[project.name] = project.name;
+          });
+          setProjectNames(projectMapping);
+        } catch (error) {
+          console.error('Failed to load projects:', error);
+        }
+      };
+
+      loadProjects();
     }
   }, [projectId]);
 
@@ -69,6 +76,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
       // Cleanup function 
       return () => {
         componentMounted = false;
+        window.api.removeListener('task:list', handleTasksReceived);
       };
     } else if (projectId) {
       setLoading(true);
@@ -88,6 +96,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
       // Cleanup function
       return () => {
         componentMounted = false;
+        window.api.removeListener('task:list', handleTaskList);
       };
     }
   }, [projectId, allProjects]);

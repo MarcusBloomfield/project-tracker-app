@@ -43,10 +43,13 @@ export const taskManager = {
    */
   getProjectTasks: (projectId: string): Promise<Task[]> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('task:list', { projectId });
-      window.api.addListener('task:list', (tasks: Task[]) => {
+      const handleTaskList = (tasks: Task[]) => {
+        window.api.removeListener('task:list', handleTaskList);
         resolve(tasks);
-      });
+      };
+
+      window.api.addListener('task:list', handleTaskList);
+      window.api.triggerEvent('task:list', { projectId });
     });
   },
 
@@ -55,10 +58,13 @@ export const taskManager = {
    */
   createTask: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'completedAt'>): Promise<Task> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('task:create', { task });
-      window.api.addListener('task:created', (newTask: Task) => {
+      const handleTaskCreated = (newTask: Task) => {
+        window.api.removeListener('task:created', handleTaskCreated);
         resolve(newTask);
-      });
+      };
+
+      window.api.addListener('task:created', handleTaskCreated);
+      window.api.triggerEvent('task:create', { task });
     });
   },
 
@@ -67,10 +73,13 @@ export const taskManager = {
    */
   updateTask: (taskId: string, updates: Partial<Omit<Task, 'id' | 'createdAt'>>): Promise<Task> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('task:update', { taskId, updates });
-      window.api.addListener('task:updated', (updatedTask: Task) => {
+      const handleTaskUpdated = (updatedTask: Task) => {
+        window.api.removeListener('task:updated', handleTaskUpdated);
         resolve(updatedTask);
-      });
+      };
+
+      window.api.addListener('task:updated', handleTaskUpdated);
+      window.api.triggerEvent('task:update', { taskId, updates });
     });
   },
 
@@ -79,10 +88,13 @@ export const taskManager = {
    */
   deleteTask: (taskId: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('task:delete', { taskId });
-      window.api.addListener('task:deleted', (success: boolean) => {
+      const handleTaskDeleted = (success: boolean) => {
+        window.api.removeListener('task:deleted', handleTaskDeleted);
         resolve(success);
-      });
+      };
+
+      window.api.addListener('task:deleted', handleTaskDeleted);
+      window.api.triggerEvent('task:delete', { taskId });
     });
   },
 
@@ -95,10 +107,14 @@ export const taskManager = {
         status,
         completedAt: status === TaskStatus.COMPLETED ? new Date() : null 
       };
-      window.api.triggerEvent('task:update', { taskId, updates });
-      window.api.addListener('task:updated', (updatedTask: Task) => {
+
+      const handleTaskUpdated = (updatedTask: Task) => {
+        window.api.removeListener('task:updated', handleTaskUpdated);
         resolve(updatedTask);
-      });
+      };
+
+      window.api.addListener('task:updated', handleTaskUpdated);
+      window.api.triggerEvent('task:update', { taskId, updates });
     });
   },
 

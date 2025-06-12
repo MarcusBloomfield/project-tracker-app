@@ -35,10 +35,13 @@ export const fileSystem = {
    */
   listProjects: (): Promise<ProjectInfo[]> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('project:list', {});
-      window.api.addListener('project:list', (projects: ProjectInfo[]) => {
+      const handleProjectList = (projects: ProjectInfo[]) => {
+        window.api.removeListener('project:list', handleProjectList);
         resolve(projects);
-      });
+      };
+
+      window.api.addListener('project:list', handleProjectList);
+      window.api.triggerEvent('project:list', {});
     });
   },
 
@@ -47,10 +50,13 @@ export const fileSystem = {
    */
   createProject: (name: string): Promise<ProjectInfo> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('project:create', { name });
-      window.api.addListener('project:created', (project: ProjectInfo) => {
+      const handleProjectCreated = (project: ProjectInfo) => {
+        window.api.removeListener('project:created', handleProjectCreated);
         resolve(project);
-      });
+      };
+
+      window.api.addListener('project:created', handleProjectCreated);
+      window.api.triggerEvent('project:create', { name });
     });
   },
 
@@ -59,10 +65,13 @@ export const fileSystem = {
    */
   getDirectoryContents: (path: string): Promise<FSItem[]> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('fs:readdir', { path });
-      window.api.addListener('fs:readdir', (items: FSItem[]) => {
+      const handleDirectoryContents = (items: FSItem[]) => {
+        window.api.removeListener('fs:readdir', handleDirectoryContents);
         resolve(items);
-      });
+      };
+
+      window.api.addListener('fs:readdir', handleDirectoryContents);
+      window.api.triggerEvent('fs:readdir', { path });
     });
   },
 
@@ -71,10 +80,13 @@ export const fileSystem = {
    */
   readFile: (path: string): Promise<string> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('fs:readfile', { path });
-      window.api.addListener('fs:readfile', (content: string) => {
+      const handleFileRead = (content: string) => {
+        window.api.removeListener('fs:readfile', handleFileRead);
         resolve(content);
-      });
+      };
+
+      window.api.addListener('fs:readfile', handleFileRead);
+      window.api.triggerEvent('fs:readfile', { path });
     });
   },
 
@@ -83,10 +95,13 @@ export const fileSystem = {
    */
   writeFile: (path: string, content: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('fs:writefile', { path, content });
-      window.api.addListener('fs:writefile', (success: boolean) => {
+      const handleFileWrite = (success: boolean) => {
+        window.api.removeListener('fs:writefile', handleFileWrite);
         resolve(success);
-      });
+      };
+
+      window.api.addListener('fs:writefile', handleFileWrite);
+      window.api.triggerEvent('fs:writefile', { path, content });
     });
   },
 
@@ -95,10 +110,13 @@ export const fileSystem = {
    */
   createDirectory: (path: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('fs:mkdir', { path });
-      window.api.addListener('fs:mkdir', (success: boolean) => {
+      const handleDirectoryCreated = (success: boolean) => {
+        window.api.removeListener('fs:mkdir', handleDirectoryCreated);
         resolve(success);
-      });
+      };
+
+      window.api.addListener('fs:mkdir', handleDirectoryCreated);
+      window.api.triggerEvent('fs:mkdir', { path });
     });
   },
 
@@ -107,10 +125,13 @@ export const fileSystem = {
    */
   delete: (path: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('fs:delete', { path });
-      window.api.addListener('fs:delete', (success: boolean) => {
+      const handleDelete = (success: boolean) => {
+        window.api.removeListener('fs:delete', handleDelete);
         resolve(success);
-      });
+      };
+
+      window.api.addListener('fs:delete', handleDelete);
+      window.api.triggerEvent('fs:delete', { path });
     });
   },
 
@@ -119,10 +140,13 @@ export const fileSystem = {
    */
   rename: (oldPath: string, newPath: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      window.api.triggerEvent('fs:rename', { oldPath, newPath });
-      window.api.addListener('fs:rename', (success: boolean) => {
+      const handleRename = (success: boolean) => {
+        window.api.removeListener('fs:rename', handleRename);
         resolve(success);
-      });
+      };
+
+      window.api.addListener('fs:rename', handleRename);
+      window.api.triggerEvent('fs:rename', { oldPath, newPath });
     });
   }
 }; 

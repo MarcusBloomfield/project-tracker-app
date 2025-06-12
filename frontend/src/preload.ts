@@ -1,8 +1,6 @@
-// preload.ts
 
-// All the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
 import { contextBridge, ipcRenderer } from 'electron';
+import { setMaxListeners } from 'events';
 
 // Define valid IPC channels
 const validSendChannels = [
@@ -51,21 +49,21 @@ const validReceiveChannels = [
 // the ipcRenderer without exposing the entire object
 contextBridge.exposeInMainWorld('api', {
   triggerEvent: (channel: string, data: any) => {
-    console.log('triggerEvent', channel, data);
+    console.log('triggerEvent');
     // Whitelist channels
     if (validSendChannels.includes(channel)) {
       ipcRenderer.send(channel, data);
     }
   },
   addListener: (channel: string, func: (...args: any[]) => void) => {
-    console.log('addListener', channel, func);
+    console.log('addListener');
     if (validReceiveChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender` 
       ipcRenderer.on(channel, (event, ...args) => func(...args));
     }
   },
   removeListener: (channel: string, func: (...args: any[]) => void) => {
-    console.log('removeListener', channel, func);
+    console.log('removeListener');
     if (validReceiveChannels.includes(channel)) {
       ipcRenderer.removeListener(channel, func);
     }

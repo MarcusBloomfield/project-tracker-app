@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ProjectInfo } from '../utils/fileSystem';
+import { ProjectInfo, fileSystem } from '../utils/fileSystem';
 import CreateDialog from './CreateDialog';
 import Dashboard from './Dashboard';
 import DailyTaskList from './DailyTaskList';
@@ -17,15 +17,38 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
 
   // Load projects when component mounts
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    const loadProjects = async () => {
+      setLoading(true);
+      setError(null);
 
-    // Call the API to list projects
-    window.api.triggerEvent('project:list', {});
-    window.api.addListener('project:list', (projectList: ProjectInfo[]) => {
-      setProjects(projectList);
-      setLoading(false);
-    });
+      try {
+        const projectList = await fileSystem.listProjects();
+        setProjects(projectList);
+      } catch (err) {
+        setError('Failed to load projects');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const handleProjectCreated = (project: ProjectInfo) => {
+      if (project) {
+        setProjects(prevProjects => [...prevProjects, project]);
+      } else {
+        setError('Failed to create project');
+      }
+    };
+
+    // Register listener for project creation only
+    window.api.addListener('project:created', handleProjectCreated);
+
+    // Load initial projects
+    loadProjects();
+
+    // Cleanup function to remove listeners
+    return () => {
+      window.api.removeListener('project:created', handleProjectCreated);
+    };
   }, []);
 
   const handleProjectSelect = (project: ProjectInfo) => {
@@ -46,15 +69,6 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
     setIsDialogOpen(false);
 
     window.api.triggerEvent('project:create', { name: projectName });
-    window.api.addListener('project:created', (project: ProjectInfo) => {
-      if (project) {
-        setProjects(prevProjects => [...prevProjects, project]);
-        setLoading(false);
-      } else {
-        setError('Failed to create project');
-        setLoading(false);
-      }
-    });
   };
 
   const formatDate = (date: Date) => {

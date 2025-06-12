@@ -15,7 +15,6 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
   const [typeFilter, setTypeFilter] = useState<TaskType | null>(null);
   const [sortBy, setSortBy] = useState<'dueDate' | 'priority' | 'createdAt'>('createdAt');
   const [isCreating, setIsCreating] = useState<boolean>(false);
-  const [pendingDeleteTaskId, setPendingDeleteTaskId] = useState<string | null>(null);
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
@@ -26,70 +25,37 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
     tags: ''
   });
 
-  // Load tasks and set up event listeners when component mounts or projectId changes
+  // Load tasks when component mounts or projectId changes
   useEffect(() => {
     if (!projectId) return;
 
-    setLoading(true);
-    
-    // Set up event listeners
-    const handleTaskList = (taskList: Task[]) => {
-      setTasks(taskList);
-      setLoading(false);
-    };
-
-    const handleTaskCreated = (createdTask: Task) => {
-      if (createdTask) {
-        setTasks(prevTasks => [...prevTasks, createdTask]);
-        setNewTask({
-          title: '',
-          description: '',
-          priority: TaskPriority.MEDIUM,
-          status: TaskStatus.TODO,
-          type: TaskType.TASK,
-          dueDate: '',
-          tags: ''
-        });
-        setIsCreating(false);
+    const loadTasks = async () => {
+      setLoading(true);
+      
+      try {
+        const taskList = await taskManager.getProjectTasks(projectId);
+        setTasks(taskList);
+      } catch (error) {
+        console.error('Failed to load tasks:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const handleTaskUpdated = (updatedTask: Task) => {
-      if (updatedTask) {
-        setTasks(prevTasks => prevTasks.map(task => 
-          task.id === updatedTask.id ? updatedTask : task
-        ));
-      }
-    };
-
-    const handleTaskDeleted = (success: boolean) => {
-      console.log('Task deletewwwwwwwwwwwd',success);
-      if (success && pendingDeleteTaskId) {
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== pendingDeleteTaskId));
-        setPendingDeleteTaskId(null);
-        console.log('Task deleted');
-      } else if (!success) {
-        setPendingDeleteTaskId(null);
-      }
-    };
-
-    // Register listeners
-    window.api.addListener('task:list', handleTaskList);
-    window.api.addListener('task:created', handleTaskCreated);
-    window.api.addListener('task:updated', handleTaskUpdated);
-    window.api.addListener('task:deleted', handleTaskDeleted);
-    
-    // Load initial tasks
-    window.api.triggerEvent('task:list', { projectId });
-
-    // Cleanup function to remove listeners
-    return () => {
-      window.api.removeListener('task:list', handleTaskList);
-      window.api.removeListener('task:created', handleTaskCreated);
-      window.api.removeListener('task:updated', handleTaskUpdated);
-      window.api.removeListener('task:deleted', handleTaskDeleted);
-    };
+    loadTasks();
   }, [projectId]);
+
+  // Helper function to refresh task list
+  const refreshTasks = async () => {
+    if (!projectId) return;
+    
+    try {
+      const taskList = await taskManager.getProjectTasks(projectId);
+      setTasks(taskList);
+    } catch (error) {
+      console.error('Failed to refresh tasks:', error);
+    }
+  };
 
   // Apply filters and sorting when tasks, filters, or sort criteria change
   useEffect(() => {
@@ -125,21 +91,34 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
   };
 
   // Handle changing task status
-  const handleStatusChange = (taskId: string, newStatus: TaskStatus) => {
-    window.api.triggerEvent('task:update', { 
-      taskId, 
-      updates: { 
-        status: newStatus,
-        completedAt: newStatus === TaskStatus.COMPLETED ? new Date() : null
-      } 
-    });
+  const handleStatusChange = async (taskId: string, newStatus: TaskStatus) => {
+    try {
+      const updatedTask = await taskManager.changeTaskStatus(taskId, newStatus);
+      
+      // Update the task in the local state
+      setTasks(prevTasks => prevTasks.map(task => 
+        task.id === updatedTask.id ? updatedTask : task
+      ));
+    } catch (error) {
+      console.error('Failed to update task status:', error);
+    }
   };
 
   // Handle deleting a task
-  const handleDeleteTask = (taskId: string) => {
+  const handleDeleteTask = async (taskId: string) => {
     if (confirm('Are you sure you want to delete this task?')) {
-      setPendingDeleteTaskId(taskId);
-      window.api.triggerEvent('task:delete', { taskId });
+      try {
+        const success = await taskManager.deleteTask(taskId);
+        
+        if (success) {
+          // Remove the task from local state
+          setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+        } else {
+          console.error('Failed to delete task');
+        }
+      } catch (error) {
+        console.error('Failed to delete task:', error);
+      }
     }
   };
 
@@ -150,7 +129,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
   };
 
   // Handle saving a new task
-  const handleCreateTask = (e: React.FormEvent) => {
+  const handleCreateTask = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const taskData = {
@@ -164,7 +143,26 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
       tags: newTask.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
     };
     
-    window.api.triggerEvent('task:create', { task: taskData });
+    try {
+      const createdTask = await taskManager.createTask(taskData);
+      
+      // Add the new task to local state
+      setTasks(prevTasks => [...prevTasks, createdTask]);
+      
+      // Reset form
+      setNewTask({
+        title: '',
+        description: '',
+        priority: TaskPriority.MEDIUM,
+        status: TaskStatus.TODO,
+        type: TaskType.TASK,
+        dueDate: '',
+        tags: ''
+      });
+      setIsCreating(false);
+    } catch (error) {
+      console.error('Failed to create task:', error);
+    }
   };
 
   // Format date for display

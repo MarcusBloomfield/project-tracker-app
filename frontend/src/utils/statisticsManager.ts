@@ -171,44 +171,4 @@ export const statisticsManager = {
     }
   },
   
-  /**
-   * Calculate task distribution by status
-   */
-  getTaskDistributionByStatus: (tasks: Task[]): Record<string, number> => {
-    return {
-      [TaskStatus.TODO]: tasks.filter(task => task.status === TaskStatus.TODO).length,
-      [TaskStatus.IN_PROGRESS]: tasks.filter(task => task.status === TaskStatus.IN_PROGRESS).length,
-      [TaskStatus.COMPLETED]: tasks.filter(task => task.status === TaskStatus.COMPLETED).length
-    };
-  },
-  
-  /**
-   * Calculate task distribution by priority
-   */
-  getTaskDistributionByPriority: (tasks: Task[]): Record<string, number> => {
-    return {
-      [TaskPriority.HIGH]: tasks.filter(task => task.priority === TaskPriority.HIGH).length,
-      [TaskPriority.MEDIUM]: tasks.filter(task => task.priority === TaskPriority.MEDIUM).length,
-      [TaskPriority.LOW]: tasks.filter(task => task.priority === TaskPriority.LOW).length
-    };
-  },
-  
-  /**
-   * Calculate task completion rate by priority
-   */
-  getCompletionRateByPriority: (tasks: Task[]): Record<string, number> => {
-    const result: Record<string, number> = {};
-    
-    // Calculate for each priority
-    [TaskPriority.HIGH, TaskPriority.MEDIUM, TaskPriority.LOW].forEach(priority => {
-      const tasksWithPriority = tasks.filter(task => task.priority === priority);
-      const completedTasks = tasksWithPriority.filter(task => task.status === TaskStatus.COMPLETED);
-      
-      result[priority] = tasksWithPriority.length > 0 
-        ? (completedTasks.length / tasksWithPriority.length) * 100 
-        : 0;
-    });
-    
-    return result;
-  }
 }; 
