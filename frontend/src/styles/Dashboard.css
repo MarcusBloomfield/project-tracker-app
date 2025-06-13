@@ -1,12 +1,20 @@
-/* Dashboard.css */
 
 .dashboard-container {
   flex: 1 1 25%;
   height: 100%;
-  /* Remove scrollbar */
   overflow: hidden;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+
+.dashboard-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  height: auto;
 }
 
 /* Hide scrollbar for webkit browsers */
@@ -24,6 +32,8 @@
   margin-bottom: 20px;
   color: #e0e0e0;
   font-size: 1.5rem;
+  width: 100%;
+  height: auto;
 }
 
 .dashboard-container h3 {
@@ -615,4 +625,36 @@
 .contribution-legend .contribution-day {
   width: 8px;
   height: 8px;
+}
+
+/* Uptime section styles */
+.uptime-section {
+  margin-bottom: 20px;
+}
+
+.uptime-card {
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: auto;
+}
+
+
+.uptime-value {
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #2196f3;
+  padding: 10px;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+}
+
+.uptime-details {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  min-width: 200px;
 }

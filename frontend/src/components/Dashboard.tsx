@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Task, TaskStatus, TaskPriority, taskManager } from '../utils/taskManager';
 import { statisticsManager, ProjectStatistics } from '../utils/statisticsManager';
 import { fileSystem } from '../utils/fileSystem';
+import { uptimeManager, UptimeInfo } from '../utils/uptimeManager';
 import '../styles/Dashboard.css';
 
 interface DashboardProps {
@@ -14,6 +15,16 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [allProjects, setAllProjects] = useState<string[]>([]);
   const [projectNames, setProjectNames] = useState<Record<string, string>>({});
+  const [uptime, setUptime] = useState<UptimeInfo>(uptimeManager.getUptime());
+
+  // Update uptime every second
+  useEffect(() => {
+    const uptimeInterval = setInterval(() => {
+      setUptime(uptimeManager.getUptime());
+    }, 1000);
+
+    return () => clearInterval(uptimeInterval);
+  }, []);
 
   // Load project list when component mounts if showing all projects
   useEffect(() => {
@@ -23,7 +34,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
           const projectList = await fileSystem.listProjects();
           const projectNames = projectList.map(project => project.name);
           setAllProjects(projectNames);
-          
+
           // Create a mapping of project IDs to names
           const projectMapping: Record<string, string> = {};
           projectList.forEach(project => {
@@ -43,36 +54,36 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   useEffect(() => {
     if (projectId === 'all') {
       if (allProjects.length === 0) return;
-      
+
       setLoading(true);
-      
+
       // Initialize an array to collect all tasks
       let allTasks: Task[] = [];
       let loadedProjectCount = 0;
       let componentMounted = true;
-      
+
       // Setup a handler for receiving tasks from each project
       const handleTasksReceived = (taskList: Task[], currentProjectId: string) => {
         if (!componentMounted) return;
-        
+
         allTasks = [...allTasks, ...taskList];
         loadedProjectCount++;
-        
+
         // When all projects are loaded, update the state
         if (loadedProjectCount === allProjects.length) {
           setTasks(allTasks);
           setLoading(false);
         }
       };
-      
+
       // Register the listener once
       window.api.addListener('task:list', handleTasksReceived);
-      
+
       // Request tasks for each project
       allProjects.forEach(projectName => {
         window.api.triggerEvent('task:list', { projectId: projectName });
       });
-      
+
       // Cleanup function 
       return () => {
         componentMounted = false;
@@ -80,19 +91,19 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
       };
     } else if (projectId) {
       setLoading(true);
-      
+
       let componentMounted = true;
-      
+
       const handleTaskList = (taskList: Task[]) => {
         if (!componentMounted) return;
-        
+
         setTasks(taskList);
         setLoading(false);
       };
-      
+
       window.api.triggerEvent('task:list', { projectId });
       window.api.addListener('task:list', handleTaskList);
-      
+
       // Cleanup function
       return () => {
         componentMounted = false;
@@ -174,7 +185,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   const generateContributionGrid = (contributionData: Record<string, number>) => {
     const weeks: { date: string; count: number }[][] = [];
     const dates = Object.keys(contributionData).sort();
-    
+
     if (dates.length === 0) return weeks;
 
     let currentWeek: { date: string; count: number }[] = [];
@@ -188,7 +199,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
 
     dates.forEach(date => {
       const dayOfWeek = getDayOfWeek(date);
-      
+
       if (dayOfWeek === 0 && currentWeek.length > 0) {
         weeks.push(currentWeek);
         currentWeek = [];
@@ -230,21 +241,32 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   }
 
   // Sort tasks by priority for all projects view
-  const tasksSortedByPriority = projectId === 'all' 
+  const tasksSortedByPriority = projectId === 'all'
     ? taskManager.sortTasks([...tasks], 'priority')
     : [];
 
   return (
     <div className="dashboard-container">
-      <h2>{projectId === 'all' ? 'All Projects Dashboard' : 'Project Dashboard'}</h2>
-      
-      
+      <div className="dashboard-header">
+        <h2>{projectId === 'all' ? 'All Projects Dashboard' : 'Project Dashboard'}</h2>
+
+        {/* Add uptime display */}
+        <div className="uptime-section">
+          <div className="uptime-card">
+            <div className="uptime-details">
+              Started: {uptime.startTime.toLocaleString()}
+            </div>
+            <div className="uptime-value">{uptime.currentUptime}</div>
+          </div>
+        </div>
+      </div>
+
       <div className="stats-overview">
         <div className="stat-card">
           <h3>Task Overview</h3>
           <div className="stat-value">{stats.totalTasks}</div>
           <div className="stat-label">Total Tasks</div>
-          
+
           <div className="stat-details">
             <div className="stat-item">
               <span className="stat-item-value todo">{stats.todoTasks}</span>
@@ -260,11 +282,11 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="stat-card">
           <h3>Completion Rate</h3>
-          <div className="completion-circle" style={{ 
-            background: `conic-gradient(#4caf50 ${stats.completionRate * 3.6}deg, #f0f0f0 ${stats.completionRate * 3.6}deg)` 
+          <div className="completion-circle" style={{
+            background: `conic-gradient(#4caf50 ${stats.completionRate * 3.6}deg, #f0f0f0 ${stats.completionRate * 3.6}deg)`
           }}>
             <div className="completion-inner">
               <span>{formatPercentage(stats.completionRate)}</span>
@@ -272,18 +294,18 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
           </div>
           <div className="stat-label">Tasks Completed</div>
         </div>
-        
+
         <div className="stat-card">
           <h3>Average Completion Time</h3>
           <div className="stat-value">
-            {stats.averageCompletionTime 
+            {stats.averageCompletionTime
               ? statisticsManager.formatDuration(stats.averageCompletionTime)
               : 'N/A'}
           </div>
           <div className="stat-label">From creation to completion</div>
         </div>
       </div>
-      
+
       {stats && (
         <div className="contribution-section">
           <div className="contribution-graph">
@@ -344,7 +366,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
           </div>
         </div>
       )}
-      
+
       <div className="stats-row">
         <div className="stat-chart-card">
           <h3>Task Distribution</h3>
@@ -352,25 +374,25 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
             <div className="distribution-bar">
               {stats.totalTasks > 0 && (
                 <>
-                  <div 
-                    className="distribution-segment todo" 
+                  <div
+                    className="distribution-segment todo"
                     style={{ width: `${(stats.todoTasks / stats.totalTasks) * 100}%` }}
                     title={`To Do: ${stats.todoTasks} tasks (${formatPercentage((stats.todoTasks / stats.totalTasks) * 100)})`}
                   ></div>
-                  <div 
-                    className="distribution-segment in-progress" 
+                  <div
+                    className="distribution-segment in-progress"
                     style={{ width: `${(stats.inProgressTasks / stats.totalTasks) * 100}%` }}
                     title={`In Progress: ${stats.inProgressTasks} tasks (${formatPercentage((stats.inProgressTasks / stats.totalTasks) * 100)})`}
                   ></div>
-                  <div 
-                    className="distribution-segment completed" 
+                  <div
+                    className="distribution-segment completed"
                     style={{ width: `${(stats.completedTasks / stats.totalTasks) * 100}%` }}
                     title={`Completed: ${stats.completedTasks} tasks (${formatPercentage((stats.completedTasks / stats.totalTasks) * 100)})`}
                   ></div>
                 </>
               )}
             </div>
-            
+
             <div className="distribution-legend">
               <div className="legend-item">
                 <span className="legend-color todo"></span>
@@ -390,13 +412,13 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="stat-chart-card">
           <h3>Task Priorities</h3>
           <div className="task-priorities">
             <div className="priorities-chart">
               {Object.entries(stats.tasksByPriority).map(([priority, count]) => (
-                <div 
+                <div
                   key={priority}
                   className={`priority-bar ${priority.toLowerCase()}`}
                   style={{ height: `${stats.totalTasks > 0 ? (count / stats.totalTasks) * 200 : 0}px` }}
@@ -404,7 +426,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
                 ></div>
               ))}
             </div>
-            
+
             <div className="priorities-legend">
               <div className="legend-item">
                 <span className="legend-color high"></span>
@@ -425,7 +447,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
           </div>
         </div>
       </div>
-      
+
     </div>
   );
 };
