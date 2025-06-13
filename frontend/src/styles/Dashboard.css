@@ -517,4 +517,102 @@
     margin-top: 5px;
     align-self: flex-start;
   }
-} 
+}
+
+/* Contribution Graph Styles */
+.contribution-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  flex: 1 1;
+}
+
+.contribution-section h3 {
+  margin: 0 0 15px 0;
+  color: #e0e0e0;
+  font-size: 16px;
+}
+
+.contribution-graph {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+}
+
+.contribution-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-right: 4px;
+  color: #a0a0a0;
+  font-size: 12px;
+  padding-top: 10px;
+}
+
+.contribution-grid {
+  display: flex;
+  gap: 2px;
+  overflow: hidden;
+  padding-bottom: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.contribution-week {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.contribution-day {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  transition: transform 0.1s ease;
+}
+
+.contribution-day:hover {
+  transform: scale(1.2);
+}
+
+/* Contribution levels using project's color scheme */
+.contribution-day.level-0 {
+  background-color: #2a2a2a;
+}
+
+.contribution-day.level-1 {
+  background-color: rgba(33, 150, 243, 0.3); /* #2196f3 with opacity */
+}
+
+.contribution-day.level-2 {
+  background-color: rgba(33, 150, 243, 0.6); /* #2196f3 with opacity */
+}
+
+.contribution-day.level-3 {
+  background-color: rgba(33, 150, 243, 0.8); /* #2196f3 with opacity */
+}
+
+.contribution-day.level-4 {
+  background-color: #2196f3; /* Full intensity blue */
+}
+
+.contribution-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #a0a0a0;
+}
+
+.contribution-legend .contribution-day {
+  width: 8px;
+  height: 8px;
+}

@@ -12,6 +12,9 @@ export interface ProjectStatistics {
   taskCompletionTrend: TaskCompletionTrend[];
   upcomingDeadlines: Task[];
   overdueTasks: Task[];
+  contributionData: {
+    [date: string]: number;  // Format: 'YYYY-MM-DD'
+  };
 }
 
 // Task completion trend data model for charts
@@ -99,7 +102,8 @@ export const statisticsManager = {
       averageCompletionTime,
       taskCompletionTrend,
       upcomingDeadlines,
-      overdueTasks
+      overdueTasks,
+      contributionData: statisticsManager.calculateContributions(tasks)
     };
   },
   
@@ -171,4 +175,37 @@ export const statisticsManager = {
     }
   },
   
+  calculateContributions(tasks: Task[]): { [date: string]: number } {
+    const contributions: { [date: string]: number } = {};
+    
+    // Get date range for the last year
+    const today = new Date();
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
+    
+    // Initialize all dates in the last year with 0
+    for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
+      const dateStr = d.toISOString().split('T')[0];
+      contributions[dateStr] = 0;
+    }
+    
+    // Count contributions (created or completed tasks)
+    tasks.forEach(task => {
+      // Count task creation
+      const createdDate = new Date(task.createdAt).toISOString().split('T')[0];
+      if (contributions[createdDate] !== undefined) {
+        contributions[createdDate]++;
+      }
+      
+      // Count task completion
+      if (task.completedAt) {
+        const completedDate = new Date(task.completedAt).toISOString().split('T')[0];
+        if (contributions[completedDate] !== undefined) {
+          contributions[completedDate]++;
+        }
+      }
+    });
+    
+    return contributions;
+  },
 }; 
