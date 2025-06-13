@@ -1,101 +1,163 @@
 /* ReportExport.css */
 
-.report-export {
-  background-color: #1e1e1e;
+.report-export-container {
+  background-color: var(--bg-secondary);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.report-export-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.report-export-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+}
+
+.report-export-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.export-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.export-button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.export-button:disabled {
+  background-color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.export-icon {
+  font-size: 1rem;
+}
+
+.report-filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 200px;
+}
+
+.filter-label {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.filter-input,
+.filter-select {
+  padding: 8px;
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.report-preview {
+  background-color: var(--bg-tertiary);
+  border-radius: 4px;
   padding: 20px;
   margin-top: 20px;
 }
 
-.report-export h3 {
-  margin-top: 0;
+.preview-header {
   margin-bottom: 15px;
-  color: #e0e0e0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-primary);
 }
 
-.export-options {
-  margin-bottom: 20px;
+.preview-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
 }
 
-.export-format {
-  margin-bottom: 15px;
-}
-
-.export-format label {
-  display: inline-block;
-  margin-right: 10px;
-  font-weight: bold;
-  color: #d0d0d0;
-}
-
-.export-format select {
-  padding: 8px 12px;
-  border: 1px solid #606060;
-  border-radius: 4px;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
+.preview-content {
+  color: var(--text-primary);
   font-size: 0.9rem;
+  line-height: 1.5;
 }
 
-.export-content p {
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #d0d0d0;
-}
-
-.export-checkboxes {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px;
-}
-
-.export-checkbox {
-  display: flex;
-  align-items: center;
-}
-
-.export-checkbox input[type="checkbox"] {
-  margin-right: 8px;
-}
-
-.export-checkbox label {
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: #d0d0d0;
-}
-
-.export-button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+.preview-table {
   width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
 }
 
-.export-button:hover {
-  background-color: #2980b9;
+.preview-table th,
+.preview-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-primary);
 }
 
-.export-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.preview-table th {
+  color: var(--text-tertiary);
+  font-weight: 500;
 }
 
-.export-button.exporting {
-  background-color: #f39c12;
+.preview-table tr:last-child td {
+  border-bottom: none;
 }
 
-.export-button.success {
-  background-color: #2ecc71;
+.error-message {
+  color: var(--status-error);
+  font-size: 0.9rem;
+  margin-top: 10px;
 }
 
-@media (max-width: 600px) {
-  .export-checkboxes {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .report-export-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .report-export-actions {
+    width: 100%;
+  }
+  
+  .export-button {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .filter-group {
+    min-width: 100%;
   }
 } 

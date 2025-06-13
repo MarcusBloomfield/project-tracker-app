@@ -9,15 +9,15 @@
   display: flex;
   align-items: center;
   padding: 15px;
-  background-color: #1e1e1e;
-  color: #e0e0e0;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   flex-wrap: wrap;
 }
 
 .back-button {
   background-color: transparent;
-  color: #e0e0e0;
-  border: 1px solid rgba(224, 224, 224, 0.3);
+  color: var(--text-primary);
+  border: 1px solid var(--interactive-border);
   border-radius: 4px;
   padding: 6px 12px;
   margin-right: 15px;
@@ -27,7 +27,7 @@
 }
 
 .back-button:hover {
-  background-color: rgba(224, 224, 224, 0.1);
+  background-color: var(--interactive-hover);
 }
 
 .project-title {
@@ -44,7 +44,7 @@
 
 .tab-button {
   background-color: transparent;
-  color: rgba(224, 224, 224, 0.7);
+  color: var(--interactive-text);
   border: none;
   padding: 8px 16px;
   margin-left: 5px;
@@ -55,14 +55,14 @@
 }
 
 .tab-button:hover {
-  color: #e0e0e0;
-  background-color: rgba(224, 224, 224, 0.1);
+  color: var(--text-primary);
+  background-color: var(--interactive-hover);
 }
 
 .tab-button.active {
-  color: #e0e0e0;
-  background-color: rgba(224, 224, 224, 0.15);
-  border-bottom: 2px solid #3498db;
+  color: var(--text-primary);
+  background-color: var(--interactive-hover-alt);
+  border-bottom: 2px solid var(--color-primary);
 }
 
 .project-content {
@@ -74,7 +74,7 @@
 .file-browser-container {
   width: 300px;
   overflow: hidden;
-  border-right: 1px solid #404040;
+  border-right: 1px solid var(--border-primary);
 }
 
 .text-editor-container {
@@ -128,6 +128,6 @@
     width: 100%;
     height: 200px;
     border-right: none;
-    border-bottom: 1px solid #404040;
+    border-bottom: 1px solid var(--border-primary);
   }
 } 

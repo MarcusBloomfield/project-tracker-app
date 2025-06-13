@@ -15,11 +15,11 @@
 
 .task-list-header h2 {
   margin: 0;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 .create-task-button {
-  background-color: #3498db;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -30,14 +30,14 @@
 }
 
 .create-task-button:hover {
-  background-color: #2980b9;
+  background-color: var(--color-primary-hover);
 }
 
 /* Task filters */
 .task-filters {
   display: flex;
   flex-wrap: wrap;
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -52,23 +52,23 @@
 .filter-group label {
   margin-right: 8px;
   font-weight: bold;
-  color: #d0d0d0;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
 .filter-group select {
   padding: 6px 10px;
-  border: 1px solid #606060;
+  border: 1px solid var(--border-secondary);
   border-radius: 4px;
-  background-color: #1e1e1e;
-  color: #e0e0e0;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   font-size: 0.9rem;
 }
 
 .reset-filters-button {
   background-color: transparent;
-  color: #3498db;
-  border: 1px solid #3498db;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -78,7 +78,7 @@
 }
 
 .reset-filters-button:hover {
-  background-color: #3498db;
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -90,32 +90,35 @@
 }
 
 .task-type-task {
-  color: rgb(40, 184, 71);
+  color: var(--status-success-rgb);
 }
+
 .task-type-feature {
-  color: #ff9800;
+  color: var(--task-todo);
 }
+
 .task-type-bug {
-  color: #f44336;
+  color: var(--status-error-dark);
 }
+
 .task-type-other {
-  color: #9e9e9e;
+  color: var(--task-other);
 }
 
 .task-item {
-  background-color: #1e1e1e;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px var(--shadow-medium);
   padding: 15px;
   transition: box-shadow 0.2s;
 }
 
 .task-item:hover {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3px 6px var(--shadow-strong);
 }
 
 .task-item.completed {
-  border-left: 4px solid #4caf50;
+  border-left: 4px solid var(--status-success);
 }
 
 .task-header {
@@ -128,7 +131,7 @@
 .task-header h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 .task-actions {
@@ -138,7 +141,7 @@
 
 .delete-task-button {
   background-color: transparent;
-  color: #e74c3c;
+  color: var(--status-error);
   border: none;
   padding: 2px 5px;
   cursor: pointer;
@@ -148,7 +151,7 @@
 }
 
 .delete-task-button:hover {
-  background-color: rgba(231, 76, 60, 0.2);
+  background-color: var(--status-error-light);
 }
 
 .task-info {
@@ -162,7 +165,7 @@
   font-size: 0.8rem;
   padding: 3px 8px;
   border-radius: 12px;
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
 }
 
 .status-badge, .task-type-badge {
@@ -173,15 +176,15 @@
 }
 
 .status-todo {
-  color: #ff9800;
+  color: var(--task-todo);
 }
 
 .status-in-progress {
-  color: #2196f3;
+  color: var(--task-in-progress);
 }
 
 .status-completed {
-  color: #4caf50;
+  color: var(--task-completed);
 }
 
 .task-priority {
@@ -189,24 +192,24 @@
 }
 
 .priority-high {
-  color: #f44336;
+  color: var(--status-error-dark);
 }
 
 .priority-medium {
-  color: #ff9800;
+  color: var(--status-warning);
 }
 
 .priority-low {
-  color: #4caf50;
+  color: var(--status-success);
 }
 
 .task-due-date {
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 .task-description {
   margin: 10px 0;
-  color: #b0b0b0;
+  color: var(--text-quaternary);
   font-size: 0.95rem;
   line-height: 1.5;
 }
@@ -219,8 +222,8 @@
 }
 
 .task-tag {
-  background-color: #2a2a2a;
-  color: #a0a0a0;
+  background-color: var(--bg-tertiary);
+  color: var(--text-tertiary);
   font-size: 0.8rem;
   padding: 3px 8px;
   border-radius: 12px;
@@ -235,9 +238,9 @@
 .status-button {
   flex: 1;
   padding: 6px 12px;
-  border: 1px solid #606060;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
+  border: 1px solid var(--border-secondary);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
@@ -245,38 +248,38 @@
 }
 
 .status-button:hover {
-  background-color: #3a3a3a;
+  background-color: var(--bg-secondary);
 }
 
 .status-button.todo.active {
-  background-color: rgba(255, 152, 0, 0.2);
-  color: #ff9800;
-  border-color: #ff9800;
+  background-color: var(--status-warning-light);
+  color: var(--task-todo);
+  border-color: var(--task-todo);
 }
 
 .status-button.in-progress.active {
-  background-color: rgba(33, 150, 243, 0.2);
-  color: #2196f3;
-  border-color: #2196f3;
+  background-color: var(--status-info-light);
+  color: var(--task-in-progress);
+  border-color: var(--task-in-progress);
 }
 
 .status-button.completed.active {
-  background-color: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
-  border-color: #4caf50;
+  background-color: var(--status-success-light);
+  color: var(--task-completed);
+  border-color: var(--task-completed);
 }
 
 /* New task form */
 .new-task-form-container {
-  background-color: #1e1e1e;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px var(--shadow-medium);
   margin-bottom: 20px;
 }
 
 .new-task-form-container h3 {
   margin: 0 0 15px 0;
-  color: #e0e0e0;
+  color: var(--text-primary);
   padding: 15px 15px 0;
 }
 
@@ -304,17 +307,17 @@
 .form-group label {
   margin-bottom: 5px;
   font-weight: bold;
-  color: #d0d0d0;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
 .form-group input, 
 .form-group select {
   padding: 8px 12px;
-  border: 1px solid #606060;
+  border: 1px solid var(--border-secondary);
   border-radius: 4px;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   font-size: 0.9rem;
 }
 
@@ -331,7 +334,7 @@
 }
 
 .save-button {
-  background-color: #4caf50;
+  background-color: var(--status-success);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -342,13 +345,13 @@
 }
 
 .save-button:hover {
-  background-color: #45a049;
+  background-color: var(--status-success-hover);
 }
 
 .cancel-button {
   background-color: transparent;
-  color: #e0e0e0;
-  border: 1px solid #606060;
+  color: var(--text-primary);
+  border: 1px solid var(--border-secondary);
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
@@ -357,22 +360,23 @@
 }
 
 .cancel-button:hover {
-  background-color: #3a3a3a;
+  background-color: var(--bg-secondary);
 }
 
 .no-tasks {
   text-align: center;
   padding: 40px;
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
   border-radius: 8px;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   margin-top: 20px;
 }
 
 .description-textarea {
-  background-color: #2a2a2a;
-  color:#e0e0e0
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .task-filters {

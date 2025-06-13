@@ -1,36 +1,20 @@
+@import './colors.css';
 
 .dashboard-container {
   flex: 1 1 25%;
   height: 100%;
   overflow: hidden;
   scrollbar-width: none;
-  -ms-overflow-style: none; 
+  -ms-overflow-style: none;
 }
 
-.dashboard-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-  height: auto;
-}
-
-/* Hide scrollbar for webkit browsers */
 .dashboard-container::-webkit-scrollbar {
   display: none;
 }
 
-/* When nested inside another container */
-.dashboard-container .dashboard-container {
-  padding: 14px;
-  flex: 1 1 25%;
-}
-
 .dashboard-container h2 {
   margin-bottom: 20px;
-  color: #e0e0e0;
+  color: var(--text-primary);
   font-size: 1.5rem;
   width: 100%;
   height: auto;
@@ -38,16 +22,16 @@
 
 .dashboard-container h3 {
   margin-bottom: 15px;
-  color: #d0d0d0;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 .no-stats {
   text-align: center;
   padding: 40px;
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
   border-radius: 8px;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 /* Stats overview section */
@@ -59,9 +43,9 @@
 
 .stat-card {
   flex: 1;
-  background-color: #1e1e1e;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px var(--shadow-medium);
   padding: 10px;
   text-align: center;
   display: flex;
@@ -72,11 +56,11 @@
   font-size: 2.5rem;
   font-weight: bold;
   margin: 10px 0;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 .stat-label {
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   font-size: 0.9rem;
 }
 
@@ -100,20 +84,20 @@
 }
 
 .stat-item-value.todo {
-  color: #ff9800;
+  color: var(--status-warning);
 }
 
 .stat-item-value.in-progress {
-  color: #2196f3;
+  color: var(--status-info);
 }
 
 .stat-item-value.completed {
-  color: #4caf50;
+  color: var(--status-success);
 }
 
 .stat-item-label {
   font-size: 0.8rem;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 /* Completion circle */
@@ -131,7 +115,7 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +124,7 @@
 .completion-inner span {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 /* Stats rows */
@@ -152,9 +136,9 @@
 
 .stat-chart-card {
   flex: 1;
-  background-color: #1e1e1e;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px var(--shadow-medium);
 }
 
 .stat-chart-card.full-width {
@@ -168,10 +152,16 @@
   margin-top: 15px;
 }
 
+.all-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .distribution-bar {
   height: 30px;
   border-radius: 15px;
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
   overflow: hidden;
   display: flex;
 }
@@ -181,15 +171,15 @@
 }
 
 .distribution-segment.todo {
-  background-color: #ff9800;
+  background-color: var(--status-warning);
 }
 
 .distribution-segment.in-progress {
-  background-color: #2196f3;
+  background-color: var(--status-info);
 }
 
 .distribution-segment.completed {
-  background-color: #4caf50;
+  background-color: var(--status-success);
 }
 
 .distribution-legend {
@@ -219,15 +209,15 @@
 }
 
 .priority-bar.high {
-  background-color: #f44336;
+  background-color: var(--status-error-dark);
 }
 
 .priority-bar.medium {
-  background-color: #ff9800;
+  background-color: var(--status-warning);
 }
 
 .priority-bar.low {
-  background-color: #4caf50;
+  background-color: var(--status-success);
 }
 
 .priorities-legend {
@@ -252,281 +242,28 @@
 
 .legend-color.todo,
 .legend-color.high {
-  background-color: #ff9800;
+  background-color: var(--status-warning);
 }
 
 .legend-color.in-progress,
 .legend-color.medium {
-  background-color: #2196f3;
+  background-color: var(--status-info);
 }
 
 .legend-color.completed,
 .legend-color.low {
-  background-color: #4caf50;
-}
-
-.legend-color.created {
-  background-color: #9c27b0;
+  background-color: var(--status-success);
 }
 
 .legend-label {
   font-size: 0.8rem;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 .legend-value {
   font-size: 0.8rem;
-  color: #e0e0e0;
+  color: var(--text-primary);
   margin-left: 5px;
-}
-
-/* Recent activity chart */
-.trend-chart {
-  display: flex;
-  flex-direction: column;
-  height: 200px;
-}
-
-.trend-day {
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-}
-
-.trend-bars {
-  display: flex;
-  align-items: flex-end;
-  height: 100%;
-  margin-bottom: 5px;
-}
-
-.trend-bar {
-  width: 20px;
-  margin-right: 2px;
-}
-
-.trend-bar.created {
-  background-color: #9c27b0;
-}
-
-.trend-bar.completed {
-  background-color: #4caf50;
-}
-
-.trend-date {
-  font-size: 0.7rem;
-  color: #a0a0a0;
-  text-align: center;
-}
-
-.trend-legend {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-/* Task lists in stats */
-.stat-list-card {
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  padding: 20px;
-}
-
-.empty-list {
-  text-align: center;
-  color: #a0a0a0;
-  padding: 20px;
-}
-
-.stat-list {
-  list-style: none;
-}
-
-.stat-list-item {
-  padding: 8px 0;
-  border-bottom: 1px solid #404040;
-}
-
-.stat-list-item:last-child {
-  border-bottom: none;
-}
-
-.stat-list-item.overdue {
-  background-color: rgba(244, 67, 54, 0.1);
-  margin: 0 -10px;
-  padding: 8px 10px;
-  border-radius: 4px;
-}
-
-.task-title {
-  font-weight: 500;
-  color: #e0e0e0;
-}
-
-.task-due {
-  font-size: 0.8rem;
-  color: #a0a0a0;
-  margin-top: 2px;
-}
-
-@media (max-width: 768px) {
-  .stats-overview,
-  .stats-row {
-    flex-direction: column;
-  }
-  
-  .stat-card,
-  .stat-chart-card {
-    margin-bottom: 15px;
-  }
-}
-
-/* All tasks list */
-.all-tasks-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 20px;
-  background-color: #121212;
-  max-height: 500px;
-  overflow-y: auto;
-}
-
-.all-tasks-list .task-item {
-  background-color: #1e1e1e;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  padding: 15px;
-  transition: box-shadow 0.2s;
-}
-
-.all-tasks-list .task-item.completed {
-  border-left: 4px solid #4caf50;
-}
-
-.all-tasks-list .task-item:hover {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-}
-
-.all-tasks-list .task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.all-tasks-list .task-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #e0e0e0;
-  flex: 1;
-}
-
-.all-tasks-list .task-project {
-  background-color: #2a2a2a;
-  color: #a0a0a0;
-  font-size: 0.8rem;
-  padding: 3px 8px;
-  border-radius: 12px;
-  margin-left: 10px;
-}
-
-.all-tasks-list .task-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.all-tasks-list .task-status,
-.all-tasks-list .task-priority,
-.all-tasks-list .task-due-date {
-  font-size: 0.8rem;
-  padding: 3px 8px;
-  border-radius: 12px;
-}
-
-.all-tasks-list .status-badge {
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: bold;
-}
-
-.all-tasks-list .status-badge.status-todo {
-  background-color: rgba(255, 152, 0, 0.2);
-  color: #ff9800;
-}
-
-.all-tasks-list .status-badge.status-in-progress {
-  background-color: rgba(33, 150, 243, 0.2);
-  color: #2196f3;
-}
-
-.all-tasks-list .status-badge.status-completed {
-  background-color: rgba(76, 175, 80, 0.2);
-  color: #4caf50;
-}
-
-.all-tasks-list .task-priority {
-  font-weight: bold;
-  background-color: #2a2a2a;
-}
-
-.all-tasks-list .task-priority.priority-high {
-  color: #f44336;
-}
-
-.all-tasks-list .task-priority.priority-medium {
-  color: #ff9800;
-}
-
-.all-tasks-list .task-priority.priority-low {
-  color: #4caf50;
-}
-
-.all-tasks-list .task-due-date {
-  color: #a0a0a0;
-  background-color: #2a2a2a;
-}
-
-.all-tasks-list .task-description {
-  margin: 10px 0;
-  color: #b0b0b0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.all-tasks-list .task-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin: 10px 0;
-}
-
-.all-tasks-list .task-tag {
-  background-color: #2a2a2a;
-  color: #a0a0a0;
-  font-size: 0.8rem;
-  padding: 3px 8px;
-  border-radius: 12px;
-}
-
-@media (max-width: 768px) {
-  .all-tasks-list {
-    padding: 10px;
-  }
-  
-  .all-tasks-list .task-header {
-    flex-direction: column;
-  }
-  
-  .all-tasks-list .task-project {
-    margin-left: 0;
-    margin-top: 5px;
-    align-self: flex-start;
-  }
 }
 
 /* Contribution Graph Styles */
@@ -535,7 +272,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #1e1e1e;
+  background-color: var(--bg-secondary);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
@@ -544,7 +281,7 @@
 
 .contribution-section h3 {
   margin: 0 0 15px 0;
-  color: #e0e0e0;
+  color: var(--text-primary);
   font-size: 16px;
 }
 
@@ -560,7 +297,7 @@
   flex-direction: column;
   gap: 12px;
   margin-right: 4px;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   font-size: 12px;
   padding-top: 10px;
 }
@@ -592,25 +329,24 @@
   transform: scale(1.2);
 }
 
-/* Contribution levels using project's color scheme */
 .contribution-day.level-0 {
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
 }
 
 .contribution-day.level-1 {
-  background-color: rgba(33, 150, 243, 0.3); /* #2196f3 with opacity */
+  background-color: var(--color-primary-light);
 }
 
 .contribution-day.level-2 {
-  background-color: rgba(33, 150, 243, 0.6); /* #2196f3 with opacity */
+  background-color: var(--color-primary-medium);
 }
 
 .contribution-day.level-3 {
-  background-color: rgba(33, 150, 243, 0.8); /* #2196f3 with opacity */
+  background-color: var(--color-primary);
 }
 
 .contribution-day.level-4 {
-  background-color: #2196f3; /* Full intensity blue */
+  background-color: var(--status-info);
 }
 
 .contribution-legend {
@@ -619,7 +355,7 @@
   gap: 4px;
   margin-top: 10px;
   font-size: 12px;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 .contribution-legend .contribution-day {
@@ -642,19 +378,30 @@
   width: auto;
 }
 
-
 .uptime-value {
   font-family: 'Courier New', monospace;
   font-size: 1rem;
   font-weight: bold;
-  color: #2196f3;
+  color: var(--status-info);
   padding: 10px;
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
   border-radius: 4px;
 }
 
 .uptime-details {
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   font-size: 0.9rem;
   min-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .stats-overview,
+  .stats-row {
+    flex-direction: column;
+  }
+  
+  .stat-card,
+  .stat-chart-card {
+    margin-bottom: 15px;
+  }
 }

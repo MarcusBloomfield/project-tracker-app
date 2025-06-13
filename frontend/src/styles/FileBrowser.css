@@ -3,8 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #1e1e1e;
-  border-right: 1px solid #404040;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-primary);
 }
 
 .file-browser-header {
@@ -12,18 +12,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #2a2a2a;
-  border-bottom: 1px solid #404040;
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .nav-button {
   background-color: transparent;
-  border: 1px solid #606060;
+  border: 1px solid var(--border-secondary);
   border-radius: 4px;
   padding: 4px 8px;
   cursor: pointer;
   font-size: 0.9rem;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 .nav-button:disabled {
@@ -38,7 +38,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #e0e0e0;
+  color: var(--text-primary);
 }
 
 .file-actions {
@@ -47,7 +47,7 @@
 }
 
 .action-button {
-  background-color: #3498db;
+  background-color: var(--color-primary);
   color: white;
   border: none;
   border-radius: 4px;
@@ -57,12 +57,12 @@
 }
 
 .action-button:hover {
-  background-color: #2980b9;
+  background-color: var(--color-primary-hover);
 }
 
 .error-message {
-  background-color: #3d1a1a;
-  color: #ff6b6b;
+  background-color: var(--status-error-bg);
+  color: var(--status-error-alt);
   padding: 8px;
   margin: 5px;
   border-radius: 4px;
@@ -85,11 +85,11 @@
 }
 
 .file-item:hover {
-  background-color: #2a2a2a;
+  background-color: var(--bg-tertiary);
 }
 
 .file-item.selected {
-  background-color: #1a2332;
+  background-color: var(--bg-drag-active);
 }
 
 .file-button {
@@ -98,14 +98,14 @@
   cursor: pointer;
   width: auto;
   padding: 8px;
-  color: #e0e0e0;
+  color: var(--text-primary);
   flex-grow: 1;
 }
 
 .file-icon {
   margin-right: 8px;
   font-size: 1.2rem;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
 }
 
 .file-name {
@@ -118,12 +118,12 @@
 .empty-directory {
   padding: 20px;
   text-align: center;
-  color: #a0a0a0;
+  color: var(--text-tertiary);
   font-style: italic;
-} 
+}
 
 .file-delete-button {
-  background-color: #e74c3c;
+  background-color: var(--status-error);
   color: white;
   border: none;
   border-radius: 4px;
@@ -131,17 +131,16 @@
   transition: background-color 0.2s;
   transition: opacity 0.2s;
   opacity: 0;
-
   width: 30px;
   height: 30px;
 }
 
 .file-delete-button:hover:not(:disabled) {
-  background-color: #c0392b;
+  background-color: var(--status-error-hover);
   opacity: 1;
 }
 
 .file-delete-button:disabled {
-  background-color: #606060;
+  background-color: var(--text-disabled);
   opacity: 0;
 }
