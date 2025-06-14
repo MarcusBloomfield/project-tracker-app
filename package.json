@@ -3,11 +3,75 @@
   "version": "1.0.0",
   "description": "Trackers and manages progress on projects",
   "main": "dist/main.js",
+  "homepage": "./",
   "scripts": {
     "build": "tsc && webpack --config webpack.config.js",
     "watch": "tsc -w",
     "start": "npm run build && electron .",
-    "dev": "concurrently \"webpack --watch\" \"electron .\""
+    "dev": "concurrently \"webpack --watch\" \"electron .\"",
+    "dist": "npm run build && electron-builder",
+    "dist:windows": "npm run build && electron-builder --windows",
+    "dist:dir": "npm run build && electron-builder --dir",
+    "pack": "npm run build && electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.marcusbloomfield.project-tracker",
+    "productName": "Project Tracker",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/app.ico",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Project Tracker"
+    },
+    "portable": {
+      "artifactName": "ProjectTracker-${version}-portable.exe"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/app.icns",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png",
+      "category": "Office"
+    }
   },
   "author": "Marucs Bloomfield",
   "license": "MIT",
@@ -19,7 +83,10 @@
     "concurrently": "^8.2.2",
     "css-loader": "^6.10.0",
     "electron": "^36.2.0",
+    "electron-builder": "^24.13.3",
+    "electron-icon-builder": "^2.0.1",
     "html-webpack-plugin": "^5.6.0",
+    "icon-gen": "^5.0.0",
     "style-loader": "^3.3.4",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",

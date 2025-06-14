@@ -86,3 +86,6 @@ Desktop.ini
 
 # Application specific
 user-data/ 
+
+# Release/Build/exe files
+/release/

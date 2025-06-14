@@ -27,14 +27,18 @@ const createWindow = (): void => {
   });
 
   // Build the path to the HTML file
-  const indexPath = path.join(process.cwd(), 'dist', 'index.html');
+  // Use __dirname instead of process.cwd() for packaged apps
+  const indexPath = path.join(__dirname, 'index.html');
   console.log('Loading HTML from:', indexPath);
+  console.log('App is packaged:', app.isPackaged);
 
   // and load the index.html of the app.
   mainWindow.loadFile(indexPath);
 
-  // Open the DevTools (temporarily always enabled)
-  mainWindow.webContents.openDevTools();
+  // Open DevTools only in development
+  if (!app.isPackaged) {
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 // initialization and is ready to create browser windows.

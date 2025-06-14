@@ -321,7 +321,7 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
                 name="tags" 
                 value={newTask.tags} 
                 onChange={handleNewTaskChange} 
-                placeholder="feature, bug, documentation"
+                placeholder="Easy, LongTask, Annoying, etc."
               />
             </div>
             
