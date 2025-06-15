@@ -156,6 +156,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  max-height: 600px;
+  overflow-y: auto;
 }
 
 .distribution-bar {
@@ -329,26 +331,57 @@
   transform: scale(1.2);
 }
 
-.contribution-day.level-0 {
+.contribution-day.level-0- {
   background-color: var(--bg-tertiary);
 }
 
-.contribution-day.level-1 {
-  background-color: var(--color-primary-light);
+.contribution-day.level-1-completed {
+  background-color: #174d09;
 }
 
-.contribution-day.level-2 {
-  background-color: var(--color-primary-medium);
+.contribution-day.level-2-completed {
+  background-color: #22730c;
 }
 
-.contribution-day.level-3 {
-  background-color: var(--color-primary);
+.contribution-day.level-3-completed {
+  background-color: #31a113;
 }
 
-.contribution-day.level-4 {
-  background-color: var(--status-info);
+.contribution-day.level-4-completed {
+  background-color: #40ff0d;
+  }
+
+.contribution-day.level-1-todo{
+  background-color: #5f2300;
+}
+.contribution-day.level-2-todo {
+
+  background-color: #853100;
 }
 
+.contribution-day.level-3-todo {
+  background-color: #b34100;
+}
+
+.contribution-day.level-4-todo {
+  background-color: #ff5e00;
+  }
+
+.contribution-day.level-1-in-progress{
+  background-color: #002f5a;
+}
+
+.contribution-day.level-2-in-progress {
+  background-color: #004a8f;
+}
+
+.contribution-day.level-3-in-progress{
+  background-color: #005fb8;
+}
+
+.contribution-day.level-4-in-progress {
+  background-color: #0084ff;
+  }
 .contribution-legend {
   display: flex;
   align-items: center;

@@ -14,21 +14,54 @@
 }
 
 .dialog-content {
+  width: 100%;
+  height: 100%;
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  justify-content: space-between;
   background-color: var(--bg-secondary);
   border-radius: 8px;
-  padding: 20px;
+  padding: 10px;
   width: 90%;
-  max-width: 500px;
+  max-width: 300px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+}
+
+.dialog-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap:0;
+}
+
+.dialog-actions {
+  width: 100%;
+  height: 100%;
+  margin: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  justify-content: space-between;
 }
 
 .dialog-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 10px;
 }
 
 .dialog-title {
@@ -37,7 +70,7 @@
   font-size: 1.5rem;
 }
 
-.close-button {
+.dialog-close-button {
   background: none;
   border: none;
   color: var(--text-tertiary);
@@ -50,12 +83,6 @@
 
 .close-button:hover {
   color: var(--text-primary);
-}
-
-.dialog-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
 }
 
 .form-group {
@@ -89,6 +116,8 @@
 }
 
 .form-textarea {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
   min-height: 100px;
   resize: vertical;
 }
@@ -100,14 +129,15 @@
   margin-top: 20px;
 }
 
-.cancel-button,
-.submit-button {
-  padding: 10px 20px;
-  border: none;
+.dialog-button {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-secondary);
+  padding: 8px 16px;
   border-radius: 4px;
-  font-size: 0.9rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  transition: all 0.2s;
 }
 
 .cancel-button {
@@ -133,7 +163,7 @@
   cursor: not-allowed;
 }
 
-.error-message {
+.dialog-error {
   color: var(--status-error);
   font-size: 0.9rem;
   margin-top: 5px;

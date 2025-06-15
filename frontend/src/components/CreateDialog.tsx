@@ -51,7 +51,7 @@ const CreateDialog: React.FC<CreateDialogProps> = ({
           </button>
         </div>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form-group">
           <div className="dialog-content">
             <label htmlFor="name">Name:</label>
             <input
@@ -61,9 +61,9 @@ const CreateDialog: React.FC<CreateDialogProps> = ({
               onChange={(e) => setName(e.target.value)}
               autoFocus
             />
-            {error && <div className="dialog-error">{error}</div>}
           </div>
           
+          {error && <div className="dialog-error">{error}</div>}
           <div className="dialog-actions">
             <button 
               type="button" 

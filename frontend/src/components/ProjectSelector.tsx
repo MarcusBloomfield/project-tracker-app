@@ -103,7 +103,7 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
                 <p>Create a new project to get started</p>
               </div>
             ) : (
-              projects.map(project => (
+              projects.filter(project => project.name != ".backup").map(project => (
                 <div
                   key={project.id}
                   className="project-item"

@@ -1,5 +1,14 @@
 import { Task, TaskStatus, TaskPriority } from './taskManager';
 
+export interface ContributionData {
+  [date: string]: {
+    completed: number;
+    todo: number;
+    inProgress: number;
+    total: number;
+  };
+}
+
 // Statistics data model
 export interface ProjectStatistics {
   totalTasks: number;
@@ -12,9 +21,7 @@ export interface ProjectStatistics {
   taskCompletionTrend: TaskCompletionTrend[];
   upcomingDeadlines: Task[];
   overdueTasks: Task[];
-  contributionData: {
-    [date: string]: number;  // Format: 'YYYY-MM-DD'
-  };
+  contributionData: ContributionData;
 }
 
 // Task completion trend data model for charts
@@ -175,8 +182,8 @@ export const statisticsManager = {
     }
   },
   
-  calculateContributions(tasks: Task[]): { [date: string]: number } {
-    const contributions: { [date: string]: number } = {};
+  calculateContributions(tasks: Task[]): ContributionData {
+    const contributions: ContributionData = {};
     
     // Get date range for the last year
     const today = new Date();
@@ -186,22 +193,36 @@ export const statisticsManager = {
     // Initialize all dates in the last year with 0
     for (let d = new Date(oneYearAgo); d <= today; d.setDate(d.getDate() + 1)) {
       const dateStr = d.toISOString().split('T')[0];
-      contributions[dateStr] = 0;
+      contributions[dateStr] = {
+        completed: 0,
+        todo: 0,
+        inProgress: 0,
+        total: 0
+      };
     }
     
     // Count contributions (created or completed tasks)
     tasks.forEach(task => {
-      // Count task creation
+      // Count task creation based on its current status
       const createdDate = new Date(task.createdAt).toISOString().split('T')[0];
       if (contributions[createdDate] !== undefined) {
-        contributions[createdDate]++;
+        contributions[createdDate].total++;
+        
+        if (task.status === TaskStatus.COMPLETED) {
+          contributions[createdDate].completed++;
+        } else if (task.status === TaskStatus.TODO) {
+          contributions[createdDate].todo++;
+        } else if (task.status === TaskStatus.IN_PROGRESS) {
+          contributions[createdDate].inProgress++;
+        }
       }
-      
+       
       // Count task completion
       if (task.completedAt) {
         const completedDate = new Date(task.completedAt).toISOString().split('T')[0];
         if (contributions[completedDate] !== undefined) {
-          contributions[completedDate]++;
+          contributions[completedDate].total++;
+          contributions[completedDate].completed++;
         }
       }
     });

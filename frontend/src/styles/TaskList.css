@@ -165,7 +165,7 @@
   font-size: 0.8rem;
   padding: 3px 8px;
   border-radius: 12px;
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-tertiary); 
 }
 
 .status-badge, .task-type-badge {
