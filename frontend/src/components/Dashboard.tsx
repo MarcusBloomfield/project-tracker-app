@@ -336,10 +336,10 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
         </div>
 
         <div className="stat-card">
-          <h3>Average Completion Time</h3>
+          <h3>Median Completion Time</h3>
           <div className="stat-value">
-            {stats.averageCompletionTime
-              ? statisticsManager.formatDuration(stats.averageCompletionTime)
+            {stats.medianCompletionTime
+              ? statisticsManager.formatDuration(stats.medianCompletionTime)
               : 'N/A'}
           </div>
           <div className="stat-label">From creation to completion</div>

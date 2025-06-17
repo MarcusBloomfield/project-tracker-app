@@ -17,7 +17,7 @@ export interface ProjectStatistics {
   todoTasks: number;
   completionRate: number;
   tasksByPriority: Record<TaskPriority, number>;
-  averageCompletionTime: number | null;
+  medianCompletionTime: number | null;
   taskCompletionTrend: TaskCompletionTrend[];
   upcomingDeadlines: Task[];
   overdueTasks: Task[];
@@ -56,20 +56,26 @@ export const statisticsManager = {
       ? (completedTasks / tasks.length) * 100 
       : 0;
     
-    // Calculate average completion time (for completed tasks)
+    // Calculate median completion time (for completed tasks)
     const completedTasksWithTime = tasks.filter(
       task => task.status === TaskStatus.COMPLETED && task.completedAt && task.createdAt
     );
     
-    let averageCompletionTime = null;
+    let medianCompletionTime = null;
     if (completedTasksWithTime.length > 0) {
-      const totalCompletionTime = completedTasksWithTime.reduce((total, task) => {
-        const completionTime = new Date(task.completedAt!).getTime() - new Date(task.createdAt).getTime();
-        return total + completionTime;
-      }, 0);
+      const completionTimes = completedTasksWithTime.map(task => {
+        return new Date(task.completedAt!).getTime() - new Date(task.createdAt).getTime();
+      }).sort((a, b) => a - b);
       
-      // Average time in milliseconds
-      averageCompletionTime = totalCompletionTime / completedTasksWithTime.length;
+      // Calculate median time in milliseconds
+      const middleIndex = Math.floor(completionTimes.length / 2);
+      if (completionTimes.length % 2 === 0) {
+        // Even number of elements - average of two middle values
+        medianCompletionTime = (completionTimes[middleIndex - 1] + completionTimes[middleIndex]) / 2;
+      } else {
+        // Odd number of elements - middle value
+        medianCompletionTime = completionTimes[middleIndex];
+      }
     }
     
     // Get tasks with upcoming deadlines (within next 7 days)
@@ -106,7 +112,7 @@ export const statisticsManager = {
       todoTasks,
       completionRate,
       tasksByPriority,
-      averageCompletionTime,
+      medianCompletionTime,
       taskCompletionTrend,
       upcomingDeadlines,
       overdueTasks,
