@@ -1,0 +1,124 @@
+/* Main container */
+.dead-lines-container {
+    width: 100%;
+    height: 100%;
+}
+
+/* Two-column layout */
+.dead-lines-main-layout {
+    display: flex;
+    flex: 1 1;
+    gap: 20px;
+    width: 100%;
+    height: auto;
+}
+
+/* Overdue section (left column) */
+.dead-lines-overdue-section {
+    min-width: 300px;
+    max-width: 350px;
+    border-right: 2px solid #e0e0e0;
+    padding-right: 20px;
+    overflow-y: auto;
+}
+
+.dead-lines-overdue-title {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 5px;
+}
+
+.dead-lines-overdue-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dead-lines-overdue-item {
+    color: var(--text-color);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dead-lines-overdue-date {
+    font-size: 12px;
+    color: var(--status-error);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.dead-lines-overdue-project {
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.dead-lines-overdue-title-text {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Future dates section (right column) */
+.dead-lines-future-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.dead-lines-future-title {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 5px;
+}
+
+.dead-lines-date-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: auto;
+    -ms-overflow-style: auto;
+}
+
+.dead-lines-date-container-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 200px;
+    max-width: 200px;
+    height:auto;
+    margin: 10px;
+}
+
+.dead-lines-tasks{
+    height: 100px;
+    width: auto;
+    font-size: 11px;
+
+}
+
+.dead-lines-tasks-title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dead-lines-no-tasks{
+    font-size: 11px;
+    font-weight: bold;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}

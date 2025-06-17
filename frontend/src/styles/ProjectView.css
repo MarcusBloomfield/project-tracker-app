@@ -82,14 +82,17 @@
   overflow: hidden;
 }
 
-.tasks-container, 
-.dashboard-container {
+.tasks-container {
   flex: 1;
   overflow: auto;
   width: 100%;
-  /* Remove scrollbar for dashboard-container */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.dashboard-container {
+  flex: 1;
+  width: 100%;
 }
 
 /* Hide scrollbar for webkit browsers */

@@ -118,35 +118,30 @@ export const taskManager = {
     });
   },
 
-  /**
-   * Filter tasks by status
-   */
   filterByStatus: (tasks: Task[], status: TaskStatus | null): Task[] => {
     if (!status) return tasks;
     return tasks.filter(task => task.status === status);
   },
 
-  /**
-   * Filter tasks by priority
-   */
   filterByPriority: (tasks: Task[], priority: TaskPriority | null): Task[] => {
     if (!priority) return tasks;
     return tasks.filter(task => task.priority === priority);
   },
 
-  /**
-   * Filter tasks by type
-  /**
-   * Filter tasks by type
-   */
   filterByType: (tasks: Task[], type: TaskType | null): Task[] => {
     if (!type) return tasks;
     return tasks.filter(task => task.type === type);
   },
 
-  /**
-   * Filter tasks by tags
-   */
+  filterByDueDate: (tasks: Task[], dueDate: Date | null): Task[] => {
+    if (!dueDate) return tasks;
+    return tasks.filter(task => task.dueDate && task.dueDate <= dueDate);
+  },
+
+  filterByHasDueDate: (tasks: Task[]): Task[] => {
+    return tasks.filter(task => task.dueDate);
+  },
+
   filterByTags: (tasks: Task[], tags: string[]): Task[] => {
     if (!tags.length) return tasks;
     return tasks.filter(task => 

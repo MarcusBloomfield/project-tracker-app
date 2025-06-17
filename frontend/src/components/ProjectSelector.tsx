@@ -3,6 +3,7 @@ import { ProjectInfo, fileSystem } from '../utils/fileSystem';
 import CreateDialog from './CreateDialog';
 import Dashboard from './Dashboard';
 import DailyTaskList from './DailyTaskList';
+import DeadLines from './DeadLines';
 import '../styles/ProjectSelector.css';
 
 interface ProjectSelectorProps {
@@ -125,6 +126,11 @@ const ProjectSelector: React.FC<ProjectSelectorProps> = ({ onProjectSelect }) =>
         </div>
       </div>
 
+      <div className="dead-lines-subcontainer">
+        <div className="dead-lines-container">
+          <DeadLines projectId="all" />
+        </div>
+      </div>
 
       
       <div className="project-selection-tasks-and-projects-subcontainer">

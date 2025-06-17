@@ -45,18 +45,6 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
     loadTasks();
   }, [projectId]);
 
-  // Helper function to refresh task list
-  const refreshTasks = async () => {
-    if (!projectId) return;
-    
-    try {
-      const taskList = await taskManager.getProjectTasks(projectId);
-      setTasks(taskList);
-    } catch (error) {
-      console.error('Failed to refresh tasks:', error);
-    }
-  };
-
   // Apply filters and sorting when tasks, filters, or sort criteria change
   useEffect(() => {
     let result = [...tasks];
