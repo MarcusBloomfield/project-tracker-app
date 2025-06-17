@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fileSystem } from '../utils/fileSystem';
 import '../styles/DeadLines.css';
-import { Task, TaskPriority, taskManager } from '../utils/taskManager';
+import { Task, TaskPriority, taskManager, TaskStatus } from '../utils/taskManager';
 
 interface DeadLinesProps {
     projectId: string;
@@ -136,6 +136,7 @@ const DeadLines: React.FC<DeadLinesProps> = ({ projectId }) => {
         today.setHours(0, 0, 0, 0); // Set to start of today for accurate comparison
         
         const overdueTasks = tasks.filter(task => {
+            if (task.status === TaskStatus.COMPLETED) return false;
             if (!task.dueDate) return false;
             const taskDueDate = new Date(task.dueDate);
             taskDueDate.setHours(0, 0, 0, 0);
@@ -173,6 +174,7 @@ const DeadLines: React.FC<DeadLinesProps> = ({ projectId }) => {
         
         // Filter out overdue tasks from future dates view
         const futureTasks = tasks.filter(task => {
+            if (task.status === TaskStatus.COMPLETED) return false;
             if (!task.dueDate) return false;
             const taskDueDate = new Date(task.dueDate);
             taskDueDate.setHours(0, 0, 0, 0);
