@@ -284,10 +284,6 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   const uncompletedTasksSortedByPriority = tasksSortedByPriority.filter(task => 
     task.status === TaskStatus.TODO || task.status === TaskStatus.IN_PROGRESS
   );
-  
-  const completedTasksSortedByPriority = tasksSortedByPriority.filter(task => 
-    task.status === TaskStatus.COMPLETED
-  );
 
   return (
     <div className="dashboard-container">
@@ -369,55 +365,13 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
           </div>
         </div>
       )}
-      {/* Uncompleted tasks from all projects sorted by priority */}
+      
       {projectId === 'all' && uncompletedTasksSortedByPriority.length > 0 && (
         <div className="stats-row">
           <div className="stat-chart-card full-width">
-            <h3>Uncompleted Tasks Sorted by Priority</h3>
+            <h3>Uncompleted Tasks</h3>
             <div className="all-tasks-list">
               {uncompletedTasksSortedByPriority.map(task => (
-                <div key={task.id} className={`task-item ${task.status === TaskStatus.COMPLETED ? 'completed' : ''}`}>
-                  <div className="task-header">
-                    <h3>{task.title}</h3>
-                    <div className="task-project">
-                      Project: {projectNames[task.projectId] || task.projectId}
-                    </div>
-                  </div>
-                  <div className="task-info">
-                    <div className="task-status">{renderStatusBadge(task.status)}</div>
-                    <div className={`task-priority ${getPriorityInfo(task.priority).className}`}>
-                      {getPriorityInfo(task.priority).label}
-                    </div>
-                    {task.dueDate && (
-                      <div className="task-due-date">
-                        Due: {formatDate(task.dueDate)}
-                      </div>
-                    )}
-                  </div>
-                  {task.description && (
-                    <div className="task-description">{task.description}</div>
-                  )}
-                  {task.tags && task.tags.length > 0 && (
-                    <div className="task-tags">
-                      {task.tags.map(tag => (
-                        <span key={tag} className="task-tag">{tag}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Completed tasks from all projects sorted by priority */}
-      {projectId === 'all' && completedTasksSortedByPriority.length > 0 && (
-        <div className="stats-row">
-          <div className="stat-chart-card full-width">
-            <h3>Completed Tasks Sorted by Priority</h3>
-            <div className="all-tasks-list">
-              {completedTasksSortedByPriority.map(task => (
                 <div key={task.id} className={`task-item ${task.status === TaskStatus.COMPLETED ? 'completed' : ''}`}>
                   <div className="task-header">
                     <h3>{task.title}</h3>
