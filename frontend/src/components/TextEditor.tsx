@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { marked } from 'marked';
 import { fileSystem } from '../utils/fileSystem';
 import '../styles/TextEditor.css';
 
@@ -26,6 +27,9 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     fontFamily: 'Courier New',
     textColor: '#FFFFFF'
   });
+
+  const [viewMode, setViewMode] = useState<'edit' | 'preview'>('preview');
+  const [renderedMarkdown, setRenderedMarkdown] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Available font families
@@ -40,6 +44,35 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     'Monaco',
     'Lucida Console'
   ];
+
+  // Configure marked options for security and features
+  useEffect(() => {
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
+    console.log('Markdown parser configured with enhanced options');
+  }, []);
+
+  // Update rendered markdown when content changes
+  useEffect(() => {
+    const updateMarkdownPreview = async (): Promise<void> => {
+      try {
+        const rendered = await marked(content);
+        setRenderedMarkdown(rendered);
+        console.log('Markdown content rendered successfully');
+      } catch (error) {
+        console.error('Failed to render markdown:', error);
+        setRenderedMarkdown('<p>Error rendering markdown</p>');
+      }
+    };
+
+    if (content) {
+      updateMarkdownPreview();
+    } else {
+      setRenderedMarkdown('');
+    }
+  }, [content]);
 
   // Load file content when filePath changes
   useEffect(() => {
@@ -107,6 +140,12 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
     setIsEdited(true);
+  };
+
+  // Handle view mode changes
+  const handleViewModeChange = (mode: 'edit' | 'preview'): void => {
+    setViewMode(mode);
+    console.log(`Changed view mode to: ${mode}`);
   };
 
   // Get selected text and cursor position
@@ -265,6 +304,14 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
     if (e.ctrlKey && e.key === 'u') {
       e.preventDefault();
       formatText('underline');
+      return;
+    }
+
+    // Ctrl+P for preview toggle
+    if (e.ctrlKey && e.key === 'p') {
+      e.preventDefault();
+      const nextMode = viewMode === 'edit' ? 'preview' : 'edit';
+      handleViewModeChange(nextMode);
       return;
     }
 
@@ -430,6 +477,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
           {isEdited && <span className="edited-indicator">*</span>}
         </div>
         <div className="editor-actions">
+
           <button 
             className="delete-button" 
             onClick={handleDelete}
@@ -454,6 +502,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="format-button bold"
               onClick={() => formatText('bold')}
               title="Bold (Ctrl+B)"
+              disabled={viewMode === 'preview'}
             >
               <strong>B</strong>
             </button>
@@ -461,6 +510,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="format-button italic"
               onClick={() => formatText('italic')}
               title="Italic (Ctrl+I)"
+              disabled={viewMode === 'preview'}
             >
               <em>I</em>
             </button>
@@ -468,6 +518,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="format-button underline"
               onClick={() => formatText('underline')}
               title="Underline (Ctrl+U)"
+              disabled={viewMode === 'preview'}
             >
               <u>U</u>
             </button>
@@ -475,6 +526,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="format-button strikethrough"
               onClick={() => formatText('strikethrough')}
               title="Strikethrough"
+              disabled={viewMode === 'preview'}
             >
               <s>S</s>
             </button>
@@ -493,17 +545,27 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
             </select>
           </div>
 
+          <div className="view-mode-controls">
+            <button 
+              className={`view-mode-button ${viewMode === 'edit' ? 'active' : ''}`}
+              onClick={() => {viewMode === 'edit' ? handleViewModeChange('preview') : handleViewModeChange('edit')}}
+              title="Toggle edit/preview mode"
+            >
+              {viewMode === 'edit' ? 'Preview' : 'Edit'}
+            </button>
+          </div>
+
           <div className="formatting-section">
             <label className="formatting-label">Size:</label>
             <input 
-              type="range"
-              className="font-size-slider"
+              type="number"
+              className="font-size-input"
               min="10"
               max="24"
               value={formattingOptions.fontSize}
               onChange={(e) => handleFontSizeChange(parseInt(e.target.value))}
             />
-            <span className="font-size-display">{formattingOptions.fontSize}px</span>
+            <span className="font-size-display">px</span>
           </div>
 
           <div className="formatting-section">
@@ -522,6 +584,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="insert-button"
               onClick={() => insertFormattingElement('heading')}
               title="Insert heading"
+              disabled={viewMode === 'preview'}
             >
               H1
             </button>
@@ -529,6 +592,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="insert-button"
               onClick={() => insertFormattingElement('list')}
               title="Insert list"
+              disabled={viewMode === 'preview'}
             >
               •
             </button>
@@ -536,6 +600,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="insert-button"
               onClick={() => insertFormattingElement('link')}
               title="Insert link"
+              disabled={viewMode === 'preview'}
             >
               🔗
             </button>
@@ -543,6 +608,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
               className="insert-button"
               onClick={() => insertFormattingElement('code')}
               title="Insert code block"
+              disabled={viewMode === 'preview'}
             >
               &lt;/&gt;
             </button>
@@ -554,21 +620,41 @@ const TextEditor: React.FC<TextEditorProps> = ({ filePath }) => {
       <div className="editor-container">
         <div className="editor-info">
         </div>
-        <textarea
-          ref={textareaRef}
-          className="text-content"
-          value={content}
-          onChange={handleContentChange}
-          onKeyDown={handleKeyDown}
-          spellCheck={true}
-          placeholder={`Start typing ${getFileTypeHint()}`}
-          aria-label={`Text editor for ${fileName}`}
-          aria-describedby="editor-info"
-          wrap="soft"
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-        />
+        
+        <div className={`editor-content ${viewMode}`}>
+          {viewMode === 'edit' && (
+            <div className="edit-pane">
+              <textarea
+                ref={textareaRef}
+                className="text-content"
+                value={content}
+                onChange={handleContentChange}
+                onKeyDown={handleKeyDown}
+                spellCheck={true}
+                placeholder={`Start typing ${getFileTypeHint()}`}
+                aria-label={`Text editor for ${fileName}`}
+                aria-describedby="editor-info"
+                wrap="soft"
+                autoCapitalize="off"
+                autoComplete="off"
+                autoCorrect="off"
+              />
+            </div>
+          )}
+          
+          {viewMode === 'preview' && (
+            <div className="preview-pane">
+              <div 
+                className="markdown-preview"
+                dangerouslySetInnerHTML={{ __html: renderedMarkdown }}
+                style={{
+                  fontSize: `${formattingOptions.fontSize}px`,
+                  fontFamily: formattingOptions.fontFamily
+                }}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
