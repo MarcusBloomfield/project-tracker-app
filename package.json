@@ -73,7 +73,7 @@
       "category": "Office"
     }
   },
-  "author": "Marucs Bloomfield",
+  "author": "Marcus Bloomfield",
   "license": "MIT",
   "devDependencies": {
     "@electron/typescript-definitions": "^9.1.2",

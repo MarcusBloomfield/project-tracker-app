@@ -286,7 +286,7 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
   );
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container" style={{padding: projectId === 'all' ? '0px' : '20px'}}>
       <div className="dashboard-header">
         <h2>{projectId === 'all' ? 'All Projects Dashboard' : 'Project Dashboard'}</h2>
 
