@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectInfo, fileSystem } from '../utils/fileSystem';
 import CreateDialog from './CreateDialog';
-import Dashboard from './Dashboard';
+import Dashboard from './Dashboard/Dashboard';
 import DailyTaskList from './DailyTaskList';
 import DeadLines from './DeadLines';
 import '../styles/ProjectSelector.css';

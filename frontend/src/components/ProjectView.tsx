@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import FileBrowser from './FileBrowser';
 import TextEditor from './TextEditor';
 import TaskList from './TaskList';
-import Dashboard from './Dashboard';
+import Dashboard from './Dashboard//Dashboard';
 import '../styles/ProjectView.css';
 import { ProjectInfo } from '../utils/fileSystem';
 
