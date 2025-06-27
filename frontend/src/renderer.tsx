@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/App';
-import './styles/App.css';
+import App from './pages/App';
+import './css/App.css';
 
 console.log('Renderer process started');
 

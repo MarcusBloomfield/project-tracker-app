@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fileSystem } from '../utils/fileSystem';
-import '../styles/DeadLines.css';
+import '../css/DeadLines.css';
 import { Task, TaskPriority, taskManager, TaskStatus } from '../utils/taskManager';
 
 interface DeadLinesProps {

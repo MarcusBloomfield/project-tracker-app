@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Task, TaskStatus, taskManager } from '../../utils/taskManager';
 import { statisticsManager, ProjectStatistics} from '../../utils/statisticsManager';
 import { fileSystem } from '../../utils/fileSystem';
-import '../../styles/Dashboard.css';
+import '../../css/Dashboard.css';
+
 import UpTime from './UpTime';
 import TaskOverview from './TaskOverview';
 import CompletionRate from './CompletionRate';
 import CompletionTime from './CompletionTime';
 import ContributionGraph from './ContributionGraph';
 import TaskList from './TaskList';
-import TaskPriorities from './TaskPriorities';
-
+import TaskPriorities from './TaskPriorities'; 
 
 interface DashboardProps {
     projectId: string;

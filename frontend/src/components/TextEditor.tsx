@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { marked } from 'marked';
 import { fileSystem } from '../utils/fileSystem';
-import '../styles/TextEditor.css';
+import '../css/TextEditor.css';
 
 interface TextEditorProps {
   filePath: string | null;

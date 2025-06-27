@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/CreateDialog.css';
+import '../css/CreateDialog.css';
 
 interface CreateDialogProps {
   type: string;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { DailyTask, dailyTaskManager } from '../utils/dailyTaskManager';
-import '../styles/DailyTaskList.css';
+import '../css/DailyTaskList.css';
 
 const DailyTaskList: React.FC = () => {
   const [tasks, setTasks] = useState<DailyTask[]>([]);

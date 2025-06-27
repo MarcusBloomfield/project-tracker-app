@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Task, TaskStatus, TaskPriority, taskManager, TaskType } from '../utils/taskManager';
-import '../styles/TaskList.css';
+import '../css/TaskList.css';
 
 interface TaskListProps {
   projectId: string;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FSItem, fileSystem } from '../utils/fileSystem';
-import '../styles/FileBrowser.css';
+import '../css/FileBrowser.css';
 import CreateDialog from './CreateDialog';
 
 interface FileBrowserProps {

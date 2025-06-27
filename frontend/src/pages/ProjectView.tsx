@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import FileBrowser from './FileBrowser';
-import TextEditor from './TextEditor';
-import TaskList from './TaskList';
-import Dashboard from './Dashboard//Dashboard';
-import '../styles/ProjectView.css';
+import FileBrowser from '../components/FileBrowser';
+import TextEditor from '../components/TextEditor';
+import TaskList from '../components/TaskList';
+import Dashboard from '../components/Dashboard/Dashboard';
+import '../css/ProjectView.css';
 import { ProjectInfo } from '../utils/fileSystem';
 
 interface ProjectViewProps {

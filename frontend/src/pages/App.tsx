@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../styles/App.css';
-import ProjectSelector from './ProjectSelector';
+import '../css/App.css';
+import MainView from './MainView';
 import ProjectView from './ProjectView';
 import { ProjectInfo } from '../utils/fileSystem';
 
@@ -24,7 +24,7 @@ const App: React.FC = () => {
             onBack={handleBackToProjects} 
           />
         ) : (
-          <ProjectSelector onProjectSelect={handleProjectSelect} />
+          <MainView onProjectSelect={handleProjectSelect} />
         )}
       </main>
     </div>

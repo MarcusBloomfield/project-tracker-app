@@ -1,8 +1,8 @@
 import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
-import { initFileSystemHandlers } from './main/fileSystemHandlers';
-import { initTaskHandlers } from './main/taskHandlers';
-import { initDailyTaskHandlers } from './main/dailyTaskHandlers';
+import { initFileSystemHandlers } from './handlers/fileSystemHandlers';
+import { initTaskHandlers } from './handlers/taskHandlers';
+import { initDailyTaskHandlers } from './handlers/dailyTaskHandlers';
 
 // Debug logging to help troubleshoot path issues
 console.log('__dirname:', __dirname);
