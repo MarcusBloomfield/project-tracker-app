@@ -1,66 +1,67 @@
-.timer-container{
-min-height: 50px;
-min-width: 200px;
-display: flex;
-flex-direction: row;
-
-gap: 5px;
-align-items: center;
-background-color: var(--bg-tertiary);
-
+.timer-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 15px;
   background-color: var(--bg-tertiary);
-  border-radius: 4px;
-  transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s;
-  position: relative;
+  border-radius: 8px;
+  min-height: 50px;
 }
 
-.timer-sub-container{
-
-min-height: 50px;
-min-width: 200px;
-display: flex;
-flex-direction: row;
-
-gap: 5px;
-align-items: center;
-background-color: var(--bg-tertiary);
-
+.timer-sub-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 15px;
   background-color: var(--bg-tertiary);
-  border-radius: 4px;
+  border-radius: 8px;
   border-left: 3px solid var(--color-primary);
-  transition: background-color 0.2s, transform 0.1s, box-shadow 0.1s;
-  position: relative;
+  min-height: 50px;
 }
 
-.timer-button{
+.timer-text {
+  font-weight: 500;
+  color: var(--text-primary);
+}
 
+.timer-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.timer-button {
   background-color: var(--color-primary);
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 10px 15px;
+  padding: 6px 8px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+  font-size: 0.8rem;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.timer-button:hover{
-background-color: var(--color-primary-hover);
+.timer-button:hover {
+  opacity: 0.8;
 }
 
-.timer-button-running{
-background-color: var(--status-success);
+.timer-button-running {
+  background-color: var(--status-success);
 }
 
-.timer-button-icon{
-  font-size: .7rem;
+.timer-button-paused {
+  background-color: var(--status-warning);
+}
+
+.timer-button-stop {
+  background-color: var(--status-error);
+}
+
+.timer-button-icon {
+  font-size: 0.8rem;
   color: white;
 }

@@ -97,11 +97,9 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
             <div className="project-selection-tasks-and-projects-container">
 
                 <div className="dead-lines-subcontainer">
-                    <div className="daily-tasks-container">
-                        <Timer />
-                    </div>
-
+                    <Timer />
                 </div>
+                
                 <div className="dead-lines-subcontainer">
                     <div className="dead-lines-container">
                         <DeadLines projectId="all" />
@@ -146,13 +144,6 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
                     </div>
                 </div>
 
-                <div className="project-selection-tasks-and-projects-subcontainer">
-
-                    <div className="daily-tasks-container">
-                        <DailyTaskList />
-                    </div>
-
-                </div>
             </div>
             <div className="project-selection-tasks-and-projects-container">
                 <div className="dead-lines-subcontainer">
@@ -162,6 +153,13 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
                     </div>
                 </div>
 
+                <div className="project-selection-tasks-and-projects-subcontainer">
+
+                    <div className="daily-tasks-container">
+                        <DailyTaskList />
+                    </div>
+
+                </div>
             </div>
 
 
