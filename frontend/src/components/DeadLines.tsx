@@ -215,12 +215,16 @@ const DeadLines: React.FC<DeadLinesProps> = ({ projectId }) => {
                 return taskA.title.localeCompare(taskB.title);
             });
             
+            if (tasksForThisDay.length > 0 )
+                {
+
             days.push({
                 date: new Date(currentDate),
                 dateString: dateString,
                 tasks: tasksForThisDay
             });
             
+        }
             // Move to next day
             currentDate.setDate(currentDate.getDate() + 1);
         }
@@ -275,10 +279,10 @@ const DeadLines: React.FC<DeadLinesProps> = ({ projectId }) => {
                                     ) : (
                                         <ol className="dead-lines-tasks">
                                             {day.tasks.map(task => (
-                                                <li key={task.id} > {task.projectId}:
+                                                <ol key={task.id} > {task.projectId}:
                                                     <p className="dead-lines-tasks-title">{task.title}</p>
                                                     <br></br>
-                                                </li>
+                                                </ol>
                                             ))}
                                         </ol>
                                     )}

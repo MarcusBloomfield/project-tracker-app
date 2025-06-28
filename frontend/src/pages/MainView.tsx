@@ -5,7 +5,8 @@ import Dashboard from '../components/Dashboard/Dashboard';
 import DailyTaskList from '../components/DailyTaskList';
 import DeadLines from '../components/DeadLines';
 import InProgress from '../components/InProgress';
-import '../css/ProjectSelector.css';
+import Timer from '../components/Timer'
+import '../css/ProjectSelector.css'
 
 interface MainViewProps {
     onProjectSelect: (project: ProjectInfo) => void;
@@ -96,6 +97,12 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
             <div className="project-selection-tasks-and-projects-container">
 
                 <div className="dead-lines-subcontainer">
+                    <div className="daily-tasks-container">
+                        <Timer />
+                    </div>
+
+                </div>
+                <div className="dead-lines-subcontainer">
                     <div className="dead-lines-container">
                         <DeadLines projectId="all" />
                     </div>
@@ -146,15 +153,19 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
                     </div>
 
                 </div>
-
             </div>
-
-            <div className="project-selection-dashboard-subcontainer">
-                <div className="dashboard-container">
-                    <h3>Dashboard</h3>
-                    <Dashboard projectId="all" />
+            <div className="project-selection-tasks-and-projects-container">
+                <div className="dead-lines-subcontainer">
+                    <div className="dashboard-container">
+                        <h3>Dashboard</h3>
+                        <Dashboard projectId="all" />
+                    </div>
                 </div>
+
             </div>
+
+
+
 
 
 
