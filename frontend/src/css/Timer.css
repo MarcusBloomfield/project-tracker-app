@@ -1,11 +1,20 @@
 .timer-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 16px;
   padding: 12px 15px;
-  background-color: var(--bg-tertiary);
   border-radius: 8px;
   min-height: 50px;
+}
+
+.timer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-tertiary);
+  padding: 12px 15px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
 }
 
 .timer-sub-container {
@@ -64,4 +73,15 @@
 .timer-button-icon {
   font-size: 0.8rem;
   color: white;
+}
+
+.timer-work-time-section {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.timer-work-time-section .stat-card {
+  margin: 0;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
 }

@@ -5,6 +5,7 @@ import Dashboard from '../components/Dashboard/Dashboard';
 import DailyTaskList from '../components/DailyTaskList';
 import DeadLines from '../components/DeadLines';
 import InProgress from '../components/InProgress';
+import UncompletedTasks from '../components/UncompletedTasks';
 import Timer from '../components/Timer'
 import '../css/ProjectSelector.css'
 
@@ -96,9 +97,6 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
 
             <div className="project-selection-tasks-and-projects-container">
 
-                <div className="dead-lines-subcontainer">
-                    <Timer />
-                </div>
                 
                 <div className="dead-lines-subcontainer">
                     <div className="dead-lines-container">
@@ -137,12 +135,11 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
                     </div>
                 </div>
 
-
                 <div className="dead-lines-subcontainer">
-                    <div className="dead-lines-container">
-                        <InProgress projectId="all" />
-                    </div>
+                    <Timer />
                 </div>
+
+
 
             </div>
             <div className="project-selection-tasks-and-projects-container">
@@ -153,6 +150,16 @@ const MainView: React.FC<MainViewProps> = ({ onProjectSelect }) => {
                     </div>
                 </div>
 
+                <div className="dead-lines-subcontainer">
+                    <div className="dead-lines-container">
+                        <InProgress projectId="all" />
+                    </div>
+                </div>
+                <div className="dead-lines-subcontainer">
+                    <div className="dead-lines-container">
+                        <UncompletedTasks projectId="all" />
+                    </div>
+                </div>
                 <div className="project-selection-tasks-and-projects-subcontainer">
 
                     <div className="daily-tasks-container">

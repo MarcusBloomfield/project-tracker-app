@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { workTimeManager, DailyWorkTime, WorkTimeStatistics } from '../../utils/workTimeManager';
+import { workTimeManager, DailyWorkTime, WorkTimeStatistics } from '../utils/workTimeManager';
 
 interface WorkTimeGraphProps {
   days?: number; // Number of days to show (default 30)
@@ -23,6 +23,8 @@ const WorkTimeGraph: React.FC<WorkTimeGraphProps> = ({ days = 30 }) => {
           workTimeManager.getWorkTimeStatistics(days)
         ]);
         
+        console.log('WorkTimeGraph - Loaded data:', { dailyWorkTime, stats });
+        
         setDailyData(dailyWorkTime);
         setStatistics(stats);
       } catch (err) {
@@ -36,10 +38,10 @@ const WorkTimeGraph: React.FC<WorkTimeGraphProps> = ({ days = 30 }) => {
     loadWorkTimeData();
   }, [days]);
 
-  // Simple fixed dimensions
+  // Simple fixed dimensions - made smaller for compact display
   const getGraphDimensions = () => {
-    const width = 700;
-    const height = 300;
+    const width = 500;
+    const height = 220;
     const padding = { top: 20, right: 40, bottom: 60, left: 60 };
     
     return {
@@ -58,11 +60,24 @@ const WorkTimeGraph: React.FC<WorkTimeGraphProps> = ({ days = 30 }) => {
     const { chartWidth, chartHeight } = getGraphDimensions();
     const maxHours = Math.max(...dailyData.map(day => workTimeManager.millisecondsToHours(day.totalDuration)), 1);
     
+    // Handle single data point case
+    if (dailyData.length === 1) {
+      const hours = workTimeManager.millisecondsToHours(dailyData[0].totalDuration);
+      const x = chartWidth / 2; // Center the single point
+      const y = chartHeight - (hours / maxHours) * chartHeight;
+      return `M ${x},${y} L ${x},${y}`; // Create a single point path
+    }
+    
     const points = dailyData.map((day, index) => {
       const x = (index / (dailyData.length - 1)) * chartWidth;
       const hours = workTimeManager.millisecondsToHours(day.totalDuration);
       const y = chartHeight - (hours / maxHours) * chartHeight;
-      return `${x},${y}`;
+      
+      // Ensure coordinates are valid numbers
+      const validX = isNaN(x) ? 0 : x;
+      const validY = isNaN(y) ? chartHeight : y;
+      
+      return `${validX},${validY}`;
     });
     
     return `M ${points.join(' L ')}`;
@@ -168,16 +183,43 @@ const WorkTimeGraph: React.FC<WorkTimeGraphProps> = ({ days = 30 }) => {
     const { chartWidth, chartHeight } = getGraphDimensions();
     const maxHours = Math.max(...dailyData.map(day => workTimeManager.millisecondsToHours(day.totalDuration)), 1);
     
+    // Handle single data point case
+    if (dailyData.length === 1) {
+      const hours = workTimeManager.millisecondsToHours(dailyData[0].totalDuration);
+      const x = chartWidth / 2;
+      const y = chartHeight - (hours / maxHours) * chartHeight;
+      
+      return (
+        <circle
+          key={0}
+          cx={x}
+          cy={y}
+          r="6"
+          fill="var(--color-primary)"
+          stroke="var(--bg-primary)"
+          strokeWidth="3"
+        >
+          <title>
+            {`${new Date(dailyData[0].date).toLocaleDateString()}: ${workTimeManager.formatDuration(dailyData[0].totalDuration)} (${dailyData[0].sessionCount} sessions)`}
+          </title>
+        </circle>
+      );
+    }
+    
     return dailyData.map((day, index) => {
       const x = (index / (dailyData.length - 1)) * chartWidth;
       const hours = workTimeManager.millisecondsToHours(day.totalDuration);
       const y = chartHeight - (hours / maxHours) * chartHeight;
       
+      // Ensure coordinates are valid numbers
+      const validX = isNaN(x) ? 0 : x;
+      const validY = isNaN(y) ? chartHeight : y;
+      
       return (
         <circle
           key={index}
-          cx={x}
-          cy={y}
+          cx={validX}
+          cy={validY}
           r="4"
           fill="var(--color-primary)"
           stroke="var(--bg-primary)"
@@ -260,9 +302,10 @@ const WorkTimeGraph: React.FC<WorkTimeGraphProps> = ({ days = 30 }) => {
               d={generateLinePath()}
               fill="none"
               stroke="var(--color-primary)"
-              strokeWidth="3"
+              strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
+              opacity="0.9"
             />
             
             {generateDataPoints()}
