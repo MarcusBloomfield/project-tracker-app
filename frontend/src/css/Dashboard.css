@@ -427,6 +427,77 @@
   min-width: 200px;
 }
 
+/* Work Time Graph - Simple */
+.work-time-graph {
+  padding: 20px;
+}
+
+.work-time-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 15px 0;
+  padding: 15px;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.summary-label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font-weight: bold;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.graph-container {
+  margin-top: 20px;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.work-time-chart {
+  display: block;
+}
+
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.error-message {
+  color: var(--status-error);
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-tertiary);
+}
+
+.no-data-message p {
+  margin: 5px 0;
+}
+
+.no-data-message p:first-child {
+  font-weight: bold;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 768px) {
   .stats-overview,
   .stats-row {
@@ -436,5 +507,9 @@
   .stat-card,
   .stat-chart-card {
     margin-bottom: 15px;
+  }
+
+  .work-time-summary {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
