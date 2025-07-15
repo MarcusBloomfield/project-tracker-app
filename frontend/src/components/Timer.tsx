@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { uptimeManager } from '../utils/uptimeManager';
 import { workTimeManager } from '../utils/workTimeManager';
-import WorkTimeGraph from './WorkTimeGraph';
 import '../css/Timer.css'
 
 const Timer: React.FC = () => {
@@ -78,26 +77,21 @@ const Timer: React.FC = () => {
 
     return (
         <div className='timer-container'>
-            <div className='timer-header'>
-                <div className='timer-text'>{getStatus()}</div>
-                <div className='timer-controls'>
-                    {!startTime ? (
-                        <button className='timer-button' onClick={startTimer}>▶</button>
-                    ) : (
-                        <>
-                            <button 
-                                className={`timer-button ${isPaused ? 'timer-button-paused' : 'timer-button-running'}`} 
-                                onClick={isPaused ? resumeTimer : pauseTimer}
-                            >
-                                {isPaused ? '▶' : '⏸'}
-                            </button>
-                            <button className='timer-button timer-button-stop' onClick={stopTimer}>⏹</button>
-                        </>
-                    )}
-                </div>
-            </div>
-            <div className='timer-work-time-section'>
-                <WorkTimeGraph days={30} />
+            <div className='timer-text'>{getStatus()}</div>
+            <div className='timer-controls'>
+                {!startTime ? (
+                    <button className='timer-button' onClick={startTimer}>▶</button>
+                ) : (
+                    <>
+                        <button 
+                            className={`timer-button ${isPaused ? 'timer-button-paused' : 'timer-button-running'}`} 
+                            onClick={isPaused ? resumeTimer : pauseTimer}
+                        >
+                            {isPaused ? '▶' : '⏸'}
+                        </button>
+                        <button className='timer-button timer-button-stop' onClick={stopTimer}>⏹</button>
+                    </>
+                )}
             </div>
         </div>
     )

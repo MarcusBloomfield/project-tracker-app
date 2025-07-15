@@ -427,106 +427,77 @@
   min-width: 200px;
 }
 
-/* ===== WORK TIME GRAPH COMPONENT ===== */
+/* Work Time Graph - Simple */
 .work-time-graph {
   padding: 20px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
-.work-time-graph h3 {
-  margin: 0 0 20px 0;
-  color: var(--text-primary);
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-/* Summary Statistics */
 .work-time-summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 20px;
-  padding: 16px;
+  gap: 15px;
+  margin: 15px 0;
+  padding: 15px;
   background-color: var(--bg-tertiary);
-  border-radius: 8px;
-  border: 1px solid var(--border-primary);
+  border-radius: 6px;
 }
 
 .summary-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  min-width: 0;
 }
 
 .summary-label {
   font-size: 0.8rem;
   color: var(--text-tertiary);
-  margin-bottom: 6px;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 4px;
 }
 
 .summary-value {
-  font-weight: 600;
+  font-weight: bold;
   color: var(--text-primary);
-  font-size: 0.95rem;
-  line-height: 1.2;
+  font-size: 0.9rem;
 }
 
-/* Graph Container */
 .graph-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--bg-secondary);
-  padding: 20px;
-  min-height: 300px;
+  margin-top: 20px;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+  padding: 15px;
 }
 
 .work-time-chart {
   display: block;
-  max-width: 100%;
-  height: auto;
 }
 
-/* State Messages */
 .loading-message,
-.error-message,
-.no-data-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.error-message {
   text-align: center;
-  padding: 40px 20px;
+  padding: 40px;
   color: var(--text-tertiary);
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-style: italic;
 }
 
 .error-message {
   color: var(--status-error);
-  font-weight: 500;
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-tertiary);
 }
 
 .no-data-message p {
-  margin: 8px 0;
+  margin: 5px 0;
 }
 
 .no-data-message p:first-child {
-  font-weight: 600;
+  font-weight: bold;
   color: var(--text-secondary);
-  font-size: 1rem;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .stats-overview,
   .stats-row {
@@ -538,51 +509,7 @@
     margin-bottom: 15px;
   }
 
-  /* Work Time Graph Mobile Optimizations */
-  .work-time-graph {
-    padding: 16px;
-  }
-
   .work-time-summary {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 12px;
-    margin-bottom: 16px;
-  }
-
-  .summary-label {
-    font-size: 0.75rem;
-  }
-
-  .summary-value {
-    font-size: 0.9rem;
-  }
-
-  .graph-container {
-    padding: 16px;
-    min-height: 250px;
-  }
-
-  .loading-message,
-  .error-message,
-  .no-data-message {
-    padding: 30px 16px;
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .work-time-summary {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .graph-container {
-    padding: 12px;
-    min-height: 200px;
-  }
-
-  .work-time-chart {
-    width: 100%;
   }
 }

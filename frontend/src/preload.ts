@@ -4,8 +4,8 @@ import { setMaxListeners } from 'events';
 
 // Define valid IPC channels
 const validSendChannels = [
-  'project:create', 
-  'project:get', 
+  'project:create',
+  'project:get',
   'project:list',
   'fs:readdir',
   'fs:readfile',
@@ -30,8 +30,8 @@ const validSendChannels = [
 ];
 
 const validReceiveChannels = [
-  'project:created', 
-  'project:data', 
+  'project:created',
+  'project:data',
   'project:list',
   'fs:readdir',
   'fs:readfile',

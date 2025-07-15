@@ -10,8 +10,8 @@ import CompletionRate from './CompletionRate';
 import CompletionTime from './CompletionTime';
 import ContributionGraph from './ContributionGraph';
 import TaskList from './TaskList';
-import TaskPriorities from './TaskPriorities'; 
-import WorkTimeGraph from '../WorkTimeGraph'; 
+import TaskPriorities from './TaskPriorities';
+import WorkTimeGraph from './WorkTimeGraph'; 
 
 interface DashboardProps {
     projectId: string;
@@ -174,6 +174,19 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
             </div>
 
             <ContributionGraph stats={stats}/>
+
+            <div className="stats-row">
+                <WorkTimeGraph days={30} />
+            </div>
+
+            {projectId === 'all' && uncompletedTasksSortedByPriority.length > 0 && (
+                <TaskList tasks ={uncompletedTasksSortedByPriority} projectNames={projectNames}/>
+            )}
+
+            <div className="stats-row">
+                <TaskPriorities stats={stats}/> 
+            </div>
+
         </div>
     );
 };
