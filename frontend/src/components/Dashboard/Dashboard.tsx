@@ -10,7 +10,6 @@ import CompletionRate from './CompletionRate';
 import CompletionTime from './CompletionTime';
 import ContributionGraph from './ContributionGraph';
 import TaskList from './TaskList';
-import TaskPriorities from './TaskPriorities'; 
 
 interface DashboardProps {
     projectId: string;
@@ -159,6 +158,11 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
         task.status === TaskStatus.TODO || task.status === TaskStatus.IN_PROGRESS
     );
 
+    // Filter tasks into in-progress tasks for separate section
+    const inProgressTasksSortedByPriority = tasksSortedByPriority.filter(task =>
+        task.status === TaskStatus.IN_PROGRESS
+    );
+
     return (
         <div className="dashboard-container" style={{ padding: projectId === 'all' ? '0px' : '20px' }}>
             <div className="dashboard-header">
@@ -174,13 +178,14 @@ const Dashboard: React.FC<DashboardProps> = ({ projectId }) => {
 
             <ContributionGraph stats={stats}/>
 
-            {projectId === 'all' && uncompletedTasksSortedByPriority.length > 0 && (
-                <TaskList tasks ={uncompletedTasksSortedByPriority} projectNames={projectNames}/>
+
+            {projectId === 'all' && inProgressTasksSortedByPriority.length > 0 && (
+                <TaskList tasks={inProgressTasksSortedByPriority} projectNames={projectNames} title="In Progress Tasks"/>
             )}
 
-            <div className="stats-row">
-                <TaskPriorities stats={stats}/> 
-            </div>
+            {projectId === 'all' && uncompletedTasksSortedByPriority.length > 0 && (
+                <TaskList tasks ={uncompletedTasksSortedByPriority} projectNames={projectNames} title="Uncompleted Tasks"/>
+            )}
 
         </div>
     );

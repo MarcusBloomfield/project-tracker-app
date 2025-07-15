@@ -6,9 +6,10 @@ import { Task, TaskStatus, TaskPriority, taskManager } from '../../utils/taskMan
 interface TaskListProps {
     tasks: Task[]
     projectNames: Record<string, string>
+    title: string
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, projectNames }) => {
+const TaskList: React.FC<TaskListProps> = ({ tasks, projectNames, title }) => {
     // Format date for display
     const formatDate = (date: Date | null) => {
         if (!date) return 'No due date';
@@ -43,7 +44,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, projectNames }) => {
 
                 <div className="stats-row">
                     <div className="stat-chart-card full-width">
-                        <h3>Uncompleted Tasks</h3>
+                        <h3>{title}</h3>
                         <div className="all-tasks-list">
                             {tasks.map(task => (
                                 <div key={task.id} className={`task-item ${task.status === TaskStatus.COMPLETED ? 'completed' : ''}`}>
