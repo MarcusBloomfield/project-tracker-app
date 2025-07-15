@@ -4,8 +4,8 @@ import { setMaxListeners } from 'events';
 
 // Define valid IPC channels
 const validSendChannels = [
-  'project:create',
-  'project:get',
+  'project:create', 
+  'project:get', 
   'project:list',
   'fs:readdir',
   'fs:readfile',
@@ -21,17 +21,12 @@ const validSendChannels = [
   'dailyTask:create',
   'dailyTask:toggle',
   'dailyTask:delete',
-  'dailyTask:reorder',
-  'workTime:list',
-  'workTime:save',
-  'workTime:daily',
-  'workTime:statistics',
-  'workTime:delete'
+  'dailyTask:reorder'
 ];
 
 const validReceiveChannels = [
-  'project:created',
-  'project:data',
+  'project:created', 
+  'project:data', 
   'project:list',
   'fs:readdir',
   'fs:readfile',
@@ -47,12 +42,7 @@ const validReceiveChannels = [
   'dailyTask:created',
   'dailyTask:updated',
   'dailyTask:deleted',
-  'dailyTask:reordered',
-  'workTime:list',
-  'workTime:saved',
-  'workTime:daily',
-  'workTime:statistics',
-  'workTime:deleted'
+  'dailyTask:reordered'
 ];
 
 // Expose protected methods that allow the renderer process to use

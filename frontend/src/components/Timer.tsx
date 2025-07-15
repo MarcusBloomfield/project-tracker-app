@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { uptimeManager } from '../utils/uptimeManager';
-import { workTimeManager } from '../utils/workTimeManager';
 import '../css/Timer.css'
 
 const Timer: React.FC = () => {
@@ -45,24 +44,7 @@ const Timer: React.FC = () => {
         setIsPaused(false);
     };
 
-    const stopTimer = async () => {
-        if (startTime && elapsed > 0) {
-            // Save the work session
-            try {
-                const endTime = new Date();
-                const sessionData = {
-                    startTime: startTime,
-                    endTime: endTime,
-                    duration: elapsed // actual work time excluding pauses
-                };
-                
-                await workTimeManager.saveWorkSession(sessionData);
-                console.log('Work session saved successfully:', workTimeManager.formatDuration(elapsed));
-            } catch (error) {
-                console.error('Failed to save work session:', error);
-            }
-        }
-        
+    const stopTimer = () => {
         setStartTime(null);
         setIsPaused(false);
         setTotalPausedTime(0);

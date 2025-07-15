@@ -3,7 +3,6 @@ import * as path from 'path';
 import { initFileSystemHandlers } from './handlers/fileSystemHandlers';
 import { initTaskHandlers } from './handlers/taskHandlers';
 import { initDailyTaskHandlers } from './handlers/dailyTaskHandlers';
-import { initWorkTimeHandlers } from './handlers/workTimeHandlers';
 
 // Debug logging to help troubleshoot path issues
 console.log('__dirname:', __dirname);
@@ -14,8 +13,6 @@ initFileSystemHandlers();
 initTaskHandlers();
 
 initDailyTaskHandlers();
-
-initWorkTimeHandlers();
 
 const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
