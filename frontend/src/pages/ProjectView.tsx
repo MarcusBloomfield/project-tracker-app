@@ -3,19 +3,22 @@ import FileBrowser from '../components/FileBrowser';
 import TextEditor from '../components/TextEditor';
 import TaskList from '../components/TaskList';
 import Dashboard from '../components/Dashboard/Dashboard';
+import TaskChat from '../components/TaskChat';
 import '../css/ProjectView.css';
 import { ProjectInfo } from '../utils/fileSystem';
+import { Task, taskManager } from '../utils/taskManager';
 
 interface ProjectViewProps {
   project: ProjectInfo;
   onBack: () => void;
 }
 
-type ProjectTab = 'files' | 'tasks' | 'dashboard';
+type ProjectTab = 'files' | 'tasks' | 'dashboard' | 'chat';
 
 const ProjectView: React.FC<ProjectViewProps> = ({ project, onBack }) => {
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<ProjectTab>('files');
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   // Handle file selection from FileBrowser
   const handleFileSelect = (filePath: string) => {
@@ -26,6 +29,20 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, onBack }) => {
   const handleTabChange = (tab: ProjectTab) => {
     setActiveTab(tab);
   };
+
+  // Load tasks when component mounts
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        const taskList = await taskManager.getProjectTasks(project.name);
+        setTasks(taskList);
+      } catch (error) {
+        console.error('Failed to load tasks:', error);
+      }
+    };
+
+    loadTasks();
+  }, [project.name]);
 
   return (
     <div className="project-view">
@@ -51,6 +68,12 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, onBack }) => {
             onClick={() => handleTabChange('dashboard')}
           >
             Dashboard
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'chat' ? 'active' : ''}`}
+            onClick={() => handleTabChange('chat')}
+          >
+            Chat
           </button>
         </div>
       </div>
@@ -80,6 +103,12 @@ const ProjectView: React.FC<ProjectViewProps> = ({ project, onBack }) => {
         {activeTab === 'dashboard' && (
           <div className="dashboard-container">
             <Dashboard projectId={project.name} />
+          </div>
+        )}
+        
+        {activeTab === 'chat' && (
+          <div className="chat-container">
+            <TaskChat projectId={project.name} tasks={tasks} />
           </div>
         )}
       </div>

@@ -21,7 +21,8 @@ const validSendChannels = [
   'dailyTask:create',
   'dailyTask:toggle',
   'dailyTask:delete',
-  'dailyTask:reorder'
+  'dailyTask:reorder',
+  'chat:send-message'
 ];
 
 const validReceiveChannels = [
@@ -55,6 +56,13 @@ contextBridge.exposeInMainWorld('api', {
       ipcRenderer.send(channel, data);
     }
   },
+  invokeEvent: (channel: string, data: any) => {
+    console.log('invokeEvent');
+    // Whitelist channels
+    if (validSendChannels.includes(channel)) {
+      return ipcRenderer.invoke(channel, data);
+    }
+  },
   addListener: (channel: string, func: (...args: any[]) => void) => {
     console.log('addListener');
     if (validReceiveChannels.includes(channel)) {
@@ -75,6 +83,10 @@ contextBridge.exposeInMainWorld('api', {
       chrome: process.versions.chrome,
       electron: process.versions.electron
     }
+  },
+  // Expose environment variables needed by the app
+  env: {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY
   }
 });
 

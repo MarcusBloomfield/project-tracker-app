@@ -95,6 +95,14 @@
   width: 100%;
 }
 
+.chat-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Hide scrollbar for webkit browsers */
 .dashboard-container::-webkit-scrollbar {
   display: none;
