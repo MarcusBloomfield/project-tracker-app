@@ -65,6 +65,16 @@
   font-size: 0.9rem;
 }
 
+.filter-group input[type="text"] {
+  padding: 6px 10px;
+  border: 1px solid var(--border-secondary);
+  border-radius: 4px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  min-width: 220px;
+}
+
 .reset-filters-button {
   background-color: transparent;
   color: var(--color-primary);

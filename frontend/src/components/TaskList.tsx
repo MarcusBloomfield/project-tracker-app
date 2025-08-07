@@ -15,6 +15,8 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
   const [typeFilter, setTypeFilter] = useState<TaskType | null>(null);
   const [sortBy, setSortBy] = useState<'dueDate' | 'priority' | 'createdAt'>('createdAt');
   const [isCreating, setIsCreating] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
@@ -45,9 +47,31 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
     loadTasks();
   }, [projectId]);
 
+  // Debounce search query to avoid filtering on every keystroke
+  useEffect(() => {
+    console.log('[TaskList] Search query updated:', { projectId, searchQuery });
+    const debounceTimer: number = window.setTimeout(() => {
+      console.log('[TaskList] Applying debounced search query:', { debouncedValue: searchQuery });
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+
+    return () => {
+      window.clearTimeout(debounceTimer);
+    };
+  }, [projectId, searchQuery]);
+
   // Apply filters and sorting when tasks, filters, or sort criteria change
   useEffect(() => {
     let result = [...tasks];
+    console.log('[TaskList] Applying filters and sorting:', {
+      projectId,
+      totalTasks: tasks.length,
+      statusFilter,
+      priorityFilter,
+      typeFilter,
+      sortBy,
+      debouncedSearchQuery
+    });
     
     // Apply status filter
     if (statusFilter) {
@@ -64,11 +88,24 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
       result = taskManager.filterByType(result, typeFilter);
     }
     
+    // Apply text search filter (title, description, tags)
+    if (debouncedSearchQuery && debouncedSearchQuery.trim().length > 0) {
+      const normalizedQuery: string = debouncedSearchQuery.trim().toLowerCase();
+      result = result.filter((task: Task) => {
+        const titleMatches: boolean = (task.title || '').toLowerCase().includes(normalizedQuery);
+        const descriptionMatches: boolean = (task.description || '').toLowerCase().includes(normalizedQuery);
+        const tagsText: string = Array.isArray(task.tags) ? task.tags.join(' ').toLowerCase() : '';
+        const tagsMatch: boolean = tagsText.includes(normalizedQuery);
+        return titleMatches || descriptionMatches || tagsMatch;
+      });
+    }
+
     // Apply sort
     result = taskManager.sortTasks(result, sortBy);
     
     setFilteredTasks(result);
-  }, [tasks, statusFilter, priorityFilter, typeFilter, sortBy]);
+    console.log('[TaskList] Filtered tasks computed:', { projectId, filteredCount: result.length });
+  }, [tasks, statusFilter, priorityFilter, typeFilter, sortBy, debouncedSearchQuery, projectId]);
 
   // Reset filters
   const handleResetFilters = () => {
@@ -76,6 +113,9 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
     setPriorityFilter(null);
     setTypeFilter(null);
     setSortBy('createdAt');
+    setSearchQuery('');
+    setDebouncedSearchQuery('');
+    console.log('[TaskList] Filters have been reset including search query');
   };
 
   // Handle changing task status
@@ -328,6 +368,15 @@ const TaskList: React.FC<TaskListProps> = ({ projectId }) => {
       )}
       
       <div className="task-filters">
+        <div className="filter-group">
+          <label>Search:</label>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value)}
+            placeholder="Search tasks..."
+          />
+        </div>
         <div className="filter-group">
           <label>Status:</label>
           <select value={statusFilter || ''} onChange={e => setStatusFilter(e.target.value as TaskStatus || null)}>

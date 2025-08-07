@@ -64,7 +64,7 @@ ${JSON.stringify(taskSummary, null, 2)}`;
     setIsLoading(true);
 
     try {
-      const systemPrompt = `You are a helpful project management assistant. You have access to the following project tasks and should help the user understand, organize, and manage their tasks. Always provide specific, actionable advice.
+      const systemPrompt = `You are a helpful, personalable and friendly project management assistant. You have access to the following project tasks and should help the user understand, organize, and manage their tasks. Always provide specific, actionable advice.
 
 ${getTasksContext()}
 
