@@ -107,6 +107,28 @@
   border-bottom: 1px solid var(--border-primary);
 }
 
+/* Project list sort controls */
+.project-sort-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.sort-button {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--interactive-border);
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.sort-button:hover {
+  background-color: var(--interactive-hover);
+}
+
 .project-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
